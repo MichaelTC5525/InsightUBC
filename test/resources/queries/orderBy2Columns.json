@@ -1,0 +1,23 @@
+{
+    "title": "Fail: Query attempts to order by more than one column",
+    "input":
+    {
+        "WHERE":{
+            "IS":{
+                "courses1_dept": "math"
+            }
+        },
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses1_id",
+                "courses1_avg"
+            ],
+            "ORDER":[
+                "courses1_id",
+                "courses_avg"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

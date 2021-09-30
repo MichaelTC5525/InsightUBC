@@ -1,0 +1,16 @@
+{
+    "title": "Fail: Query uses logic comparator with no nested conditions",
+    "input":
+    {
+        "WHERE":{
+            "AND":[]
+        },
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses_dept"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

@@ -1,0 +1,18 @@
+{
+    "title": "Fail: Query attempts to order the results by a key not requested in COLUMNS",
+    "input":
+    {
+        "WHERE":{},
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses1_pass",
+                "courses1_fail",
+                "courses1_audit",
+                "courses1_uuid"
+            ],
+            "ORDER": "courses1_avg"
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

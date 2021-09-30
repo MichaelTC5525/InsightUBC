@@ -1,0 +1,20 @@
+{
+    "title": "Fail: Value of a numerical comparison is inputted as a string",
+    "input":
+    {
+        "WHERE":{
+            "EQ":{
+                "courses_avg": "90"
+            }
+        },
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses_dept",
+                "courses_avg"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

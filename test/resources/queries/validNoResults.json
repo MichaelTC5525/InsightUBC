@@ -1,0 +1,28 @@
+{
+    "title": "Success: Query returns no results but is valid",
+    "input": 
+    {
+        "WHERE":{
+            "AND":[
+                {
+                    "IS":{
+                        "courses_dept": "math"
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_dept": "econ"
+                    }
+                }
+            ]
+        },
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses_dept",
+                "courses_id",
+                "courses_avg"
+            ]
+        }
+    },
+    "with": []
+}

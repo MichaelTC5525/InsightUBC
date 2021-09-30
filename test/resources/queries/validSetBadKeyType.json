@@ -1,0 +1,15 @@
+{
+    "title": "Fail: Query contains options referencing valid dataset but non-existent key type",
+    "input":{
+        "WHERE":{},
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses1_head",
+                "courses1_messiah",
+                "courses1_mouse"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}
