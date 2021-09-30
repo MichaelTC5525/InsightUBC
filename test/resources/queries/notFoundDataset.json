@@ -1,0 +1,16 @@
+{
+    "title": "Fail: Query contains options referencing non-existent dataset",
+    "input":
+    {
+        "WHERE":{},
+        "OPTIONS":{
+            "COLUMNS":[
+                "nonexist_dept",
+                "nonexist_id",
+                "nonexist_avg"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

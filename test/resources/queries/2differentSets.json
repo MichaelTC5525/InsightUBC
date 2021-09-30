@@ -1,0 +1,16 @@
+{
+    "title": "Fail: Query contains options referencing two different existing datasets",
+    "input":
+    {
+        "WHERE":{},
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses_dept",
+                "courses1_id",
+                "courses1_avg"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

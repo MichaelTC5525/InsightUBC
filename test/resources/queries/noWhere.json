@@ -1,0 +1,14 @@
+{
+    "title": "Fail: Query has no WHERE clause",
+    "input":
+    {
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses1_dept",
+                "courses1_id"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

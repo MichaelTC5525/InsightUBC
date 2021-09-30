@@ -1,0 +1,61 @@
+{
+    "title": "Success: Query contains AND clause with 2 filters",
+    "input":
+    {
+        "WHERE":{
+            "AND":[
+                {
+                    "IS":{
+                        "courses_dept": "math"
+                    }
+                },
+                {
+                    "IS":{
+                        "courses_id": "541"
+                    }
+                }
+            ]
+        },
+        "OPTIONS":{
+            "COLLUMNS":[
+                "courses_avg",
+                "courses_uuid"
+            ],
+            "ORDER": "courses_avg"
+        }
+    },
+    "with":[
+        {
+            "courses1_avg": 88,
+            "courses1_uuid": "29978"
+        },
+        {
+            "courses1_avg": 88,
+            "courses1_uuid": "29977"
+        },
+        {
+            "courses1_avg": 93.11,
+            "courses1_uuid": "90221"
+        },
+        {
+            "courses1_avg": 93.11,
+            "courses1_uuid": "90220"
+        },
+        {
+            "courses1_avg": 93.78,
+            "courses1_uuid": "27487"
+        },
+        {
+            "courses1_avg": 93.78,
+            "courses1_uuid": "27486"
+        },
+        {
+            "courses1_avg": 97.09,
+            "courses1_uuid": "73174"
+        },
+        {
+            "courses1_avg": 97.09,
+            "courses1_uuid": "73173"
+        }
+    ]
+}

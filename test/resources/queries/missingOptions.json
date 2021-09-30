@@ -1,0 +1,13 @@
+{
+    "title": "Fail: Missing OPTIONS to select the data columns to return",
+    "input":
+    {
+        "WHERE":{
+            "IS":{
+                "courses1_dept": "math"
+            }
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

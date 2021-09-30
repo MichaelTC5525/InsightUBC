@@ -1,0 +1,16 @@
+{
+    "title": "Fail: Missing required COLUMNS section under OPTIONS",
+    "input":
+    {
+        "WHERE":{
+            "IS":{
+                "courses1_dept": "math"
+            }
+        },
+        "OPTIONS":{
+            "ORDER": "courses1_avg"
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}

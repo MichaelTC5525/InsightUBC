@@ -1,0 +1,20 @@
+{
+    "title": "Fail: A query key is missing an underscore separator",
+    "input":
+    {
+        "WHERE":{
+            "IS":{
+                "courses1_dept": "math"
+            }
+        },
+        "OPTIONS":{
+            "COLUMNS":[
+                "courses1_dept",
+                "courses1_id",
+                "courses1avg"
+            ]
+        }
+    },
+    "errorExpected": true,
+    "with": "InsightError"
+}
