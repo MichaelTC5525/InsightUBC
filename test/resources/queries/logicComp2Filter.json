@@ -6,22 +6,22 @@
             "AND":[
                 {
                     "IS":{
-                        "courses_dept": "math"
+                        "courses1_dept": "math"
                     }
                 },
                 {
                     "IS":{
-                        "courses_id": "541"
+                        "courses1_id": "541"
                     }
                 }
             ]
         },
         "OPTIONS":{
-            "COLLUMNS":[
-                "courses_avg",
-                "courses_uuid"
+            "COLUMNS":[
+                "courses1_avg",
+                "courses1_uuid"
             ],
-            "ORDER": "courses_avg"
+            "ORDER": "courses1_avg"
         }
     },
     "with":[
