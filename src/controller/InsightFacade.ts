@@ -1,6 +1,8 @@
 import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
+import CourseSection from "../storageType/CourseSection";
+import FSOperator from "../helper/FSOperator";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -8,11 +10,8 @@ import JSZip from "jszip";
  *
  */
 export default class InsightFacade implements IInsightFacade {
-
 	private datasetStorage: InsightDataset[];
-
-	// Will likely make a custom class for this as [] type
-	private courseSections: Map<string, string>;
+	private courseSections: CourseSection[];
 
 	/**
 	 * On creating a new InsightFacade instance, we should read the ./data file system directory
@@ -22,10 +21,20 @@ export default class InsightFacade implements IInsightFacade {
 	constructor() {
 		console.trace("InsightFacadeImpl::init()");
 		this.datasetStorage = [];
-		this.courseSections = new Map<string, string>();
+		this.courseSections = [];
 	}
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
+		// Validate ID string using basic format scheme
+		if (!id.match(/^[^_]+$/)) {
+			return Promise.reject(new InsightError("Invalid requested dataset ID"));
+		}
+
+		// Validate content string; Sanity check that string is uses base64-type characters
+		// base64 regex pattern from StackOverflow https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not
+		if (!content.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/)) {
+			return Promise.reject(new InsightError("Invalid dataset content; must be base64 string"));
+		}
 
 		let currSets: string[] = [];
 
@@ -34,37 +43,36 @@ export default class InsightFacade implements IInsightFacade {
 			currSets.push(dataset.id);
 		}
 
-		// Validate ID string using basic format scheme
-		if (!id.match(/^[^_]+$/)) {
-			return Promise.reject(new InsightError("Invalid requested dataset ID"));
-		}
-
-		// Validate content string; Sanity check that string is base64
-		// base64 regex pattern from StackOverflow https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not
-		if (!content.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/)) {
-			return Promise.reject(new InsightError("Invalid dataset content"));
-		}
+		let sections: number = 0;
 
 		// Read in the .ZIP file
 		let zip = new JSZip();
 		zip.loadAsync(content, {base64: true})
-			.then((result) => {
+			.then((contentZip) => {
+				// Create a data folder to use as the space on disk; a directory specific to this dataset
+				fs.mkdirSync("./data/${id}");
+
+				let fsOp = new FSOperator();
+				fsOp.writeFilesWithData("courses", contentZip);
+				fsOp.writeFilesWithData("rooms", contentZip);
+
 				// Search through and parse the valid JSON files
+
 			})
 			.catch((error) => {
+				console.log(error);
 				// Remove the folder if created
-				zip.remove("./data");
-				return Promise.reject("Dataset could not be loaded. Ensure .zip is in base64 string format");
+				fs.remove("./data");
+				return Promise.reject("Dataset could not be loaded. Ensure .zip is in base64 string format and \
+										contains all necessary directories and JSON files."
+				);
 			});
-
-		// Create a data folder to use as the space on disk
-		zip.folder("./data/" + id + "/");
 
 		// Create an InsightDataset object to track high-level information of the dataset being added
 		let newDataset: InsightDataset = {
 			id: id,
 			kind: kind,
-			numRows: 0   // to be variable
+			numRows: sections, // to be variable
 		};
 		currSets.push(id);
 		this.datasetStorage.push(newDataset);
