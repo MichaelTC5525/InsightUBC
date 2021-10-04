@@ -43,28 +43,23 @@ export default class InsightFacade implements IInsightFacade {
 			currSets.push(dataset.id);
 		}
 
-		let sections: number = 0;
-
 		// Read in the .ZIP file
 		let zip = new JSZip();
 		zip.loadAsync(content, {base64: true})
 			.then((contentZip) => {
 				// Create a data folder to use as the space on disk; a directory specific to this dataset
 				fs.mkdirSync("./data/${id}");
-
 				let fsOp = new FSOperator();
-				fsOp.writeFilesWithData("courses", contentZip);
-				fsOp.writeFilesWithData("rooms", contentZip);
-
-				// Search through and parse the valid JSON files
-
+				fsOp.validateAndWriteFiles("courses", contentZip, id);
+				fsOp.validateAndWriteFiles("rooms", contentZip, id);
+				// TODO: Search through and parse the valid JSON files
 			})
 			.catch((error) => {
 				console.log(error);
 				// Remove the folder if created
 				fs.remove("./data");
 				return Promise.reject("Dataset could not be loaded. Ensure .zip is in base64 string format and \
-										contains all necessary directories and JSON files."
+										contains all necessary directories, JSON files, and course section content."
 				);
 			});
 
@@ -72,7 +67,7 @@ export default class InsightFacade implements IInsightFacade {
 		let newDataset: InsightDataset = {
 			id: id,
 			kind: kind,
-			numRows: sections, // to be variable
+			numRows: 0 // to be variable
 		};
 		currSets.push(id);
 		this.datasetStorage.push(newDataset);
