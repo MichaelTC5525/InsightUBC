@@ -1,59 +1,58 @@
 {
-    "title": "Success: Query contains AND clause with 2 filters",
+    "title": "Success: Query contains string comparison filter with asterisk suffix",
     "input":
     {
-        "WHERE":{
-            "AND":[
-                {
-                    "IS":{
-                        "courses1_dept": "math"
-                    }
-                },
-                {
-                    "IS":{
-                        "courses1_id": "541"
-                    }
-                }
-            ]
+        "WHERE": {
+            "IS": {
+                "courses1_dept": "ma*"
+            }
         },
-        "OPTIONS":{
-            "COLUMNS":[
+        "OPTIONS": {
+            "COLUMNS": [
+                "courses1_dept",
                 "courses1_avg",
                 "courses1_uuid"
-            ],
-            "ORDER": "courses1_avg"
+            ]
         }
     },
     "with":[
         {
+            "courses1_dept": "math",
             "courses1_avg": 88,
             "courses1_uuid": "29978"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 88,
             "courses1_uuid": "29977"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 93.11,
             "courses1_uuid": "90221"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 93.11,
             "courses1_uuid": "90220"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 93.78,
             "courses1_uuid": "27487"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 93.78,
             "courses1_uuid": "27486"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 97.09,
             "courses1_uuid": "73174"
         },
         {
+            "courses1_dept": "math",
             "courses1_avg": 97.09,
             "courses1_uuid": "73173"
         }
