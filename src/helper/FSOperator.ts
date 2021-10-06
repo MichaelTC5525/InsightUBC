@@ -1,9 +1,20 @@
 import * as fs from "fs-extra";
 import JSZip from "jszip";
+import CourseSection from "../storageType/CourseSection";
 
 export default class FSOperator {
 
-	public validateAndWriteFiles(folder: string, contentZip: JSZip, id: string): void {
+	// TODO: Other return value option will likely be a custom type for Rooms
+	/**
+	 * @param folder the name of the folder to extract JSON files from
+	 * @param contentZip a JSZip object populated with the contents of a .ZIP file
+	 * @param id the intended ID string for this dataset to be added
+	 * @returns an array containing the CourseSections or Rooms with extracted field values filled
+	 * We expect a dataset to contain one of the following folder names: ["courses", "rooms"]
+	 */
+	public getValidRows(folder: string, contentZip: JSZip, id: string): CourseSection[] | string[] {
+		let result: CourseSection[] = [];
+
 		contentZip.folder(folder)?.forEach(function (relativePath, file) {
 			contentZip.file(file.name)?.async("string")
 				.then(function (data) {
@@ -14,37 +25,31 @@ export default class FSOperator {
 
 					if (folder === "courses") {
 						for (let r of obj.result) {
-							if (r.Subject === undefined ||
-								r.Course === undefined ||
-								r.Avg === undefined ||
-								r.Professor === undefined ||
-								r.Title === undefined ||
-								r.Pass === undefined ||
-								r.Fail === undefined ||
-								r.Audit === undefined ||
-								r.id === undefined ||
+							if (r.Subject === undefined || r.Course === undefined || r.Avg === undefined ||
+								r.Professor === undefined || r.Title === undefined || r.Pass === undefined ||
+								r.Fail === undefined || r.Audit === undefined || r.id === undefined ||
 								r.Year === undefined) {
-								// TODO: Placeholder, should track if no sections valid across all dataset files
-								throw new Error();
+								continue;
 							}
-
-							// Start crafting the section representation in DB system?
-
-
+							// Start crafting the section representation in DB system
+							result.push(new CourseSection(r.Subject, r.Course, r.Avg, r.Professor, r.Title,
+								r.Pass, r.Fail, r.Audit, r.id, r.Year));
 						}
 					} else if (folder === "rooms") {
 						// TODO: Behaviour not yet defined; placeholder code
 						for (let r of obj.result) {
 							if (r.Room === undefined) {
-								// TODO: Placeholder
-								throw new Error();
+								continue;
 							}
+							// result.push(new Room(roomNumber, roomLocation, etc.));
 						}
-					} else {
-						throw new Error("Unsupported directory name");
 					}
 				});
+			if (result.length === 0) {
+				throw new Error("No valid information from JSON files found");
+			}
 		});
+		return result;
 	}
 
 
