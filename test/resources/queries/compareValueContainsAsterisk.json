@@ -1,5 +1,5 @@
 {
-    "title": "Fail: Value of a string comparison contains an asterisk",
+    "title": "Fail: Value of a string comparison contains an asterisk inside the string",
     "input":
     {
         "WHERE":{

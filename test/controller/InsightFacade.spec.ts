@@ -12,6 +12,7 @@ import * as fs from "fs-extra";
 import {testFolder} from "@ubccpsc310/folder-test";
 import {expect} from "chai";
 import { fail } from "assert";
+import { InputType } from "zlib";
 
 describe("InsightFacade", function () {
 	let insightFacade: InsightFacade;
@@ -408,6 +409,15 @@ describe("InsightFacade", function () {
 				});
 			});
 		});
+
+		describe("InsightFacade Integration Tests", function () {
+			context("Customer end-to-end interaction", () => {
+				it("Success: Add and remove a dataset, with listDatasets reflecting changes", () => {
+					// TODO
+					insightFacade.listDatasets();
+				});
+			});
+		});
 	});
 
 	/*
@@ -444,15 +454,33 @@ describe("InsightFacade", function () {
 			(input) => insightFacade.performQuery(input),
 			"./test/resources/queries",
 			{
-				errorValidator: (error): error is PQErrorKind =>
-					error === "ResultTooLargeError" || error === "InsightError",
-				assertOnError(expected, actual) {
+				errorValidator(error): error is PQErrorKind {
+					return error === "ResultTooLargeError" || error === "InsightError";
+				},
+
+				assertOnResult(expected: any[], actual: any, input: any) {
+					const orderKey = input.OPTIONS.ORDER;
+					expect(actual).to.be.instanceOf(Array);
+					expect(actual).to.have.length(expected.length);
+					expect(actual).to.have.deep.members(expected);
+
+					// Temporary removal, may need to check for order later, leave in
+					// if (orderKey !== undefined) {
+					// 	for (let i = 1; i < actual.length; i++) {
+					// 		if (actual[i - 1][orderKey] <= actual[i][orderKey]) {
+					// 			fail("Incorrect ordering");
+					// 		}
+					// 	}
+					// }
+				},
+
+				assertOnError(expected: PQErrorKind, actual: any) {
 					if (expected === "ResultTooLargeError") {
 						expect(actual).to.be.instanceof(ResultTooLargeError);
 					} else {
 						expect(actual).to.be.instanceof(InsightError);
 					}
-				},
+				}
 			}
 		);
 	});
