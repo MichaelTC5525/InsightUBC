@@ -200,8 +200,9 @@ export default class InsightFacade implements IInsightFacade {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			entries += "rooms\n";
 			for (let c of content) {
-				let line: string =
-					entries += (c + "\n");
+				// TODO: format strings for Room results
+				let line: string = "<<insert Room info here>>";
+				entries += (c + "\n");
 			}
 		} else {
 			throw new InsightError("Invalid dataset kind requested");
