@@ -1,10 +1,10 @@
 import * as fs from "fs-extra";
 import JSZip from "jszip";
 import CourseSection from "../storageType/CourseSection";
+import { DatasetEntry } from "../storageType/DatasetEntry";
+import Room from "../storageType/Room";
 
 export default class FSOperator {
-
-	// TODO: Other return value option will likely be a custom type for Rooms
 	/**
 	 * @param folder the name of the folder to extract JSON files from
 	 * @param contentZip a JSZip object populated with the contents of a .ZIP file
@@ -12,41 +12,50 @@ export default class FSOperator {
 	 * @returns an array containing the CourseSections or Rooms with extracted field values filled
 	 * We expect a dataset to contain one of the following folder names: ["courses", "rooms"]
 	 */
-	public getValidRows(folder: string, contentZip: JSZip, id: string): CourseSection[] | string[] {
-		let result: CourseSection[] = [];
-
+	public getValidRows(folder: string, contentZip: JSZip, id: string): DatasetEntry[] {
+		let result: DatasetEntry[] = [];
+		let promises: Array<Promise<any>> = [];
 		contentZip.folder(folder)?.forEach(function (relativePath, file) {
-			contentZip.file(file.name)?.async("string")
-				.then(function (data) {
-					const obj = JSON.parse(data);
-					if (obj.result === undefined) {
-						throw new Error("Missing 'result' keyword in file content.");
+			let newPromise = file.async("string");
+			promises.push(newPromise);
+		});
+
+		Promise.all(promises).then(function (files) {
+			for (let f of files) {
+				const obj = JSON.parse(f);
+				if (obj.result === undefined) {
+					throw new Error("Missing 'result' keyword in file content.");
+				}
+
+				if (folder === "courses") {
+					for (let r of obj.result) {
+						if (r.Subject === undefined || r.Course === undefined || r.Avg === undefined ||
+							r.Professor === undefined || r.Title === undefined || r.Pass === undefined ||
+							r.Fail === undefined || r.Audit === undefined || r.id === undefined ||
+							r.Year === undefined) {
+							continue;
+						}
+						// Start crafting the section representation in DB system
+						result.push(new CourseSection(r.Subject, r.Course, r.Avg, r.Professor, r.Title,
+							r.Pass, r.Fail, r.Audit, r.id, r.Year));
 					}
 
-					if (folder === "courses") {
-						for (let r of obj.result) {
-							if (r.Subject === undefined || r.Course === undefined || r.Avg === undefined ||
-								r.Professor === undefined || r.Title === undefined || r.Pass === undefined ||
-								r.Fail === undefined || r.Audit === undefined || r.id === undefined ||
-								r.Year === undefined) {
-								continue;
-							}
-							// Start crafting the section representation in DB system
-							result.push(new CourseSection(r.Subject, r.Course, r.Avg, r.Professor, r.Title,
-								r.Pass, r.Fail, r.Audit, r.id, r.Year));
-						}
-					} else if (folder === "rooms") {
-						// TODO: Behaviour not yet defined; placeholder code
-						for (let r of obj.result) {
-							if (r.Room === undefined) {
-								continue;
-							}
-							// result.push(new Room(roomNumber, roomLocation, etc.));
-						}
+					if (result.length === 0) {
+						throw new Error("No valid course sections found");
 					}
-				});
-			if (result.length === 0) {
-				throw new Error("No valid information from JSON files found");
+				} else if (folder === "rooms") {
+					// TODO: Behaviour not yet defined; placeholder code
+					for (let r of obj.result) {
+						if (r.Room === undefined || r.Building === undefined || r.Capacity === undefined) {
+							continue;
+						}
+						result.push(new Room(r.Room, r.Building, r.Capacity));
+					}
+
+					if (result.length === 0) {
+						throw new Error("No valid room info found");
+					}
+				}
 			}
 		});
 		return result;

@@ -3,7 +3,9 @@
  * the InsightFacade system
  */
 
-export default class CourseSection {
+import { DatasetEntry } from "./DatasetEntry";
+
+export default class CourseSection implements DatasetEntry{
 	private dept: string;
 	private id: string;
 	private avg: number;
