@@ -12,15 +12,15 @@ export default class FSOperator {
 	 * @returns an array containing the CourseSections or Rooms with extracted field values filled
 	 * We expect a dataset to contain one of the following folder names: ["courses", "rooms"]
 	 */
-	public getValidRows(folder: string, contentZip: JSZip, id: string): DatasetEntry[] {
+	public getValidRows(folder: string, contentZip: JSZip, id: string): Promise<DatasetEntry[]> {
 		let result: DatasetEntry[] = [];
-		let promises: Array<Promise<any>> = [];
+		let promises: Array<Promise<string>> = [];
 		contentZip.folder(folder)?.forEach(function (relativePath, file) {
 			let newPromise = file.async("string");
 			promises.push(newPromise);
 		});
 
-		Promise.all(promises).then(function (files) {
+		return Promise.all(promises).then(function (files) {
 			for (let f of files) {
 				const obj = JSON.parse(f);
 				if (obj.result === undefined) {
@@ -57,18 +57,7 @@ export default class FSOperator {
 					}
 				}
 			}
-		});
-		return result;
-	}
-
-
-	public writeFilesWithData(folder: string, contentZip: JSZip): void {
-		// Read each of the files within the courses directory, if it exists
-		contentZip.folder(folder)?.forEach(function (relativePath, file) {
-			contentZip.file(file.name)?.async("string")
-				.then(function (data) {
-					fs.writeFile("./data/${id}/" + file.name, data);
-				});
+			return Promise.resolve(result);
 		});
 	}
 }

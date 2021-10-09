@@ -10,15 +10,13 @@ import { DatasetEntry } from "../storageType/DatasetEntry";
  *
  */
 export default class InsightFacade implements IInsightFacade {
-	private datasetStorage: InsightDataset[];
+	private readonly datasetStorage: InsightDataset[];
 	private datasetEntries: DatasetEntry[];
 	private dataFolder: string = "./data";
-
-
 	/**
 	 * On creating a new InsightFacade instance, we should read the ./data file system directory
-	 * in order to ensure that we reload any existing datasets and course sections that were left from
-	 * a previous instance of the class
+	 * in order to ensure that we reload any existing datasets that were left from a previous
+	 * instance of the class
 	 */
 	constructor() {
 		console.trace("InsightFacadeImpl::init()");
@@ -30,26 +28,24 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		let fileNames: string[] = fs.readdirSync(this.dataFolder);
 		for (let name in fileNames) {
-			fs.readFile(name, (error, data) => {
-				// Parse data, grabbing each entry of { } as one row and courseSection object
-				let lines = data.toString().split("\n");
+			let fileContent: Buffer = fs.readFileSync(name);
+			let lines = fileContent.toString().split("\n");
 
-				if (lines[0] === "courses") {
-					let courseSet: InsightDataset = {
-						id: name,
-						kind: InsightDatasetKind.Courses,
-						numRows: lines.length - 1
-					};
-					this.datasetStorage.push(courseSet);
-				} else if (lines[0] === "rooms") {
-					let roomSet = {
-						id: name,
-						kind: InsightDatasetKind.Rooms,
-						numRows: lines.length - 1
-					};
-					this.datasetStorage.push(roomSet);
-				}
-			});
+			if (lines[0] === "courses") {
+				let courseSet: InsightDataset = {
+					id: name,
+					kind: InsightDatasetKind.Courses,
+					numRows: lines.length - 1
+				};
+				this.datasetStorage.push(courseSet);
+			} else if (lines[0] === "rooms") {
+				let roomSet = {
+					id: name,
+					kind: InsightDatasetKind.Rooms,
+					numRows: lines.length - 1
+				};
+				this.datasetStorage.push(roomSet);
+			}
 		}
 	}
 
@@ -67,34 +63,21 @@ export default class InsightFacade implements IInsightFacade {
 
 		// Read in the .ZIP file
 		let zip = new JSZip();
-		let datasetContent: DatasetEntry[] = [];
-		let read = zip.loadAsync(content, {base64: true}).then((contentZip) => {
-			datasetContent = this.findRows(contentZip, id);
-			rows = datasetContent.length;
-			let fileContent: string = this.makeFileContents(datasetContent, kind);
-			fs.writeFile("./data/${id}.txt", fileContent, () => {
-				// Create an InsightDataset object to track high-level information of the dataset being added
-				let newDataset: InsightDataset = {
-					id: id,	kind: kind,	numRows: rows
-				};
-				this.datasetStorage.push(newDataset);
-				currSets.push(id);
-			});
-			return Promise.resolve();
-		})
-			.catch((error) => {
-				// Remove file if it was created
-				fs.removeSync("./data/${id}.txt");
-				return Promise.reject(error);
-			});
-
-		return new Promise((resolve, reject) => {
-			Promise.all([read]).then(() => {
-				resolve(currSets);
-			}).catch((e) => {
-				// Perpetuate error message to outside for specific reason of fail
-				reject(e);
-			});
+		// let datasetContent: DatasetEntry[] = [];
+		return zip.loadAsync(content, {base64: true}).then((contentZip) => {
+			return this.findRows(contentZip, id);
+		}).then((entryArray) => {
+			let fileContent: string = this.makeFileContents(entryArray, kind);
+			fs.writeFileSync("./data/" + id + ".txt", fileContent);
+			// Create an InsightDataset object to track high-level information of the dataset being added
+			let newDataset: InsightDataset = {
+				id: id, kind: kind, numRows: rows
+			};
+			this.datasetStorage.push(newDataset);
+			currSets.push(id);
+			return Promise.resolve(currSets);
+		}).catch((error) => {
+			return Promise.reject(error);
 		});
 	}
 
@@ -122,21 +105,33 @@ export default class InsightFacade implements IInsightFacade {
 		return true;
 	}
 
-	private findRows(contentZip: JSZip, id: string): DatasetEntry[] {
+	private findRows(contentZip: JSZip, id: string): Promise<DatasetEntry[]> {
 		let fsOp = new FSOperator();
-		let sections = fsOp.getValidRows("courses", contentZip, id);
-		// May require functionality for Rooms in later iterations; please leave in
-		let rooms = fsOp.getValidRows("rooms", contentZip, id);
-		let rows: number = sections.length + rooms.length;
-		if (rows === 0) {
-			throw new InsightError("Zip folder is empty or does not contain 'courses' nor 'rooms'.");
-		}
-
-		if (sections.length === 0) {
-			return rooms;
-		} else {
-			return sections;
-		}
+		let totalRows: number = 0;
+		let sections: number = 0;
+		let rooms: number = 0;
+		let retArray: DatasetEntry[] = [];
+		return fsOp.getValidRows("courses", contentZip, id).then((array) => {
+			totalRows += array.length;
+			sections = array.length;
+			if (sections !== 0) {
+				retArray = array;
+			}
+			retArray = array;
+		}).then(() => {
+			fsOp.getValidRows("rooms", contentZip, id).then((array) => {
+				totalRows += array.length;
+				rooms = array.length;
+				if (rooms !== 0) {
+					retArray = array;
+				}
+			});
+		}).then(() => {
+			if (totalRows === 0) {
+				throw new InsightError("Zip folder is empty or does not contain 'courses' nor 'rooms'.");
+			}
+			return retArray;
+		});
 	}
 
 	private makeFileContents(content: DatasetEntry[], kind: InsightDatasetKind): string {
