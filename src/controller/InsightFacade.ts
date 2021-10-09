@@ -3,6 +3,8 @@ import * as fs from "fs-extra";
 import JSZip from "jszip";
 import FSOperator from "../helper/FSOperator";
 import { DatasetEntry } from "../storageType/DatasetEntry";
+import CourseSection from "../storageType/CourseSection";
+import Room from "../storageType/Room";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -12,7 +14,7 @@ import { DatasetEntry } from "../storageType/DatasetEntry";
 export default class InsightFacade implements IInsightFacade {
 	private readonly datasetStorage: InsightDataset[];
 	private datasetEntries: DatasetEntry[];
-	private dataFolder: string = "./data";
+	private dataFolder: string = "./data/";
 	/**
 	 * On creating a new InsightFacade instance, we should read the ./data file system directory
 	 * in order to ensure that we reload any existing datasets that were left from a previous
@@ -31,18 +33,21 @@ export default class InsightFacade implements IInsightFacade {
 			let fileContent: Buffer = fs.readFileSync(name);
 			let lines = fileContent.toString().split("\n");
 
+			// Length of results should not include
+			// 1. First line "courses" / "rooms"
+			// 2. Empty line after final result \n character
 			if (lines[0] === "courses") {
 				let courseSet: InsightDataset = {
 					id: name,
 					kind: InsightDatasetKind.Courses,
-					numRows: lines.length - 1
+					numRows: lines.length - 2
 				};
 				this.datasetStorage.push(courseSet);
 			} else if (lines[0] === "rooms") {
 				let roomSet = {
 					id: name,
 					kind: InsightDatasetKind.Rooms,
-					numRows: lines.length - 1
+					numRows: lines.length - 2
 				};
 				this.datasetStorage.push(roomSet);
 			}
@@ -68,13 +73,17 @@ export default class InsightFacade implements IInsightFacade {
 			return this.findRows(contentZip, id);
 		}).then((entryArray) => {
 			let fileContent: string = this.makeFileContents(entryArray, kind);
-			fs.writeFileSync("./data/" + id + ".txt", fileContent);
+			fs.writeFileSync(this.dataFolder + id + ".txt", fileContent);
+			// Rows should not include
+			// 1. first line "courses" / "rooms" as well as
+			// 2. the extra newline after the final result
+			rows = fileContent.split("\n").length - 2;
+			currSets.push(id);
 			// Create an InsightDataset object to track high-level information of the dataset being added
 			let newDataset: InsightDataset = {
 				id: id, kind: kind, numRows: rows
 			};
 			this.datasetStorage.push(newDataset);
-			currSets.push(id);
 			return Promise.resolve(currSets);
 		}).catch((error) => {
 			return Promise.reject(error);
@@ -82,7 +91,30 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		return Promise.reject("Not implemented.");
+		if (!this.baseValidateDataset(id)) {
+			return Promise.reject(new InsightError("Invalid Dataset ID search term"));
+		}
+
+		let existingSets: string[] = [];
+		for (let dataset of this.datasetStorage) {
+			existingSets.push(dataset.id);
+		}
+
+		if (!existingSets.includes(id)) {
+			return Promise.reject(new NotFoundError("Dataset ID does not exist in current DB state"));
+		}
+
+		// Delete from InsightFacade object storage
+		for (let index = 0; index < this.datasetStorage.length; index++) {
+			if (this.datasetStorage[index].id === id) {
+				this.datasetStorage.splice(index, 1);
+			}
+		}
+
+		// Delete from disk
+		fs.removeSync(this.dataFolder + id + ".txt");
+
+		return Promise.resolve(id);
 	}
 
 	public performQuery(query: any): Promise<any[]> {
@@ -94,12 +126,17 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 
-	private baseValidateDataset(id: string, content: string): boolean {
+	private baseValidateDataset(id: string, content?: string): boolean {
 		// Validate ID string using basic format scheme; Sanity check base64 characters in content string
 		// base64 regex pattern from StackOverflow https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not
-		if (!id.match(/^[^_]+$/) || id.match(/\s+/) ||
-			!content.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/)) {
+		if (!id.match(/^[^_]+$/) || id.match(/\s+/)) {
 			return false;
+		}
+
+		if (content !== undefined) {
+			if (!content.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -138,13 +175,27 @@ export default class InsightFacade implements IInsightFacade {
 		let entries: string = "";
 		if (kind === InsightDatasetKind.Courses) {
 			entries += "courses\n";
+			for (let c of content) {
+				let line: string = "{ \"courses_dept\": \"" + (c as CourseSection).getField("dept") + "\", " +
+									"\"courses_id\": \"" + (c as CourseSection).getField("id") + "\", " +
+									"\"courses_avg\": " + (c as CourseSection).getField("avg") + ", " +
+									"\"courses_instr\": \"" + (c as CourseSection).getField("instr") + "\", " +
+									"\"courses_title\": \"" + (c as CourseSection).getField("title") + "\", " +
+									"\"courses_pass\": " + (c as CourseSection).getField("pass") + ", " +
+									"\"courses_fail\": " + (c as CourseSection).getField("fail") + ", " +
+									"\"courses_audit\": " + (c as CourseSection).getField("audit") + ", " +
+									"\"courses_uuid\": \"" + (c as CourseSection).getField("uuid") + "\", " +
+									"\"courses_year\": " + (c as CourseSection).getField("year") + " }";
+				entries += (line + "\n");
+			}
 		} else if (kind === InsightDatasetKind.Rooms) {
 			entries += "rooms\n";
+			for (let c of content) {
+				let line: string =
+					entries += (c + "\n");
+			}
 		} else {
 			throw new InsightError("Invalid dataset kind requested");
-		}
-		for (let c of content) {
-			entries += (c + "\n");
 		}
 		return entries;
 	}

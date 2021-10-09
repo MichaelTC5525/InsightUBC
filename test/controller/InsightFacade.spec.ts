@@ -409,6 +409,15 @@ describe("InsightFacade", function () {
 				});
 			});
 		});
+
+		describe("InsightFacade Integration Tests", function () {
+			context("Customer end-to-end interaction", () => {
+				it("Success: Add and remove a dataset, with listDatasets reflecting changes", () => {
+					// TODO
+					insightFacade.listDatasets();
+				});
+			});
+		});
 	});
 
 	/*
