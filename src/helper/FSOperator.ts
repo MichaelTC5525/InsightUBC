@@ -1,5 +1,6 @@
 import * as fs from "fs-extra";
 import JSZip from "jszip";
+import { InsightError } from "../controller/IInsightFacade";
 import CourseSection from "../storageType/CourseSection";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import Room from "../storageType/Room";
@@ -24,7 +25,7 @@ export default class FSOperator {
 			for (let f of files) {
 				const obj = JSON.parse(f);
 				if (obj.result === undefined) {
-					throw new Error("Missing 'result' keyword in file content.");
+					throw new InsightError("Missing 'result' keyword in file content.");
 				}
 
 				if (folder === "courses") {
