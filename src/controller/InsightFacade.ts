@@ -59,6 +59,15 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Dataset ID or content invalid"));
 		}
 
+		let existingSets: string[] = [];
+		for (let dataset of this.datasetStorage) {
+			existingSets.push(dataset.id);
+		}
+
+		if (existingSets.includes(id)) {
+			return Promise.reject(new InsightError("Requested dataset ID already exists in InsightUBC"));
+		}
+
 		let currSets: string[] = [];
 		let rows: number = 0;
 		// Grab the dataset ids that are already in the database
