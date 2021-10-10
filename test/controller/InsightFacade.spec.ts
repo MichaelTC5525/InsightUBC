@@ -11,8 +11,7 @@ import * as fs from "fs-extra";
 
 import {testFolder} from "@ubccpsc310/folder-test";
 import {expect} from "chai";
-import { fail } from "assert";
-import { InputType } from "zlib";
+import {fail} from "assert";
 
 describe("InsightFacade", function () {
 	let insightFacade: InsightFacade;
@@ -413,8 +412,32 @@ describe("InsightFacade", function () {
 		describe("InsightFacade Integration Tests", function () {
 			context("Customer end-to-end interaction", () => {
 				it("Success: Add and remove a dataset, with listDatasets reflecting changes", () => {
-					// TODO
-					insightFacade.listDatasets();
+					const id: string = "courses";
+					const content: string = datasetContents.get("courses") ?? "";
+					const expected: string[] = [id];
+					return insightFacade.addDataset(id, content, InsightDatasetKind.Courses)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						})
+						.then(() => {
+							let newDataset: InsightDataset = {
+								id: id, kind: InsightDatasetKind.Courses, numRows: 64612
+							};
+							const expectedDatasets1: InsightDataset[] = [newDataset];
+							insightFacade.listDatasets().then((currSets: InsightDataset[]) => {
+								expect(currSets).to.deep.equal(expectedDatasets1);
+							});
+						})
+						.then(() => {
+							insightFacade.removeDataset(id).then((removedID: string) => {
+								expect(removedID).to.deep.equal(id);
+							});
+						})
+						.then(() => {
+							insightFacade.listDatasets().then((finalSetList: InsightDataset[]) => {
+								expect(finalSetList).to.deep.equal([]);
+							});
+						});
 				});
 			});
 		});
