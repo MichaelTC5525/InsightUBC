@@ -2,6 +2,7 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFou
 import * as fs from "fs-extra";
 import JSZip from "jszip";
 import DatasetZipReader from "../helper/DatasetZipReader";
+import FSOperator from "../helper/FSOperator";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
 import Room from "../storageType/Room";
@@ -59,12 +60,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Dataset ID or content invalid"));
 		}
 
-		let existingSets: string[] = [];
-		for (let dataset of this.datasetStorage) {
-			existingSets.push(dataset.id);
-		}
-
-		if (existingSets.includes(id)) {
+		if (this.hasDataset(id)) {
 			return Promise.reject(new InsightError("Requested dataset ID already exists in InsightUBC"));
 		}
 
@@ -77,16 +73,11 @@ export default class InsightFacade implements IInsightFacade {
 
 		// Read in the .ZIP file
 		let zip = new JSZip();
-		// let datasetContent: DatasetEntry[] = [];
 		return zip.loadAsync(content, {base64: true}).then((contentZip) => {
 			return this.findRows(contentZip, id);
 		}).then((entryArray) => {
-			let fileContent: string = this.makeFileContents(entryArray, kind);
-			fs.writeFileSync(this.dataFolder + id + ".txt", fileContent);
-			// Rows should not include
-			// 1. first line "courses" / "rooms" as well as
-			// 2. the extra newline after the final result
-			rows = fileContent.split("\n").length - 2;
+			let fsOp: FSOperator = new FSOperator();
+			rows = fsOp.createDatasetOnDisk(entryArray, kind, this.dataFolder, id);
 			currSets.push(id);
 			// Create an InsightDataset object to track high-level information of the dataset being added
 			let newDataset: InsightDataset = {
@@ -104,12 +95,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid Dataset ID search term"));
 		}
 
-		let existingSets: string[] = [];
-		for (let dataset of this.datasetStorage) {
-			existingSets.push(dataset.id);
-		}
-
-		if (!existingSets.includes(id)) {
+		if (!this.hasDataset(id)) {
 			return Promise.reject(new NotFoundError("Dataset ID does not exist in current DB state"));
 		}
 
@@ -127,7 +113,47 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: any): Promise<any[]> {
-		return Promise.reject("Not implemented.");
+		let queryResults: DatasetEntry[] = [];
+
+		try {
+			let obj = JSON.parse(query);
+			if (obj.WHERE === undefined || obj.OPTIONS === undefined) {
+				throw new InsightError("Required query BODY components missing: WHERE or OPTIONS");
+			}
+
+			let datasetToSearch: string = this.getDatasetToSearch(obj);
+
+			if (!this.hasDataset(datasetToSearch)) {
+				throw new InsightError("Query contains reference to non-existing dataset");
+			}
+
+			// At time of querying, then load relevant dataset
+			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
+			let setKind: string = data[0];
+			// Remove first line "courses" / "rooms" and last empty newline
+			data.splice(0, 1);
+			data.splice(data.length - 1, 1);
+			for (let d of data) {
+				let r = JSON.parse(d);
+				if (setKind === "courses") {
+					this.datasetEntries.push(new CourseSection(r.courses_dept, r.courses_id, r.courses_avg,
+						r.courses_instr, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
+						r.courses_uuid, r.courses_year));
+				} else if (setKind === "rooms") {
+					this.datasetEntries.push(new Room(r.room_roomNumber, r.room_building, r.room_capacity));
+				} else {
+					throw new InsightError("Stored dataset kind unspecified; " +
+												"is the first line of the file 'courses' or 'rooms'?");
+				}
+			}
+			// TODO: File is read, InsightFacade has an updated datasetEntries cache with relevant dataset rows
+		} catch (error: any) {
+			if (error instanceof SyntaxError) {
+				return Promise.reject("Query is improperly formatted; invalid JSON");
+			}
+			return Promise.reject(new InsightError(error));
+		}
+		return Promise.resolve(queryResults);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {
@@ -136,8 +162,7 @@ export default class InsightFacade implements IInsightFacade {
 
 
 	private baseValidateDataset(id: string): boolean {
-		// Validate ID string using basic format scheme; Sanity check base64 characters in content string
-		// base64 regex pattern from StackOverflow https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not
+		// Validate ID string using basic format scheme
 		if (!id.match(/^[^_]+$/) || id.match(/\s+/)) {
 			return false;
 		}
@@ -174,35 +199,19 @@ export default class InsightFacade implements IInsightFacade {
 		});
 	}
 
-	private makeFileContents(content: DatasetEntry[], kind: InsightDatasetKind): string {
-		let entries: string = "";
-		if (kind === InsightDatasetKind.Courses) {
-			entries += "courses\n";
-			for (let c of content) {
-				let line: string = "{ \"courses_dept\": \"" + (c as CourseSection).getField("dept") + "\", " +
-									"\"courses_id\": \"" + (c as CourseSection).getField("id") + "\", " +
-									"\"courses_avg\": " + (c as CourseSection).getField("avg") + ", " +
-									"\"courses_instr\": \"" + (c as CourseSection).getField("instr") + "\", " +
-									"\"courses_title\": \"" + (c as CourseSection).getField("title") + "\", " +
-									"\"courses_pass\": " + (c as CourseSection).getField("pass") + ", " +
-									"\"courses_fail\": " + (c as CourseSection).getField("fail") + ", " +
-									"\"courses_audit\": " + (c as CourseSection).getField("audit") + ", " +
-									"\"courses_uuid\": \"" + (c as CourseSection).getField("uuid") + "\", " +
-									"\"courses_year\": " + (c as CourseSection).getField("year") + " }";
-				entries += (line + "\n");
-			}
-		} else if (kind === InsightDatasetKind.Rooms) {
-			entries += "rooms\n";
-			for (let c of content) {
-				// TODO: Room result line may have more attributes
-				let line: string = "{ \"rooms_roomNumber\": " + (c as Room).getField("roomNumber") + ", " +
-									"\"rooms_building\": \"" + (c as Room).getField("building") + "\", " +
-									"\"rooms_capacity\": " + (c as Room).getField("capacity") + " }";
-				entries += (line + "\n");
-			}
-		} else {
-			throw new InsightError("Invalid dataset kind requested");
+	private hasDataset(id: string): boolean {
+		let existingSets: string[] = [];
+		for (let dataset of this.datasetStorage) {
+			existingSets.push(dataset.id);
 		}
-		return entries;
+		return existingSets.includes(id);
+	}
+
+	private getDatasetToSearch(obj: any): string {
+		const setToQuery: string[] = obj.OPTIONS.COLUMNS[0].split("_");
+		if (setToQuery.length !== 2) {
+			throw new InsightError("Query contains an invalid key");
+		}
+		return setToQuery[0];
 	}
 }
