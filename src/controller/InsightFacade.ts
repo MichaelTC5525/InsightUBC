@@ -1,7 +1,7 @@
 import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
-import FSOperator from "../helper/FSOperator";
+import DatasetZipReader from "../helper/DatasetZipReader";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
 import Room from "../storageType/Room";
@@ -55,7 +55,7 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
-		if (!this.baseValidateDataset(id, content)) {
+		if (!this.baseValidateDataset(id)) {
 			return Promise.reject(new InsightError("Dataset ID or content invalid"));
 		}
 
@@ -95,7 +95,7 @@ export default class InsightFacade implements IInsightFacade {
 			this.datasetStorage.push(newDataset);
 			return Promise.resolve(currSets);
 		}).catch((error) => {
-			return Promise.reject(error);
+			return Promise.reject(new InsightError(error));
 		});
 	}
 
@@ -135,29 +135,23 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 
-	private baseValidateDataset(id: string, content?: string): boolean {
+	private baseValidateDataset(id: string): boolean {
 		// Validate ID string using basic format scheme; Sanity check base64 characters in content string
 		// base64 regex pattern from StackOverflow https://stackoverflow.com/questions/8571501/how-to-check-whether-a-string-is-base64-encoded-or-not
 		if (!id.match(/^[^_]+$/) || id.match(/\s+/)) {
 			return false;
 		}
 
-		if (content !== undefined) {
-			if (!content.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/)) {
-				return false;
-			}
-		}
-
 		return true;
 	}
 
 	private findRows(contentZip: JSZip, id: string): Promise<DatasetEntry[]> {
-		let fsOp = new FSOperator();
+		let dsZip = new DatasetZipReader();
 		let totalRows: number = 0;
 		let sections: number = 0;
 		let rooms: number = 0;
 		let retArray: DatasetEntry[] = [];
-		return fsOp.getValidRows("courses", contentZip, id).then((array) => {
+		return dsZip.getValidRows("courses", contentZip, id).then((array) => {
 			totalRows += array.length;
 			sections = array.length;
 			if (sections !== 0) {
@@ -165,7 +159,7 @@ export default class InsightFacade implements IInsightFacade {
 			}
 			retArray = array;
 		}).then(() => {
-			fsOp.getValidRows("rooms", contentZip, id).then((array) => {
+			dsZip.getValidRows("rooms", contentZip, id).then((array) => {
 				totalRows += array.length;
 				rooms = array.length;
 				if (rooms !== 0) {
@@ -200,9 +194,11 @@ export default class InsightFacade implements IInsightFacade {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			entries += "rooms\n";
 			for (let c of content) {
-				// TODO: format strings for Room results
-				let line: string = "<<insert Room info here>>";
-				entries += (c + "\n");
+				// TODO: Room result line may have more attributes
+				let line: string = "{ \"rooms_roomNumber\": " + (c as Room).getField("roomNumber") + ", " +
+									"\"rooms_building\": \"" + (c as Room).getField("building") + "\", " +
+									"\"rooms_capacity\": " + (c as Room).getField("capacity") + " }";
+				entries += (line + "\n");
 			}
 		} else {
 			throw new InsightError("Invalid dataset kind requested");
