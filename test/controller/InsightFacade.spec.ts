@@ -509,20 +509,21 @@ describe("InsightFacade", function () {
 	});
 
 	describe("Non-folder-test performQuery", function () {
+		before(function () {
+			fs.removeSync("./data/");
+		});
+
+		after(function () {
+			fs.removeSync("./data/");
+		});
+
 		context("Success: Query returns exactly 5000 results", () => {
-			it("Should successfully return exactly 5000 results", () => {
-				const query5000: string =
-				`
-				{
-					"WHERE":{},
-					"OPTIONS":{
-						"COLUMNS":[
-							"courses2_uuid"
-						]
-					}
-				}
-				`;
-				return insightFacade.performQuery(JSON.parse(query5000))
+			it("Should successfully return exactly 5000 results", async () => {
+				let id: string = "courses2";
+				let content: string = datasetContents.get("courses2") ?? "";
+				await new InsightFacade().addDataset(id, content, InsightDatasetKind.Courses);
+				const query5000: string = "{ \"WHERE\": {},\"OPTIONS\":{\"COLUMNS\":[\"courses2_uuid\"]}}";
+				return new InsightFacade().performQuery(JSON.parse(query5000))
 					.then((result: any[]) => {
 						expect(result).to.have.length(5000);
 					});

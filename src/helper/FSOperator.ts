@@ -31,7 +31,7 @@ export default class FSOperator {
 				let line: string = "{ \"courses_dept\": \"" + (c as CourseSection).getField("dept") + "\", " +
 					"\"courses_id\": \"" + (c as CourseSection).getField("id") + "\", " +
 					"\"courses_avg\": " + (c as CourseSection).getField("avg") + ", " +
-					"\"courses_instr\": \"" + (c as CourseSection).getField("instr") + "\", " +
+					"\"courses_instructor\": \"" + (c as CourseSection).getField("instr") + "\", " +
 					"\"courses_title\": \"" + (c as CourseSection).getField("title") + "\", " +
 					"\"courses_pass\": " + (c as CourseSection).getField("pass") + ", " +
 					"\"courses_fail\": " + (c as CourseSection).getField("fail") + ", " +

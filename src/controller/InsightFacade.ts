@@ -39,21 +39,21 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		let fileNames: string[] = fs.readdirSync(this.dataFolder);
 		for (let name of fileNames) {
-			let lines: string[] = fs.readFileSync(name).toString().split("\n");
+			let lines: string[] = fs.readFileSync(this.dataFolder + name).toString().split("\n");
 
 			// Length of results should not include
 			// 1. First line "courses" / "rooms"
 			// 2. Empty line after final result \n character
-			if (lines[0] === "courses") {
+			if (lines[0].split(".txt")[0] === "courses") {
 				let courseSet: InsightDataset = {
-					id: name,
+					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Courses,
 					numRows: lines.length - 2
 				};
 				this.datasetStorage.push(courseSet);
-			} else if (lines[0] === "rooms") {
+			} else if (lines[0].split(".txt")[0] === "rooms") {
 				let roomSet = {
-					id: name,
+					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Rooms,
 					numRows: lines.length - 2
 				};
@@ -123,8 +123,8 @@ export default class InsightFacade implements IInsightFacade {
 		// Reset the cache, remove results from previous query
 		this.datasetEntries = [];
 		try {
-			let obj = JSON.parse(query);
-
+			// let obj = JSON.parse(query);
+			let obj = query;
 			let datasetToSearch: string = this.getDatasetToSearch(obj);
 
 			let existingSets: string[] = [];
@@ -234,7 +234,7 @@ export default class InsightFacade implements IInsightFacade {
 			let r = JSON.parse(d);
 			if (kind === "courses") {
 				this.datasetEntries.push(new CourseSection(r.courses_dept, r.courses_id, r.courses_avg,
-					r.courses_instr, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
+					r.courses_instructor, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
 					r.courses_uuid, r.courses_year));
 			} else if (kind === "rooms") {
 				// TODO: More Room attributes? Add here
