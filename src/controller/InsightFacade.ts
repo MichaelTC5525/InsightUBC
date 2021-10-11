@@ -1,8 +1,16 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
+import {
+	IInsightFacade,
+	InsightDataset,
+	InsightDatasetKind,
+	InsightError,
+	NotFoundError,
+	ResultTooLargeError
+} from "./IInsightFacade";
 import * as fs from "fs-extra";
 import JSZip from "jszip";
 import DatasetZipReader from "../helper/DatasetZipReader";
 import FSOperator from "../helper/FSOperator";
+import QueryOperator from "../helper/QueryOperator";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
 import Room from "../storageType/Room";
@@ -30,9 +38,8 @@ export default class InsightFacade implements IInsightFacade {
 			fs.mkdirSync(this.dataFolder);
 		}
 		let fileNames: string[] = fs.readdirSync(this.dataFolder);
-		for (let name in fileNames) {
-			let fileContent: Buffer = fs.readFileSync(name);
-			let lines = fileContent.toString().split("\n");
+		for (let name of fileNames) {
+			let lines: string[] = fs.readFileSync(name).toString().split("\n");
 
 			// Length of results should not include
 			// 1. First line "courses" / "rooms"
@@ -113,47 +120,50 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: any): Promise<any[]> {
-		let queryResults: DatasetEntry[] = [];
-
+		// Reset the cache, remove results from previous query
+		this.datasetEntries = [];
 		try {
 			let obj = JSON.parse(query);
-			if (obj.WHERE === undefined || obj.OPTIONS === undefined) {
-				throw new InsightError("Required query BODY components missing: WHERE or OPTIONS");
-			}
 
 			let datasetToSearch: string = this.getDatasetToSearch(obj);
 
-			if (!this.hasDataset(datasetToSearch)) {
-				throw new InsightError("Query contains reference to non-existing dataset");
+			let existingSets: string[] = [];
+			for (let dataset of this.datasetStorage) {
+				existingSets.push(dataset.id);
 			}
-
+			if (!existingSets.includes(datasetToSearch)) {
+				throw new InsightError("Query column contains reference to non-existing dataset");
+			}
 			// At time of querying, then load relevant dataset
 			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
 			let setKind: string = data[0];
-			// Remove first line "courses" / "rooms" and last empty newline
-			data.splice(0, 1);
-			data.splice(data.length - 1, 1);
-			for (let d of data) {
-				let r = JSON.parse(d);
-				if (setKind === "courses") {
-					this.datasetEntries.push(new CourseSection(r.courses_dept, r.courses_id, r.courses_avg,
-						r.courses_instr, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
-						r.courses_uuid, r.courses_year));
-				} else if (setKind === "rooms") {
-					this.datasetEntries.push(new Room(r.room_roomNumber, r.room_building, r.room_capacity));
-				} else {
-					throw new InsightError("Stored dataset kind unspecified; " +
-												"is the first line of the file 'courses' or 'rooms'?");
+			let qOperator = new QueryOperator();
+			qOperator.validateQuery(obj, setKind, existingSets);
+
+			this.fillCache(data, setKind);
+
+			// TODO: Evaluate query for semantics and reduce datasetEntries
+			for (let entry of this.datasetEntries) {
+				if (!qOperator.isWithinFilter(entry, obj.WHERE)) {
+					this.datasetEntries.splice(this.datasetEntries.indexOf(entry), 1);
 				}
 			}
-			// TODO: File is read, InsightFacade has an updated datasetEntries cache with relevant dataset rows
+
+			if (this.datasetEntries.length > 5000) {
+				return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
+					" results"));
+			}
+
+			// TODO: Order the results and present as string[]
+			this.orderResults(obj.OPTIONS.ORDER);
+			let queryResults: string[] = this.craftResults(obj.OPTIONS.COLUMNS);
+			return Promise.resolve(queryResults);
 		} catch (error: any) {
 			if (error instanceof SyntaxError) {
-				return Promise.reject("Query is improperly formatted; invalid JSON");
+				return Promise.reject(new InsightError("Query is improperly formatted; invalid JSON"));
 			}
 			return Promise.reject(new InsightError(error));
 		}
-		return Promise.resolve(queryResults);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {
@@ -209,9 +219,39 @@ export default class InsightFacade implements IInsightFacade {
 
 	private getDatasetToSearch(obj: any): string {
 		const setToQuery: string[] = obj.OPTIONS.COLUMNS[0].split("_");
+		// Need to check, or else we might get less than the full ID returned
 		if (setToQuery.length !== 2) {
-			throw new InsightError("Query contains an invalid key");
+			throw new InsightError("Invalid query key in COLUMNS");
 		}
 		return setToQuery[0];
+	}
+
+	private fillCache(data: string[], kind: string) {
+		// Remove first line "courses" / "rooms" and last empty newline
+		data.splice(0, 1);
+		data.splice(data.length - 1, 1);
+		for (let d of data) {
+			let r = JSON.parse(d);
+			if (kind === "courses") {
+				this.datasetEntries.push(new CourseSection(r.courses_dept, r.courses_id, r.courses_avg,
+					r.courses_instr, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
+					r.courses_uuid, r.courses_year));
+			} else if (kind === "rooms") {
+				// TODO: More Room attributes? Add here
+				this.datasetEntries.push(new Room(r.room_roomNumber, r.room_building, r.room_capacity));
+			} else {
+				throw new InsightError("Stored dataset kind unspecified; " +
+					"is the first line of the file 'courses' or 'rooms'?");
+			}
+		}
+	}
+
+	// TODO: Implement ordering and string crafting
+	private orderResults(obj: any) {
+		return;
+	}
+
+	private craftResults(obj: any): string[] {
+		return [];
 	}
 }
