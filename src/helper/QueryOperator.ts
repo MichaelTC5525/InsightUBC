@@ -205,9 +205,12 @@ export default class QueryOperator {
 								(refValue as string).indexOf("*", 1) !== (refValue as string).length - 1) {
 						throw new InsightError("String comparison value cannot have asterisk not in first or last pos");
 					}
-					return (fieldValue as string).search((refValue as string).split("*")[1]) !== -1;
+					// abcd length 4 - ("*d" -> d length 1) = abcd index 3
+					return (fieldValue as string).indexOf((refValue as string).split("*")[1]) ===
+						(fieldValue as string).length - (refValue as string).split("*")[1].length;
 				} else if ((refValue as string).indexOf("*") === (refValue as string).length - 1) {
-					return (fieldValue as string).search((refValue as string).split("*")[0]) !== -1;
+					// Searching for the refValue in the string must be at the beginning
+					return (fieldValue as string).indexOf((refValue as string).split("*")[0]) === 0;
 				} else {
 					throw new InsightError("String comparison value cannot have asterisk not in first or last pos");
 				}
