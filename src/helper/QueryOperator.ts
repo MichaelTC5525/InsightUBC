@@ -1,7 +1,4 @@
-import {InsightDatasetKind, InsightError} from "../controller/IInsightFacade";
-import {DatasetEntry} from "../storageType/DatasetEntry";
-import CourseSection from "../storageType/CourseSection";
-import Room from "../storageType/Room";
+import {InsightError} from "../controller/IInsightFacade";
 
 export default class QueryOperator {
 	public validateQuery(obj: any, kind: string, existingSets: string[]) {
