@@ -11,6 +11,7 @@ import JSZip from "jszip";
 import DatasetZipReader from "../helper/DatasetZipReader";
 import FSOperator from "../helper/FSOperator";
 import QueryOperator from "../helper/QueryOperator";
+import ResultHandler from "../helper/ResultHandler";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
 import Room from "../storageType/Room";
@@ -140,14 +141,8 @@ export default class InsightFacade implements IInsightFacade {
 			let qOperator = new QueryOperator();
 			qOperator.validateQuery(obj, setKind, existingSets);
 
-			this.fillCache(data, setKind);
-
 			// TODO: Evaluate query for semantics and reduce datasetEntries
-			for (let entry of this.datasetEntries) {
-				if (!qOperator.isWithinFilter(entry, obj.WHERE)) {
-					this.datasetEntries.splice(this.datasetEntries.indexOf(entry), 1);
-				}
-			}
+			this.filterDatasetToCache(data, setKind, obj.WHERE, qOperator);
 
 			if (this.datasetEntries.length > 5000) {
 				return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
@@ -155,9 +150,10 @@ export default class InsightFacade implements IInsightFacade {
 			}
 
 			// TODO: Order the results and present as string[]
-			this.orderResults(obj.OPTIONS.ORDER);
-			let queryResults: string[] = this.craftResults(obj.OPTIONS.COLUMNS);
-			return Promise.resolve(queryResults);
+			let rh: ResultHandler = new ResultHandler();
+			let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
+			let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
+			return Promise.resolve(completedResults);
 		} catch (error: any) {
 			if (error instanceof SyntaxError) {
 				return Promise.reject(new InsightError("Query is improperly formatted; invalid JSON"));
@@ -226,32 +222,33 @@ export default class InsightFacade implements IInsightFacade {
 		return setToQuery[0];
 	}
 
-	private fillCache(data: string[], kind: string) {
+	private filterDatasetToCache(data: string[], kind: string, obj: any, qOp: QueryOperator) {
 		// Remove first line "courses" / "rooms" and last empty newline
 		data.splice(0, 1);
 		data.splice(data.length - 1, 1);
 		for (let d of data) {
-			let r = JSON.parse(d);
-			if (kind === "courses") {
-				this.datasetEntries.push(new CourseSection(r.courses_dept, r.courses_id, r.courses_avg,
-					r.courses_instructor, r.courses_title, r.courses_pass, r.courses_fail, r.courses_audit,
-					r.courses_uuid, r.courses_year));
-			} else if (kind === "rooms") {
-				// TODO: More Room attributes? Add here
-				this.datasetEntries.push(new Room(r.room_roomNumber, r.room_building, r.room_capacity));
-			} else {
-				throw new InsightError("Stored dataset kind unspecified; " +
-					"is the first line of the file 'courses' or 'rooms'?");
+			try {
+				let r = JSON.parse(d);
+				if (qOp.isWithinFilter(r, obj)) {
+					let pushVals: any[] = Object.values(r);
+					if (kind === "courses") {
+						this.datasetEntries.push(new CourseSection(pushVals[0], pushVals[1], pushVals[2], pushVals[3],
+							pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
+					} else if (kind === "rooms") {
+						// TODO: More Room attributes? Add here
+						this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2]));
+					} else {
+						throw new InsightError("Stored dataset kind unspecified; " +
+							"is the first line of the file 'courses' or 'rooms'?");
+					}
+				}
+			} catch (error) {
+				if (error instanceof SyntaxError) {
+					throw new InsightError("Requested dataset has an invalidly formatted row, check the " +
+						"relevant .txt file or remove/re-add this dataset");
+				}
+				throw error;
 			}
 		}
-	}
-
-	// TODO: Implement ordering and string crafting
-	private orderResults(obj: any) {
-		return;
-	}
-
-	private craftResults(obj: any): string[] {
-		return [];
 	}
 }

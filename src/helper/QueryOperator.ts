@@ -1,5 +1,7 @@
-import {InsightError} from "../controller/IInsightFacade";
+import {InsightDatasetKind, InsightError} from "../controller/IInsightFacade";
 import {DatasetEntry} from "../storageType/DatasetEntry";
+import CourseSection from "../storageType/CourseSection";
+import Room from "../storageType/Room";
 
 export default class QueryOperator {
 	public validateQuery(obj: any, kind: string, existingSets: string[]) {
@@ -83,8 +85,8 @@ export default class QueryOperator {
 			if (Object.keys(obj.AND).length === 0) {
 				throw new InsightError("Logic comparison wrapper array contains no filters");
 			}
-			for (let k = 0; k < Object.keys(obj.AND).length; k++) {
-				this.validateClauseComparison(id, fields, obj.AND[k]);
+			for (let m = 0; m < Object.keys(obj.AND).length; m++) {
+				this.validateClauseComparison(id, fields, obj.AND[m]);
 			}
 			break;
 		case "NOT":
@@ -116,7 +118,7 @@ export default class QueryOperator {
 			}
 
 			strVal = (Object.values(obj)[0] as string);
-			if (strVal.indexOf("*") > 0 && strVal.indexOf("*") < strVal.length - 1) {
+			if (strVal.indexOf("*", 1) > 0 && strVal.indexOf("*", 1) < strVal.length - 1) {
 				throw new InsightError("WHERE clause contains string comparison with non-edge position wildcard");
 			}
 			break;
@@ -144,34 +146,67 @@ export default class QueryOperator {
 	}
 
 	// TODO: Evaluate query
-	public isWithinFilter(entry: DatasetEntry, filter: any): boolean {
-		// // Double-sided recursion
-		// let queryKey: string;
-		// if (filter.GT) {
-		// 	queryKey = Object.keys(filter.GT)[0];
-		// }
-		// switch(filter) {
-		// case "GT":
-		// 	// queryKey = filter.GT[0];
-		// 	return entry;
-		// case "LT":
-		// 	return entry;
-		// case "EQ":
-		// 	return entry;
-		// case "IS":
-		// 	return entry;
-		// case "OR":
-		// 	let result: boolean = this.isWithinFilter(entry, filter.OR[0]);
-		// 	for (let i = 1; i < filter.OR.length; i++) {
-		// 		result |= this.isWithinFilter(entry, filter.OR[i]);
-		// 	}
-		// 	return isWithinFilter(entry, filter.OR[0]) || isWithinFilter(entry, filter.OR[1]);
-		// case "AND":
-		// 	return this.isWithinFilter(entry, filter.AND[0]) && this.isWithinFilter(entry, filter.AND[1]);
-		// default:
-		// 	throw new InsightError("Invalid filter type");
-		// }
-		//
-		return false;
+	public isWithinFilter(e: any, filter: any): boolean {
+		// Double-sided recursion; No key validations should be required at this point
+		if (Object.keys(filter).length === 0) {
+			return true;
+		}
+		let result: boolean = true;
+		let comp = Object.keys(filter)[0];
+		let compKey: string;
+		switch(comp) {
+		case "GT":
+			compKey = Object.keys(filter.GT)[0];
+			return this.evaluateComp(e, comp, compKey, filter.GT);
+		case "LT":
+			compKey = Object.keys(filter.LT)[0];
+			return this.evaluateComp(e, comp, compKey, filter.LT);
+		case "EQ":
+			compKey = Object.keys(filter.EQ)[0];
+			return this.evaluateComp(e, comp, compKey, filter.EQ);
+		case "IS":
+			compKey = Object.keys(filter.IS)[0];
+			return this.evaluateComp(e, comp, compKey, filter.IS);
+		case "OR":
+			result = false;
+			for (let i = 0; i < Object.keys(filter.OR).length; i++) {
+				result ||= this.isWithinFilter(e, filter.OR[i]);
+			}
+			return result;
+		case "AND":
+			for (let j = 0; j < Object.keys(filter.AND).length; j++) {
+				result &&= this.isWithinFilter(e, filter.AND[j]);
+			}
+			return result;
+		case "NOT":
+			compKey = Object.keys(filter.NOT)[0];
+			return !this.isWithinFilter(e, filter.NOT.valueOf());
+		default:
+			throw new InsightError("Invalid filter type");
+		}
+	}
+
+	private evaluateComp(entry: any, comp: string, compKey: string, obj: any): boolean {
+		let fieldValue: string | number = entry[compKey];
+		let refValue: string | number = (Object.values(obj)[0] as string | number);
+		switch(comp) {
+		case "GT":
+			return fieldValue > refValue;
+		case "LT":
+			return fieldValue < refValue;
+		case "IS":
+			// *input* case is equivalent to first nested case if-statement
+			if ((refValue as string).indexOf("*") !== -1) {
+				if ((refValue as string).indexOf("*") === 0) {
+					return (fieldValue as string).search((refValue as string).split("*")[1]) !== -1;
+				} else if ((refValue as string).indexOf("*") === (refValue as string).length - 1) {
+					return (fieldValue as string).search((refValue as string).split("*")[0]) !== -1;
+				}
+			}
+		case "EQ":
+			return fieldValue === refValue;
+		default:
+			throw new InsightError("Invalid comparison operator");
+		}
 	}
 }
