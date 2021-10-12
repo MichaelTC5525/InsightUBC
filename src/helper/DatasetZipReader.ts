@@ -61,6 +61,10 @@ export default class DatasetZipReader {
 					r.Year === undefined) {
 					continue;
 				}
+
+				if (r.Section === "overall") {
+					r.Year = 1900;
+				}
 				result.push(new CourseSection(r.Subject, r.Course, r.Avg, r.Professor, r.Title,
 					r.Pass, r.Fail, r.Audit, r.id, r.Year));
 			}

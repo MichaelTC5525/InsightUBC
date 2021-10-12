@@ -1,5 +1,5 @@
 {
-    "title": "Sucess: Query contains string comparison filter with double-ended asterisks",
+    "title": "Success: Query contains string comparison filter with double-ended asterisks",
     "input":
     {
         "WHERE": {
