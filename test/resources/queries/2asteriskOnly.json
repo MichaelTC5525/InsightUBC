@@ -1,0 +1,51 @@
+{
+	"title": "Success: Query contains only asterisks in the filter",
+	"input":
+	{
+		"WHERE": {
+			"IS":{
+				"courses1_dept": "**"
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"courses1_avg"
+			]
+		}
+	},
+	"with": [
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 88
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 88
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 93.11
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 93.11
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 93.78
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 93.78
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 97.09
+		},
+		{
+			"courses1_dept": "math",
+			"courses1_avg": 97.09
+		}
+	]
+}

@@ -142,7 +142,6 @@ export default class QueryOperator {
 		}
 	}
 
-	// TODO: Evaluate query
 	public isWithinFilter(e: any, filter: any): boolean {
 		// Double-sided recursion; No key validations should be required at this point
 		if (Object.keys(filter).length === 0) {
@@ -193,6 +192,9 @@ export default class QueryOperator {
 			return fieldValue < refValue;
 		case "IS":
 			// *input* case is equivalent to first nested case if-statement
+			if ((refValue as string) === "*" || (refValue as string) === "**") {
+				return true;
+			}
 			if ((refValue as string).indexOf("*") !== -1) {
 				if ((refValue as string).indexOf("*") === 0) {
 					return (fieldValue as string).search((refValue as string).split("*")[1]) !== -1;
