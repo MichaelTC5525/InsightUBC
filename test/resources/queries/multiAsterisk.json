@@ -1,0 +1,19 @@
+{
+	"title": "Fail: Query contains IS comparison with multiple asterisks, and asterisk in non-edge position",
+	"input":
+	{
+		"WHERE": {
+			"IS": {
+				"courses_dept": "*a*c*"
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses_dept",
+				"courses_id"
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
