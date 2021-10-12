@@ -191,15 +191,25 @@ export default class QueryOperator {
 		case "LT":
 			return fieldValue < refValue;
 		case "IS":
-			// *input* case is equivalent to first nested case if-statement
 			if ((refValue as string) === "*" || (refValue as string) === "**") {
 				return true;
+			} else if ((refValue as string) === "***") {
+				throw new InsightError("String comparison value cannot have asterisk not in first or last pos");
 			}
+
 			if ((refValue as string).indexOf("*") !== -1) {
 				if ((refValue as string).indexOf("*") === 0) {
+					if ((refValue as string).indexOf("*", 1) === (refValue as string).length - 1) {
+						return (fieldValue as string).includes((refValue as string).split("*")[1]);
+					} else if ((refValue as string).indexOf("*", 1) > 0 &&
+								(refValue as string).indexOf("*", 1) !== (refValue as string).length - 1) {
+						throw new InsightError("String comparison value cannot have asterisk not in first or last pos");
+					}
 					return (fieldValue as string).search((refValue as string).split("*")[1]) !== -1;
 				} else if ((refValue as string).indexOf("*") === (refValue as string).length - 1) {
 					return (fieldValue as string).search((refValue as string).split("*")[0]) !== -1;
+				} else {
+					throw new InsightError("String comparison value cannot have asterisk not in first or last pos");
 				}
 			}
 		case "EQ":
