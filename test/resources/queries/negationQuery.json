@@ -1,0 +1,45 @@
+{
+	"title": "Success: Query contains negation clause",
+	"input":
+	{
+		"WHERE":{
+			"NOT": {
+				"GT": {
+					"courses1_avg": 97
+				}
+			}
+		},
+		"OPTIONS":{
+			"COLUMNS":[
+				"courses1_uuid",
+				"courses1_year"
+			]
+		}
+	},
+	"with":[
+		{
+			"courses1_uuid": "29978",
+			"courses1_year": 1900
+		},
+		{
+			"courses1_uuid": "29977",
+			"courses1_year": 2008
+		},
+		{
+			"courses1_uuid": "90221",
+			"courses1_year": 1900
+		},
+		{
+			"courses1_uuid": "90220",
+			"courses1_year": 2015
+		},
+		{
+			"courses1_uuid": "27487",
+			"courses1_year": 1900
+		},
+		{
+			"courses1_uuid": "27486",
+			"courses1_year": 2012
+		}
+	]
+}

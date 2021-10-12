@@ -1,0 +1,39 @@
+{
+	"title": "Success: Query results with a focus on ascending order",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_avg"
+			],
+			"ORDER": "courses1_avg"
+		}
+	},
+	"with": [
+		{
+			"courses1_avg": 88
+		},
+		{
+			"courses1_avg": 88
+		},
+		{
+			"courses1_avg": 93.11
+		},
+		{
+			"courses1_avg": 93.11
+		},
+		{
+			"courses1_avg": 93.78
+		},
+		{
+			"courses1_avg": 93.78
+		},
+		{
+			"courses1_avg": 97.09
+		},
+		{
+			"courses1_avg": 97.09
+		}
+	]
+}
