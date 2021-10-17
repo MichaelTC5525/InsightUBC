@@ -1,6 +1,3 @@
-import QueryValidator from "./QueryValidator";
-import CourseSection from "../storageType/CourseSection";
-import Room from "../storageType/Room";
 import {InsightError} from "../controller/IInsightFacade";
 
 export default class QueryEvaluator {
