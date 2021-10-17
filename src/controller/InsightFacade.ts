@@ -10,7 +10,8 @@ import * as fs from "fs-extra";
 import JSZip from "jszip";
 import DatasetZipReader from "../helper/DatasetZipReader";
 import FSOperator from "../helper/FSOperator";
-import QueryOperator from "../helper/QueryOperator";
+import QueryValidator from "../helper/QueryValidator";
+import QueryEvaluator from "../helper/QueryEvaluator";
 import ResultHandler from "../helper/ResultHandler";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
@@ -124,32 +125,30 @@ export default class InsightFacade implements IInsightFacade {
 		// Reset the cache, remove results from previous query
 		this.datasetEntries = [];
 		try {
-			// let obj = JSON.parse(query);
 			let obj = query;
-			let datasetToSearch: string = this.getDatasetToSearch(obj);
 
-			let existingSets: string[] = [];
-			for (let dataset of this.datasetStorage) {
-				existingSets.push(dataset.id);
-			}
-			if (!existingSets.includes(datasetToSearch)) {
-				throw new InsightError("Query column contains reference to non-existing dataset");
-			}
-			// At time of querying, then load relevant dataset
+			let datasetToSearch: string = this.getDatasetToSearch(obj);
 			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
 			let setKind: string = data[0];
-			let qOperator = new QueryOperator();
-			qOperator.validateQuery(obj, setKind, existingSets);
 
-			// TODO: Evaluate query for semantics and reduce datasetEntries
-			this.filterDatasetToCache(data, setKind, obj.WHERE, qOperator);
+			let existingSets: string[] = [];
+			for (let d of this.datasetStorage) {
+				existingSets.push(d.id);
+			}
+
+			let qValidator = new QueryValidator();
+			qValidator.validateQuery(obj, setKind, existingSets);
+
+			let qEvaluator = new QueryEvaluator();
+			data = qEvaluator.filterResults(data, obj.WHERE);
+
+			this.updateDatasetEntriesCache(data, setKind);
 
 			if (this.datasetEntries.length > 5000) {
 				return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
 					" results"));
 			}
 
-			// TODO: Order the results and present as string[]
 			let rh: ResultHandler = new ResultHandler();
 			let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
 			let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
@@ -214,40 +213,35 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	private getDatasetToSearch(obj: any): string {
-		const setToQuery: string[] = obj.OPTIONS.COLUMNS[0].split("_");
-		// Need to check, or else we might get less than the full ID returned
-		if (setToQuery.length !== 2) {
-			throw new InsightError("Invalid query key in COLUMNS");
+		let setToQuery: string[] = [];
+		for (let c of obj.OPTIONS.COLUMNS) {
+			setToQuery = c.split("_");
+			if (setToQuery.length === 2) {
+				if (setToQuery[0] === "") {
+					throw new InsightError("Pre-validation: A query COLUMNS key is missing a dataset ID");
+				}
+				return setToQuery[0];
+			}
 		}
-		return setToQuery[0];
+		throw new InsightError("Pre-validation: Query must contain at least one COLUMN in form 'id_attribute'");
 	}
 
-	private filterDatasetToCache(data: string[], kind: string, obj: any, qOp: QueryOperator) {
-		// Remove first line "courses" / "rooms" and last empty newline
-		data.splice(0, 1);
-		data.splice(data.length - 1, 1);
-		for (let d of data) {
+	private updateDatasetEntriesCache(from: string[], kind: string) {
+		for (let entry of from) {
 			try {
-				let r = JSON.parse(d);
-				if (qOp.isWithinFilter(r, obj)) {
-					let pushVals: any[] = Object.values(r);
-					if (kind === "courses") {
-						this.datasetEntries.push(new CourseSection(pushVals[0], pushVals[1], pushVals[2], pushVals[3],
-							pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
-					} else if (kind === "rooms") {
-						// TODO: More Room attributes? Add here
-						this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2]));
-					} else {
-						throw new InsightError("Stored dataset kind unspecified; " +
-							"is the first line of the file 'courses' or 'rooms'?");
-					}
+				let r = JSON.parse(entry);
+				let pushVals: any[] = Object.values(r);
+				if (kind === "courses") {
+					this.datasetEntries.push(new CourseSection(pushVals[0], pushVals[1], pushVals[2], pushVals[3],
+						pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
+				} else if (kind === "rooms") {
+					// TODO: More Room attributes? Add here
+					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2]));
+				} else {
+					throw new InsightError("Filtered results list are of unidentifiable dataset type");
 				}
-			} catch (error) {
-				if (error instanceof SyntaxError) {
-					throw new InsightError("Requested dataset has an invalidly formatted row, check the " +
-						"relevant .txt file or remove/re-add this dataset");
-				}
-				throw error;
+			} catch (error: any) {
+				throw new InsightError(error);
 			}
 		}
 	}

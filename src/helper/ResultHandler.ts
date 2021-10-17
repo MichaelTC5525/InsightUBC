@@ -17,7 +17,7 @@ export default class ResultHandler {
 	public craftResults(id: string, columns: string[], entries: DatasetEntry[]): any[] {
 		let retArray: any[] = [];
 		for (let entry of entries) {
-			retArray.push(this.createNextLine(id, columns, entry));
+			retArray.push(this.createNextCourse(id, columns, entry));
 		}
 		for (let i = 0; i < retArray.length; i++) {
 			retArray[i] = JSON.parse(retArray[i]);
@@ -25,7 +25,7 @@ export default class ResultHandler {
 		return retArray;
 	}
 
-	private createNextLine(id: string, columns: string[], entry: DatasetEntry): string {
+	private createNextCourse(id: string, columns: string[], entry: DatasetEntry): string {
 		let resultLine: string = "";
 		for (let c = 0; c < columns.length; c++) {
 			if (c === 0) {
