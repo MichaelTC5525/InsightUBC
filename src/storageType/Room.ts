@@ -18,14 +18,14 @@ export default class Room implements DatasetEntry{
 
 	public getField(field: string): string | number {
 		switch(field) {
-		case "roomNumber":
-			return this.roomNumber;
-		case "building":
-			return this.building;
-		case "capacity":
-			return this.capacity;
-		default:
-			return -1;
+			case "roomNumber":
+				return this.roomNumber;
+			case "building":
+				return this.building;
+			case "capacity":
+				return this.capacity;
+			default:
+				return -1;
 		}
 	}
 }

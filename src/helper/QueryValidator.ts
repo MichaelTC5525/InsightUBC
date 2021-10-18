@@ -73,35 +73,35 @@ export default class QueryValidator {
 		let comp = Object.keys(obj)[0];
 		let compKey: string;
 		switch(comp) {
-		case "GT":
-		case "LT":
-		case "EQ":
-		case "IS":
-			compKey = Object.keys(obj[comp])[0];
-			this.checkKey(id, fields, obj[comp], compKey);
-			break;
-		case "OR":
-			if (Object.keys(obj.OR).length === 0) {
-				throw new InsightError("Logic comparison wrapper array contains no filters");
-			}
-			for (let k = 0; k < Object.keys(obj.OR).length; k++) {
-				this.validateWhereFilter(id, fields, obj.OR[k]);
-			}
-			break;
-		case "AND":
-			if (Object.keys(obj.AND).length === 0) {
-				throw new InsightError("Logic comparison wrapper array contains no filters");
-			}
-			for (let m = 0; m < Object.keys(obj.AND).length; m++) {
-				this.validateWhereFilter(id, fields, obj.AND[m]);
-			}
-			break;
-		case "NOT":
-			compKey = Object.keys(obj.NOT)[0];
-			this.validateWhereFilter(id, fields, obj.NOT.valueOf());
-			break;
-		default:
-			throw new InsightError("WHERE clause contains unsupported logic / comparison type");
+			case "GT":
+			case "LT":
+			case "EQ":
+			case "IS":
+				compKey = Object.keys(obj[comp])[0];
+				this.checkKey(id, fields, obj[comp], compKey);
+				break;
+			case "OR":
+				if (Object.keys(obj.OR).length === 0) {
+					throw new InsightError("Logic comparison wrapper array contains no filters");
+				}
+				for (let k = 0; k < Object.keys(obj.OR).length; k++) {
+					this.validateWhereFilter(id, fields, obj.OR[k]);
+				}
+				break;
+			case "AND":
+				if (Object.keys(obj.AND).length === 0) {
+					throw new InsightError("Logic comparison wrapper array contains no filters");
+				}
+				for (let m = 0; m < Object.keys(obj.AND).length; m++) {
+					this.validateWhereFilter(id, fields, obj.AND[m]);
+				}
+				break;
+			case "NOT":
+				compKey = Object.keys(obj.NOT)[0];
+				this.validateWhereFilter(id, fields, obj.NOT.valueOf());
+				break;
+			default:
+				throw new InsightError("WHERE clause contains unsupported logic / comparison type");
 		}
 	}
 
@@ -109,46 +109,46 @@ export default class QueryValidator {
 		let strVal: string = "";
 		switch(key) {
 		// String Course fields
-		case id + "_dept":
-		case id + "_id":
-		case id + "_instructor":
-		case id + "_title":
-		case id + "_uuid":
-		// String Room fields
-		case id + "_building":
-			if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
-				!fields.includes(key.split("_")[1])) {
-				throw new InsightError("WHERE clause contains invalid string comparison key");
-			}
-			if (!(typeof Object.values(obj)[0] === "string")) {
-				throw new InsightError("WHERE clause contains string comparison but value is not string");
-			}
+			case id + "_dept":
+			case id + "_id":
+			case id + "_instructor":
+			case id + "_title":
+			case id + "_uuid":
+			// String Room fields
+			case id + "_building":
+				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
+					!fields.includes(key.split("_")[1])) {
+					throw new InsightError("WHERE clause contains invalid string comparison key");
+				}
+				if (!(typeof Object.values(obj)[0] === "string")) {
+					throw new InsightError("WHERE clause contains string comparison but value is not string");
+				}
 
-			strVal = (Object.values(obj)[0] as string);
-			if (strVal.indexOf("*", 1) > 0 && strVal.indexOf("*", 1) < strVal.length - 1) {
-				throw new InsightError("WHERE clause contains string comparison with non-edge position wildcard");
-			}
-			break;
-		// Number Course fields
-		case id + "_avg":
-		case id + "_pass":
-		case id + "_fail":
-		case id + "_audit":
-		case id + "_year":
-		// Number Room fields
-		case id + "_roomNumber":
-		case id + "_capacity":
-			if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
-				!fields.includes(key.split("_")[1])) {
-				throw new InsightError("WHERE clause contains invalid numerical comparison key");
-			}
-			if (!(typeof Object.values(obj)[0] === "number")) {
-				throw new InsightError("WHERE clause contains numerical comparison but value is not numerical");
-			}
-			break;
-		default:
-			throw new InsightError("Comparison key does not match any known supported query keys; " +
-										"check dataset ID or attribute in the WHERE clause");
+				strVal = (Object.values(obj)[0] as string);
+				if (strVal.indexOf("*", 1) > 0 && strVal.indexOf("*", 1) < strVal.length - 1) {
+					throw new InsightError("WHERE clause contains string comparison with non-edge position wildcard");
+				}
+				break;
+			// Number Course fields
+			case id + "_avg":
+			case id + "_pass":
+			case id + "_fail":
+			case id + "_audit":
+			case id + "_year":
+			// Number Room fields
+			case id + "_roomNumber":
+			case id + "_capacity":
+				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
+					!fields.includes(key.split("_")[1])) {
+					throw new InsightError("WHERE clause contains invalid numerical comparison key");
+				}
+				if (!(typeof Object.values(obj)[0] === "number")) {
+					throw new InsightError("WHERE clause contains numerical comparison but value is not numerical");
+				}
+				break;
+			default:
+				throw new InsightError("Comparison key does not match any known supported query keys; " +
+											"check dataset ID or attribute in the WHERE clause");
 		}
 	}
 }

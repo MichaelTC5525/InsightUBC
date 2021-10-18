@@ -32,36 +32,36 @@ export default class ResultHandler {
 				resultLine += "{";
 			}
 			switch(columns[c]) {
-			case id + "_dept":
-				resultLine += ("\"" + id + "_dept\": \"") + entry.getField("dept") + "\"";
-				break;
-			case id + "_id":
-				resultLine += ("\"" + id + "_id\": \"") + entry.getField("id") + "\"";
-				break;
-			case id + "_avg":
-				resultLine += ("\"" + id + "_avg\": ") + entry.getField("avg");
-				break;
-			case id + "_title":
-				resultLine += ("\"" + id + "_title\": \"") + entry.getField("title") + "\"";
-				break;
-			case id + "_instructor":
-				resultLine += ("\"" + id + "_instructor\": \"") + entry.getField("instr") + "\"";
-				break;
-			case id + "_pass":
-				resultLine += ("\"" + id + "_pass\": ") + entry.getField("pass");
-				break;
-			case id + "_fail":
-				resultLine += ("\"" + id + "_fail\": ") + entry.getField("fail");
-				break;
-			case id + "_audit":
-				resultLine += ("\"" + id + "_audit\": ") + entry.getField("audit");
-				break;
-			case id + "_uuid":
-				resultLine += ("\"" + id + "_uuid\": \"") + entry.getField("uuid") + "\"";
-				break;
-			case id + "_year":
-				resultLine += ("\"" + id + "_year\": ") + entry.getField("year");
-				break;
+				case id + "_dept":
+					resultLine += ("\"" + id + "_dept\": \"") + entry.getField("dept") + "\"";
+					break;
+				case id + "_id":
+					resultLine += ("\"" + id + "_id\": \"") + entry.getField("id") + "\"";
+					break;
+				case id + "_avg":
+					resultLine += ("\"" + id + "_avg\": ") + entry.getField("avg");
+					break;
+				case id + "_title":
+					resultLine += ("\"" + id + "_title\": \"") + entry.getField("title") + "\"";
+					break;
+				case id + "_instructor":
+					resultLine += ("\"" + id + "_instructor\": \"") + entry.getField("instr") + "\"";
+					break;
+				case id + "_pass":
+					resultLine += ("\"" + id + "_pass\": ") + entry.getField("pass");
+					break;
+				case id + "_fail":
+					resultLine += ("\"" + id + "_fail\": ") + entry.getField("fail");
+					break;
+				case id + "_audit":
+					resultLine += ("\"" + id + "_audit\": ") + entry.getField("audit");
+					break;
+				case id + "_uuid":
+					resultLine += ("\"" + id + "_uuid\": \"") + entry.getField("uuid") + "\"";
+					break;
+				case id + "_year":
+					resultLine += ("\"" + id + "_year\": ") + entry.getField("year");
+					break;
 			}
 
 			if (c === columns.length - 1) {
