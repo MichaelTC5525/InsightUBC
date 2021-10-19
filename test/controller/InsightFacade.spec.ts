@@ -29,7 +29,11 @@ describe("InsightFacade", function () {
 		ignoreFolderSet: "./test/resources/archives/ignoreFolderSet.zip",
 		invalidSetDir: "./test/resources/archives/invalidSetDir.zip",
 		invalidSetJSON: "./test/resources/archives/invalidSetJSON.zip",
-		skipOverSet: "./test/resources/archives/skipOverSet.zip"
+		skipOverSet: "./test/resources/archives/skipOverSet.zip",
+		rooms: "./test/resources/archives/rooms.zip",
+		ignoreFolderRoomsSet: "./test/resources/archives/ignoreFolderRoomsSet.zip",
+		invalidRoomSetDir: "./test/resources/archives/invalidRoomSetDir.zip",
+		missingIndex: "./test/resources/archives/missingIndex.zip"
 	};
 
 	before(function () {
@@ -66,8 +70,8 @@ describe("InsightFacade", function () {
 		});
 
 		describe("InsightFacade.addDataset Test Cases", function () {
-			context("Success: Add a dataset to a new database", () => {
-				it("Should have a single dataset ID in the database", () => {
+			context("Success: Add a dataset of type Courses to a new database", () => {
+				it("Should have a single course dataset ID in the database", () => {
 					const id: string = "courses1";
 					const content: string = datasetContents.get("courses1") ?? "";
 					const expected: string[] = [id];
@@ -78,13 +82,38 @@ describe("InsightFacade", function () {
 				});
 			});
 
-			context("Success: Add a dataset to a database with one existing dataset", () => {
-				it("Should have 2 dataset IDs in the database", async () => {
+			context("Success: Add a dataset of type Rooms to a new database", () => {
+				it("Should have a single room dataset ID in the database", () => {
+					const id: string = "rooms";
+					const content: string = datasetContents.get("rooms") ?? "";
+					const expected: string[] = [id];
+					return insightFacade.addDataset(id, content, InsightDatasetKind.Rooms)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						});
+				});
+			});
+
+			context("Success: Add a Courses dataset to a database with one existing Courses dataset", () => {
+				it("Should have 2 course dataset IDs in the database", async () => {
 					const content: string = datasetContents.get("courses1") ?? "";
 					const expected: string[] = ["1", "2"];
 					// Add one dataset successfully beforehand
 					await insightFacade.addDataset("1", content, InsightDatasetKind.Courses);
 					return insightFacade.addDataset("2", content, InsightDatasetKind.Courses)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						});
+				});
+			});
+
+			context("Success: Add a Rooms dataset to a database with one existing Rooms dataset", () => {
+				it("Should have 2 room dataset IDs in the database", async () => {
+					const content: string = datasetContents.get("rooms") ?? "";
+					const expected: string[] = ["1", "2"];
+					// Add one dataset successfully beforehand
+					await insightFacade.addDataset("1", content, InsightDatasetKind.Rooms);
+					return insightFacade.addDataset("2", content, InsightDatasetKind.Rooms)
 						.then((result: string[]) => {
 							expect(result).to.deep.equal(expected);
 						});
@@ -105,7 +134,22 @@ describe("InsightFacade", function () {
 				});
 			});
 
-			context("Success: Add a dataset while skipping over an invalid file", () => {
+			context("Success: Add datasets to the database, one of each type", () => {
+				it("Should be able to store both types of datasets simultaneously", async () => {
+					const id: string = "courses1";
+					const id1: string = "rooms";
+					const content: string = datasetContents.get("courses1") ?? "";
+					const content1: string = datasetContents.get("rooms") ?? "";
+					const expected: string[] = [id, id1];
+					await insightFacade.addDataset(id, content, InsightDatasetKind.Courses);
+					return insightFacade.addDataset(id1, content1, InsightDatasetKind.Rooms)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						});
+				});
+			});
+
+			context("Success: Add a Courses dataset while skipping over an invalid file", () => {
 				it("Should add a dataset with no error, with results from only valid files", () => {
 					const content: string = datasetContents.get("skipOverSet") ?? "";
 					const expected: string[] = ["skipOverSet"];
@@ -116,11 +160,22 @@ describe("InsightFacade", function () {
 				});
 			});
 
-			context("Success: Add a dataset while ignoring folders other than 'courses' in ZIP", () => {
-				it("Should add a dataset with no error, ignoring other folders in the ZIP", () => {
+			context("Success: Add a Courses dataset while ignoring folders other than 'courses' in ZIP", () => {
+				it("Should add a courses dataset with no error, ignoring other folders in the ZIP", () => {
 					const content: string = datasetContents.get("ignoreFolderSet") ?? "";
 					const expected: string[] = ["ignoreFolderSet"];
 					return insightFacade.addDataset("ignoreFolderSet", content, InsightDatasetKind.Courses)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						});
+				});
+			});
+
+			context("Success: Add a Rooms dataset while ignoring folders other than 'rooms' in ZIP", () => {
+				it("Should add a rooms dataset with no error, ignoring other folders in the ZIP", () => {
+					const content: string = datasetContents.get("ignoreFolderRoomsSet") ?? "";
+					const expected: string[] = ["ignoreFolderRoomsSet"];
+					return insightFacade.addDataset("ignoreFolderRoomsSet", content, InsightDatasetKind.Rooms)
 						.then((result: string[]) => {
 							expect(result).to.deep.equal(expected);
 						});
@@ -193,7 +248,7 @@ describe("InsightFacade", function () {
 				});
 			});
 
-			context("Fail: Add a dataset that does not have any valid course JSON", () => {
+			context("Fail: Add a Courses dataset that does not have any valid course JSON", () => {
 				it("Should throw an InsightError on account of invalid course JSON content", () => {
 					const invalidDatasetJSON: string = datasetContents.get("invalidSetJSON") ?? "";
 					return insightFacade.addDataset("1", invalidDatasetJSON, InsightDatasetKind.Courses)
@@ -206,10 +261,24 @@ describe("InsightFacade", function () {
 				});
 			});
 
-			context("Fail: Add a dataset that does not have a directory exactly named 'courses'", () => {
+			context("Fail: Add a Courses dataset that does not have a directory exactly named 'courses'", () => {
 				it("Should throw an InsightError on account of a directory 'courses' not found", () => {
 					const invalidDatasetDir: string = datasetContents.get("invalidSetDir") ?? "";
 					return insightFacade.addDataset("1", invalidDatasetDir, InsightDatasetKind.Courses)
+						.then((result: string[]) => {
+							fail();
+						})
+						.catch((error: any) => {
+							expect(error).to.be.instanceOf(InsightError);
+						});
+				});
+			});
+
+			context("Fail: Add a Rooms dataset that does not have a directory exactly named 'rooms'", () => {
+				it("Should throw an InsightError on account of a directory 'rooms' not found", () => {
+					// Give a courses dataset; will contain 'courses' but not 'rooms'
+					const invalidRoomsDatasetDir: string = datasetContents.get("courses1") ?? "";
+					return insightFacade.addDataset("1", invalidRoomsDatasetDir, InsightDatasetKind.Rooms)
 						.then((result: string[]) => {
 							fail();
 						})
@@ -245,6 +314,19 @@ describe("InsightFacade", function () {
 						});
 				});
 			});
+
+			context("Fail: Add a Rooms dataset that is missing an 'index.htm' file at the root directory", () => {
+				it("Should throw an InsightError due to missing required index.htm file", () => {
+					const missingIndex: string = datasetContents.get("missingIndex") ?? "";
+					return insightFacade.addDataset("1", missingIndex, InsightDatasetKind.Rooms)
+						.then((result: string[]) => {
+							fail();
+						})
+						.catch((error: any) => {
+							expect(error).to.be.instanceOf(InsightError);
+						});
+				});
+			});
 		});
 
 
@@ -257,7 +339,7 @@ describe("InsightFacade", function () {
 					await insightFacade.addDataset(id, content, InsightDatasetKind.Courses);
 					return insightFacade.removeDataset(id)
 						.then((result: string) => {
-							expect(result).to.deep.equal(id);
+							expect(result).to.deep.equal(expected);
 						});
 				});
 			});
@@ -385,8 +467,10 @@ describe("InsightFacade", function () {
 			context("Success: Retrieve the list of datasets with multiple datasets added", () => {
 				it("Should return a list containing more than a single entry", async () => {
 					const content: string = datasetContents.get("courses1") ?? "";
+					const roomContent: string = datasetContents.get("rooms") ?? "";
 					await insightFacade.addDataset("1", content, InsightDatasetKind.Courses);
 					await insightFacade.addDataset("2", content, InsightDatasetKind.Courses);
+					await insightFacade.addDataset("3", roomContent, InsightDatasetKind.Rooms);
 
 					const expected: InsightDataset = {
 						id: "1",
@@ -400,9 +484,15 @@ describe("InsightFacade", function () {
 						numRows: 8
 					};
 
+					const expected2: InsightDataset = {
+						id: "3",
+						kind: InsightDatasetKind.Rooms,
+						numRows: 364
+					};
+
 					return insightFacade.listDatasets()
 						.then((result: any[]) => {
-							expect(result).to.have.deep.members([expected, expected1]);
+							expect(result).to.have.deep.members([expected, expected1, expected2]);
 							expect(result).to.have.length(2);
 						});
 				});
