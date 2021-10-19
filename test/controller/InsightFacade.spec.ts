@@ -32,7 +32,6 @@ describe("InsightFacade", function () {
 		skipOverSet: "./test/resources/archives/skipOverSet.zip",
 		rooms: "./test/resources/archives/rooms.zip",
 		ignoreFolderRoomsSet: "./test/resources/archives/ignoreFolderRoomsSet.zip",
-		invalidRoomSetDir: "./test/resources/archives/invalidRoomSetDir.zip",
 		missingIndex: "./test/resources/archives/missingIndex.zip"
 	};
 
