@@ -492,7 +492,7 @@ describe("InsightFacade", function () {
 					return insightFacade.listDatasets()
 						.then((result: any[]) => {
 							expect(result).to.have.deep.members([expected, expected1, expected2]);
-							expect(result).to.have.length(2);
+							expect(result).to.have.length(3);
 						});
 				});
 			});

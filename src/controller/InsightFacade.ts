@@ -83,7 +83,7 @@ export default class InsightFacade implements IInsightFacade {
 		// Read in the .ZIP file
 		let zip = new JSZip();
 		return zip.loadAsync(content, {base64: true}).then((contentZip) => {
-			return this.findRows(contentZip, id);
+			return this.findRows(contentZip, id, kind);
 		}).then((entryArray) => {
 			let fsOp: FSOperator = new FSOperator();
 			rows = fsOp.createDatasetOnDisk(entryArray, kind, this.dataFolder, id);
@@ -179,40 +179,32 @@ export default class InsightFacade implements IInsightFacade {
 
 	private baseValidateDataset(id: string): boolean {
 		// Validate ID string using basic format scheme
-		if (!id.match(/^[^_]+$/) || id.match(/\s+/)) {
-			return false;
-		}
-
-		return true;
+		return !(!id.match(/^[^_]+$/) || id.match(/\s+/));
 	}
 
-	private findRows(contentZip: JSZip, id: string): Promise<DatasetEntry[]> {
+	private findRows(contentZip: JSZip, id: string, kind: string): Promise<DatasetEntry[]> {
 		let dsZip = new DatasetZipReader();
-		let totalRows: number = 0;
-		let sections: number = 0;
-		let rooms: number = 0;
-		let retArray: DatasetEntry[] = [];
-		return dsZip.getValidRows("courses", contentZip, id).then((array) => {
-			totalRows += array.length;
-			sections = array.length;
-			if (sections !== 0) {
-				retArray = array;
-			}
-			retArray = array;
-		}).then(() => {
-			dsZip.getValidRows("rooms", contentZip, id).then((array) => {
-				totalRows += array.length;
-				rooms = array.length;
-				if (rooms !== 0) {
-					retArray = array;
+		let totalRows: number;
+
+		if (kind === InsightDatasetKind.Courses) {
+			return dsZip.getValidRows("courses", contentZip, id).then((array) => {
+				totalRows = array.length;
+				if (totalRows === 0) {
+					throw new InsightError("Zip folder is empty or does not contain 'courses' directory.");
 				}
+				return array;
 			});
-		}).then(() => {
-			if (totalRows === 0) {
-				throw new InsightError("Zip folder is empty or does not contain 'courses' nor 'rooms'.");
-			}
-			return retArray;
-		});
+		} else if (kind === InsightDatasetKind.Rooms) {
+			return dsZip.getValidRows("rooms", contentZip, id).then((array) => {
+				totalRows = array.length;
+				if (totalRows === 0) {
+					throw new InsightError("Zip folder is empty or does not contain 'rooms' directory.");
+				}
+				return array;
+			});
+		} else {
+			throw new InsightError("Unreachable: Kind must be 'courses' or 'rooms'");
+		}
 	}
 
 	private hasDataset(id: string): boolean {

@@ -3,6 +3,10 @@ import { InsightError } from "../controller/IInsightFacade";
 import CourseSection from "../storageType/CourseSection";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import Room from "../storageType/Room";
+import * as fs from "fs-extra";
+import * as p5 from "parse5";
+
+const http = require("http");
 
 export default class DatasetZipReader {
 	/**
@@ -15,40 +19,52 @@ export default class DatasetZipReader {
 	public getValidRows(folder: string, contentZip: JSZip, id: string): Promise<DatasetEntry[]> {
 		let totalResult: DatasetEntry[] = [];
 		let promises: Array<Promise<string>> = [];
-		contentZip.folder(folder)?.forEach(function (relativePath, file) {
-			let newPromise = file.async("string");
-			promises.push(newPromise);
-		});
 
-		return Promise.all(promises).then((files) => {
-			for (let f of files) {
-				try {
-					const obj = JSON.parse(f);
-					if (obj.result === undefined) {
-						// Skip this file, either empty or no entries correctly listed
-						continue;
-					}
-					let singleFileResult: DatasetEntry[] = this.addValidRows(folder, obj);
-					for (let result of singleFileResult) {
-						totalResult.push(result);
-					}
-				} catch (error: any) {
-					// Perpetuate if unrecoverable; continue if JSON SyntaxError
-					if (error instanceof InsightError) {
-						throw error;
-					}
-				}
-			}
+		if (folder === "courses") {
+			contentZip.folder(folder)?.forEach(function (relativePath, file) {
+				let newPromise = file.async("string");
+				promises.push(newPromise);
+			});
 
-			if (totalResult.length === 0) {
-				if (folder === "courses") {
-					throw new InsightError("No valid course sections found");
-				} else if (folder === "rooms") {
-					throw new InsightError("No valid room info found");
-				}
-			}
+			return Promise.all(promises).then((files) => {
+				totalResult = this.handleCourseFiles(folder, files);
+				return Promise.resolve(totalResult);
+			});
+		} else if (folder === "rooms") {
+			// TODO: parse index.htm, populate promises for rooms files
+			// contentZip.file(folder + "/index.htm").async("string").then((indexContent) => {
+			// 	const document = p5.parse(indexContent);
+			// }).then(() => {
+			// 	// TODO: HTTP GET REQUEST
+			// 	// http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team115/<ADDRESS>");
+			// });
 			return Promise.resolve(totalResult);
-		});
+		} else {
+			throw new InsightError("Unreachable: folder to check for should be either 'courses' or 'rooms'");
+		}
+	}
+
+	private handleCourseFiles(folder: string, files: string[]) {
+		let courses: DatasetEntry[] = [];
+		for (let f of files) {
+			try {
+				const obj = JSON.parse(f);
+				if (obj.result === undefined) {
+					// Skip this file, either empty or no entries correctly listed
+					continue;
+				}
+				let singleFileResult: DatasetEntry[] = this.addValidRows(folder, obj);
+				for (let result of singleFileResult) {
+					courses.push(result);
+				}
+			} catch (error: any) {
+				// Perpetuate if unrecoverable; continue if JSON SyntaxError
+				if (error instanceof InsightError) {
+					throw error;
+				}
+			}
+		}
+		return courses;
 	}
 
 	private addValidRows(folder: string, obj: any): DatasetEntry[] {
@@ -74,6 +90,8 @@ export default class DatasetZipReader {
 				if (r.RoomNumber === undefined || r.Building === undefined || r.Capacity === undefined) {
 					continue;
 				}
+				result.push(new Room(r.fullname, r.shortname, r.number, r.address, r.lat, r.lon, r.seats, r.type,
+					r.furniture, r.href));
 			}
 		}
 		return result;
