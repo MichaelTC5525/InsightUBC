@@ -2,8 +2,7 @@ import {InsightError} from "../controller/IInsightFacade";
 
 export default class QueryValidator {
 	public validateQuery(obj: any, kind: string, existingSets: string[]) {
-		// TODO: max number of keys in WHERE clause is 3 (allows TRANSFORMATIONS)
-		if (obj.WHERE === undefined || obj.OPTIONS.COLUMNS[0] === undefined || Object.keys(obj).length > 2) {
+		if (obj.WHERE === undefined || obj.OPTIONS.COLUMNS[0] === undefined || Object.keys(obj).length > 3) {
 			throw new InsightError("Query does not contain required keys, or has excess keys");
 		}
 
@@ -11,8 +10,8 @@ export default class QueryValidator {
 		if (kind === "courses") {
 			validQueryKeys = ["dept", "id", "avg", "instructor", "title", "pass", "fail", "audit", "uuid", "year"];
 		} else if (kind === "rooms") {
-			// TODO: More Room attributes? Add here
-			validQueryKeys = ["roomNumber", "building", "capacity"];
+			validQueryKeys = ["fullName", "shortName", "number", "name", "address", "lat", "lon", "seats", "type",
+				"furniture", "href"];
 		} else {
 			throw new InsightError("Invalid dataset kind in validating query");
 		}
@@ -23,44 +22,91 @@ export default class QueryValidator {
 		}
 
 		this.validateWhereFilter(id, validQueryKeys, obj.WHERE);
+
+		if (obj.TRANSFORMATIONS !== undefined) {
+			this.validateTransformations(id, validQueryKeys, obj.TRANSFORMATIONS);
+		}
 	}
 
 	private validateOptions(fields: string[], obj: any): string {
 		let idToMatch: string = "";
 		for (let c of obj.COLUMNS) {
 			let keyPieces: string[] = c.split("_");
+			// Only act on it if there was an underscore that split the string
+			// Will not affect names that might represent aggregation columns
 			if (keyPieces.length === 2) {
-				if (keyPieces[0] === "" || !fields.includes(keyPieces[1])) {
+				if (keyPieces[0] === "") {
+					throw new InsightError("Query COLUMNS contains a null string ID");
+				}
+				if (!fields.includes(keyPieces[1])) {
 					throw new InsightError("Invalid query key in COLUMNS");
 				}
-
 				if (idToMatch !== "") {
 					if (keyPieces[0] !== idToMatch) {
 						throw new InsightError("Invalid dataset ID found in COLUMNS");
 					}
 				}
-			}
-			if (idToMatch === "") {
-				idToMatch = keyPieces[0];
+				// Initialize the ID we must match in any other query location with form "id_attr"
+				if (idToMatch === "") {
+					idToMatch = keyPieces[0];
+				}
+			} else if (keyPieces.length > 2) {
+				throw new InsightError("Query key in COLUMNS contains multiple underscores");
 			}
 		}
 
-		// TODO: Order can have another level of attributes
-		if (obj.ORDER) {
-			if (obj.ORDER instanceof Array) {
-				throw new InsightError("Cannot sort data by more than one column");
-			}
-			let orderPieces: string[] = obj.ORDER.split("_");
-			if (orderPieces[0] !== idToMatch || !fields.includes(orderPieces[1]) || orderPieces.length !== 2) {
-				throw new InsightError("Invalid query key in ORDER");
-			}
-
-			if (!obj.COLUMNS.includes(obj.ORDER)) {
-				throw new InsightError("Ordering column is missing from requested columns");
-			}
+		if (idToMatch === "") {
+			throw new InsightError("Query COLUMNS must contain at least entry of the form 'id_attribute'");
 		}
+		this.validateOrder(idToMatch, fields, obj);
 
 		return idToMatch;
+	}
+
+	private validateOrder(idToMatch: string, fields: string[], obj: any) {
+		if (obj.ORDER) {
+			if (obj.ORDER instanceof Array) {
+				throw new InsightError("ORDER clause cannot be an array at top level");
+			}
+			if (typeof obj.ORDER === "string") {
+				let orderPieces: string[] = obj.ORDER.split("_");
+				if (orderPieces[0] !== idToMatch || !fields.includes(orderPieces[1]) || orderPieces.length !== 2) {
+					throw new InsightError("Invalid query key in ORDER");
+				}
+
+				if (!obj.COLUMNS.includes(obj.ORDER)) {
+					throw new InsightError("Ordering column is missing from requested columns");
+				}
+			} else {
+				// obj.ORDER is a JSON object
+				if (obj.ORDER.dir === null || obj.ORDER.keys === null) {
+					throw new InsightError("ORDER clause is defined as object; missing required ordering keys");
+				}
+				if (obj.ORDER.dir !== "UP" && obj.ORDER.dir !== "DOWN") {
+					throw new InsightError("ORDER clause sorting direction invalid");
+				}
+				if (!(obj.ORDER.keys instanceof Array) || obj.ORDER.keys.length === 0) {
+					throw new InsightError("ORDER clause 'keys' should be an array of length >= 1");
+				}
+
+				for (let k of obj.ORDER.keys) {
+					let keySplit: string[] = k.split("_");
+					if (keySplit.length === 2) {
+						if (keySplit[0] !== idToMatch) {
+							throw new InsightError("ORDER key does not match requested dataset in COLUMNS");
+						}
+						if (!(fields.includes(keySplit[1]))) {
+							throw new InsightError("ORDER key contains invalid attribute for this dataset type");
+						}
+					} else if (keySplit.length > 2) {
+						throw new InsightError("ORDER clause contains a key with too many underscores");
+					}
+					if (!(obj.COLUMNS.includes(k))) {
+						throw new InsightError("Ordering key is missing from requested COLUMNS");
+					}
+				}
+			}
+		}
 	}
 
 	private validateWhereFilter(id: string, fields: string[], obj: any) {
@@ -149,6 +195,18 @@ export default class QueryValidator {
 			default:
 				throw new InsightError("Comparison key does not match any known supported query keys; " +
 											"check dataset ID or attribute in the WHERE clause");
+		}
+	}
+
+	private validateTransformations(id: string, fields: string[], obj: any) {
+		// TODO: Complete final component validation
+		// According to EBNF, must have GROUP and APPLY when TRANSFORMATIONS is defined
+		if (obj.GROUP === undefined || obj.APPLY === undefined) {
+			throw new InsightError("Query TRANSFORMATIONS is missing one of GROUP or APPLY");
+		}
+
+		if (!(obj.GROUP instanceof Array) || obj.GROUP.length === 0) {
+			throw new InsightError("GROUP clause should be an array of length >= 1");
 		}
 	}
 }

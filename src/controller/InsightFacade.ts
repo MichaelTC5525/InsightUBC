@@ -128,6 +128,9 @@ export default class InsightFacade implements IInsightFacade {
 			let obj = query;
 
 			let datasetToSearch: string = this.getDatasetToSearch(obj);
+			if (!this.hasDataset(datasetToSearch)) {
+				throw new InsightError("Requested dataset in COLUMNS does not exist in DB");
+			}
 			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
 			let setKind: string = data[0];
 
@@ -236,7 +239,8 @@ export default class InsightFacade implements IInsightFacade {
 						pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else if (kind === "rooms") {
 					// TODO: More Room attributes? Add here
-					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2]));
+					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2], pushVals[3], pushVals[4],
+						pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else {
 					throw new InsightError("Filtered results list are of unidentifiable dataset type");
 				}
