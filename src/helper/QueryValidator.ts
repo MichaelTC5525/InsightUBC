@@ -24,7 +24,7 @@ export default class QueryValidator {
 		this.validateWhereFilter(id, validQueryKeys, obj.WHERE);
 
 		if (obj.TRANSFORMATIONS !== undefined) {
-			this.validateTransformations(id, validQueryKeys, obj.TRANSFORMATIONS);
+			this.validateTransformations(obj.OPTIONS.COLUMNS, obj.TRANSFORMATIONS);
 		}
 	}
 
@@ -198,15 +198,48 @@ export default class QueryValidator {
 		}
 	}
 
-	private validateTransformations(id: string, fields: string[], obj: any) {
+	private validateTransformations(columns: string[], obj: any) {
 		// TODO: Complete final component validation
 		// According to EBNF, must have GROUP and APPLY when TRANSFORMATIONS is defined
+
 		if (obj.GROUP === undefined || obj.APPLY === undefined) {
 			throw new InsightError("Query TRANSFORMATIONS is missing one of GROUP or APPLY");
 		}
 
-		if (!(obj.GROUP instanceof Array) || obj.GROUP.length === 0) {
+		this.checkGroup(columns, obj.GROUP);
+
+		this.checkApply(columns, obj.APPLY);
+	}
+
+	private checkGroup(columns: string[], obj: any) {
+		if (!(obj instanceof Array) || obj.length === 0) {
 			throw new InsightError("GROUP clause should be an array of length >= 1");
+		}
+		for (let k of obj) {
+			if (!(columns.includes(k))) {
+				throw new InsightError("GROUP clause contains a key not requested for in COLUMNS");
+			}
+		}
+	}
+
+	private checkApply(columns: string[], obj: any) {
+		if (!(obj instanceof Array)) {
+			throw new InsightError("APPLY clause should be an array type");
+		}
+
+		let supportedAggs: string[] = ["MAX", "MIN", "AVG", "COUNT", "SUM"];
+		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
+		for (let o of obj) {
+			if (!(columns.includes(Object.keys(o)[0]))) {
+				throw new InsightError("APPLY clause contains an applykey not in requested COLUMNS");
+			}
+
+			// TODO: Debug this
+			// o = { applykey: { "MAX": "courses_avg" }}
+			if (!(supportedAggs.includes(Object.keys(obj[0].o)[0]))) {
+				throw new InsightError("Aggregation type for APPLY column " +
+					Object.keys(o)[0] + " is unsupported");
+			}
 		}
 	}
 }
