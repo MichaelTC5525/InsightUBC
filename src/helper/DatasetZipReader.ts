@@ -1,10 +1,10 @@
 import JSZip from "jszip";
-import { InsightError } from "../controller/IInsightFacade";
+import {InsightError} from "../controller/IInsightFacade";
 import CourseSection from "../storageType/CourseSection";
-import { DatasetEntry } from "../storageType/DatasetEntry";
+import {DatasetEntry} from "../storageType/DatasetEntry";
 import Room from "../storageType/Room";
-import * as fs from "fs-extra";
 import * as p5 from "parse5";
+import {Document} from "parse5";
 
 const http = require("http");
 
@@ -31,17 +31,71 @@ export default class DatasetZipReader {
 				return Promise.resolve(totalResult);
 			});
 		} else if (folder === "rooms") {
-			// TODO: parse index.htm, populate promises for rooms files
-			// contentZip.file(folder + "/index.htm").async("string").then((indexContent) => {
-			// 	const document = p5.parse(indexContent);
-			// }).then(() => {
-			// 	// TODO: HTTP GET REQUEST
-			// 	// http.get("http://cs310.students.cs.ubc.ca:11316/api/v1/project_team115/<ADDRESS>");
-			// });
+			let index: JSZip.JSZipObject | null = contentZip.file(folder + "/index.htm");
+			if (index === null) {
+				throw new InsightError("Zip file is missing index.htm in root directory under 'rooms'");
+			}
+			index.async("string").then((indexContent) => {
+				return p5.parse(indexContent);
+			}).then((document) => {
+				// TODO: Find <a href>s for links to other files in ZIP
+				let filesToCheck: string[] = this.findRoomBuildingFiles(document);
+				return this.handleRoomFiles(folder, contentZip, filesToCheck);
+			}).then((entries) => {
+				// TODO
+			});
+
 			return Promise.resolve(totalResult);
 		} else {
 			throw new InsightError("Unreachable: folder to check for should be either 'courses' or 'rooms'");
 		}
+	}
+
+	private findRoomBuildingFiles(document: Document): string[] {
+		// TODO: extract list of href from "a" elements in corresponding table
+		let filePaths: string[] = [];
+		// Base case: should occur when within an "a" tag
+		let currElem = document["childNodes"];
+		// Document -> html -> body -> div class="view-content" -> table class -> tbody
+		for (let c of document.childNodes) {
+			if (c.nodeName === "html") {
+				//
+			}
+		}
+		return filePaths;
+	}
+
+	private handleRoomFiles(folder: string, contentZip: JSZip, files: string[]): Promise<DatasetEntry[]> {
+		let promises: Array<Promise<string>> = [];
+		for (let f of files) {
+			// <a href = "./campus/directories/ ... " ; remove prefix ./
+			let filePath: string = f.split("./")[1];
+			const currFile: JSZip.JSZipObject | null = contentZip.file(folder + "/" + filePath);
+			// If file that is in the link non-existent in dataset, skip
+			if (currFile === null) {
+				continue;
+			}
+			promises.push(currFile.async("string"));
+		}
+
+		return Promise.all(promises).then((filesContent) => {
+			let results: DatasetEntry[] = [];
+			for (let fc of filesContent) {
+				let doc: Document = p5.parse(fc);
+				results = results.concat(this.findRoomRows(doc));
+			}
+			return Promise.resolve(results);
+		});
+	}
+
+	private findRoomRows(document: Document): DatasetEntry[] {
+		let rows: DatasetEntry[] = [];
+		// TODO: find the table in there
+		let buildingAddress: string = "";
+		let httpAddress: string = "http://cs310.students.cs.ubc.ca:11316/api/v1/project_team115/" + buildingAddress;
+		// TODO: HTTP GET REQUEST
+		const request = http.get(httpAddress);
+		return rows;
 	}
 
 	private handleCourseFiles(folder: string, files: string[]) {
