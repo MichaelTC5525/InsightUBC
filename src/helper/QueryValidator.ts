@@ -1,7 +1,7 @@
 import {InsightError} from "../controller/IInsightFacade";
 
 export default class QueryValidator {
-	public validateQuery(obj: any, kind: string, existingSets: string[]) {
+	public validateQuery(id: string, obj: any, kind: string, existingSets: string[]) {
 		if (obj.WHERE === undefined || obj.OPTIONS.COLUMNS[0] === undefined || Object.keys(obj).length > 3) {
 			throw new InsightError("Query does not contain required keys, or has excess keys");
 		}
@@ -10,13 +10,13 @@ export default class QueryValidator {
 		if (kind === "courses") {
 			validQueryKeys = ["dept", "id", "avg", "instructor", "title", "pass", "fail", "audit", "uuid", "year"];
 		} else if (kind === "rooms") {
-			validQueryKeys = ["fullName", "shortName", "number", "name", "address", "lat", "lon", "seats", "type",
+			validQueryKeys = ["fullname", "shortname", "number", "name", "address", "lat", "lon", "seats", "type",
 				"furniture", "href"];
 		} else {
 			throw new InsightError("Invalid dataset kind in validating query");
 		}
 
-		let id: string = this.validateOptions(validQueryKeys, obj.OPTIONS);
+		this.validateOptions(id, validQueryKeys, obj.OPTIONS);
 		if (!existingSets.includes(id)) {
 			throw new InsightError("Invalid query key in COLUMNS");
 		}
@@ -33,8 +33,7 @@ export default class QueryValidator {
 		}
 	}
 
-	private validateOptions(fields: string[], obj: any): string {
-		let idToMatch: string = "";
+	private validateOptions(id: string, fields: string[], obj: any) {
 		for (let c of obj.COLUMNS) {
 			let keyPieces: string[] = c.split("_");
 			// Only act on it if there was an underscore that split the string
@@ -46,26 +45,14 @@ export default class QueryValidator {
 				if (!fields.includes(keyPieces[1])) {
 					throw new InsightError("Invalid query key in COLUMNS");
 				}
-				if (idToMatch !== "") {
-					if (keyPieces[0] !== idToMatch) {
-						throw new InsightError("Invalid dataset ID found in COLUMNS");
-					}
-				}
-				// Initialize the ID we must match in any other query location with form "id_attr"
-				if (idToMatch === "") {
-					idToMatch = keyPieces[0];
+				if (keyPieces[0] !== id) {
+					throw new InsightError("Invalid dataset ID found in COLUMNS");
 				}
 			} else if (keyPieces.length > 2) {
 				throw new InsightError("Query key in COLUMNS contains multiple underscores");
 			}
 		}
-
-		if (idToMatch === "") {
-			throw new InsightError("Query COLUMNS must contain at least entry of the form 'id_attribute'");
-		}
-		this.validateOrder(idToMatch, fields, obj);
-
-		return idToMatch;
+		this.validateOrder(id, fields, obj);
 	}
 
 	private validateOrder(idToMatch: string, fields: string[], obj: any) {
@@ -240,10 +227,18 @@ export default class QueryValidator {
 		}
 
 		let supportedAggs: string[] = ["MAX", "MIN", "AVG", "COUNT", "SUM"];
+
+		// Used to ensure applyKey uniqueness
+		let applyKeys: string[] = [];
+
 		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
 		for (let o of obj) {
 			// o = { applykey: { "MAX": "courses_avg" }}
 			let applyKey: string = Object.keys(o)[0]; // There should only be a first element, no more
+			if (applyKeys.includes(applyKey)) {
+				throw new InsightError("APPLY clause contains duplicate applyKeys; an aggregated column can only" +
+				" take on a single aggregation operation");
+			}
 			if (columns.includes(applyKey)) {
 				columns.splice(columns.indexOf(applyKey), 1);
 			}
@@ -260,6 +255,7 @@ export default class QueryValidator {
 				throw new InsightError("APPLY column " + applyKey +
 					" performs aggregation on an invalid query key");
 			}
+			applyKeys.push(applyKey);
 		}
 
 		return columns;

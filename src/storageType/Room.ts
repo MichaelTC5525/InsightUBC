@@ -6,8 +6,8 @@
 import { DatasetEntry } from "./DatasetEntry";
 
 export default class Room implements DatasetEntry{
-	private readonly fullName: string;
-	private readonly shortName: string;
+	private readonly fullname: string;
+	private readonly shortname: string;
 	private readonly number: string;
 	private readonly name: string;
 	private readonly address: string;
@@ -18,12 +18,12 @@ export default class Room implements DatasetEntry{
 	private readonly furniture: string;
 	private readonly href: string
 
-	constructor(fullName: string, shortName: string, number: string, address: string, lat: number,
+	constructor(fullname: string, shortname: string, number: string, address: string, lat: number,
 		lon: number, seats: number, type: string, furniture: string, href: string) {
-		this.fullName = fullName;
-		this.shortName = shortName;
+		this.fullname = fullname;
+		this.shortname = shortname;
 		this.number = number;
-		this.name = shortName + "_" + number;
+		this.name = shortname + "_" + number;
 		this.address = address;
 		this.lat = lat;
 		this.lon = lon;
@@ -35,10 +35,10 @@ export default class Room implements DatasetEntry{
 
 	public getField(field: string): string | number {
 		switch(field) {
-			case "fullName":
-				return this.fullName;
-			case "shortName":
-				return this.shortName;
+			case "fullname":
+				return this.fullname;
+			case "shortname":
+				return this.shortname;
 			case "number":
 				return this.number;
 			case "name":

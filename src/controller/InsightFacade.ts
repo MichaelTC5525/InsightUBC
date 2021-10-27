@@ -140,26 +140,29 @@ export default class InsightFacade implements IInsightFacade {
 			}
 
 			let qValidator = new QueryValidator();
-			qValidator.validateQuery(obj, setKind, existingSets);
+			qValidator.validateQuery(datasetToSearch, obj, setKind, existingSets);
 
 			let qEvaluator = new QueryEvaluator();
 			data = qEvaluator.filterResults(data, obj.WHERE);
 
 			this.updateDatasetEntriesCache(data, setKind);
 
-			if (obj.TRANSFORMATIONS !== undefined) {
+			let rh: ResultHandler = new ResultHandler();
+			if (obj.TRANSFORMATIONS === undefined) {
 				if (this.datasetEntries.length > 5000) {
 					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
 						" results"));
 				}
+				let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
+				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
+				return Promise.resolve(completedResults);
+			} else {
+				// TODO
+				// let groupedResults: Array<any[]> = rh.groupResults(obj.TRANSFORMATIONS.GROUP, this.datasetEntries);
+				// let aggregatedResults: any[] = rh.aggregateResults(obj.TRANSFORMATIONS.APPLY, groupedResults);
+				// let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, aggregatedResults);
+				return Promise.resolve([]);
 			}
-
-			let rh: ResultHandler = new ResultHandler();
-			// TODO: Fix craftResults with aggregated columns
-			let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
-			// let aggResults: any[] = rh.aggregateResults(obj.OPTIONS.COLUMNS, this.datasetEntries);
-			let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
-			return Promise.resolve(completedResults);
 		} catch (error: any) {
 			if (error instanceof SyntaxError) {
 				return Promise.reject(new InsightError("Query is improperly formatted; invalid JSON"));
@@ -230,7 +233,13 @@ export default class InsightFacade implements IInsightFacade {
 				return setToQuery[0];
 			}
 		}
-		throw new InsightError("Pre-validation: Query must contain at least one COLUMN in form 'id_attribute'");
+		// If columns didn't include a 'id_attr', then a TRANSFORMATIONS.GROUP must be present, with this form
+		try {
+			setToQuery = obj.TRANSFORMATIONS.GROUP[0].split("_");
+		} catch (error: any) {
+			throw new InsightError(error);
+		}
+		return setToQuery[0];
 	}
 
 	private updateDatasetEntriesCache(from: string[], kind: string) {

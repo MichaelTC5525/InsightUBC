@@ -482,19 +482,35 @@ describe("InsightFacade", function () {
 				},
 
 				assertOnResult(expected: any[], actual: any, input: any) {
-					const orderKey = input.OPTIONS.ORDER;
 					expect(actual).to.be.instanceOf(Array);
 					expect(actual).to.have.length(expected.length);
 					expect(actual).to.have.deep.members(expected);
 
-					// Temporary removal, may need to check for order later, leave in
-					// if (orderKey !== undefined) {
-					// 	for (let i = 1; i < actual.length; i++) {
-					// 		if (actual[i - 1][orderKey] <= actual[i][orderKey]) {
-					// 			fail("Incorrect ordering");
-					// 		}
-					// 	}
-					// }
+					const orderKey: string | any = input.OPTIONS.ORDER;
+					if (orderKey !== undefined) {
+						if (typeof orderKey === "string") {
+							for (let i = 1; i < actual.length; i++) {
+								if (actual[i - 1][orderKey] > actual[i][orderKey]) {
+									fail("Incorrect ordering");
+								}
+							}
+						} else {
+							// TODO: add in testing support for multi-key ordering
+							if (orderKey.dir === "DOWN") {
+								for (let i = 1; i < actual.length; i++) {
+									if (actual[i - 1][orderKey.keys[0]] < actual[i][orderKey.keys[0]]) {
+										fail("Incorrect ordering");
+									}
+								}
+							} else {
+								for (let i = 1; i < actual.length; i++) {
+									if (actual[i - 1][orderKey] > actual[i][orderKey]) {
+										fail("Incorrect ordering");
+									}
+								}
+							}
+						}
+					}
 				},
 
 				assertOnError(expected: PQErrorKind, actual: any) {

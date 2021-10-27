@@ -1,16 +1,46 @@
 import {DatasetEntry} from "../storageType/DatasetEntry";
 
 export default class ResultHandler {
-	public orderResults(obj: string, kind: string, entries: any[]): any[] {
-		entries.sort(function compareFunc(entry1, entry2) {
-			if (entry1[obj] < entry2[obj]) {
-				return -1;
-			} else if (entry1[obj] > entry2[obj]) {
-				return 1;
+	public orderResults(obj: any | string, kind: string, entries: any[]): any[] {
+		if (obj === undefined) {
+			return entries;
+		}
+		if (typeof obj === "string") {
+			entries.sort(function compareFunc(entry1, entry2) {
+				if (entry1[obj] < entry2[obj]) {
+					return -1;
+				} else if (entry1[obj] > entry2[obj]) {
+					return 1;
+				} else {
+					return 0;
+				}
+			});
+		} else {
+			let compareRetVals: number[];
+			if (obj.dir === "DOWN") {
+				compareRetVals = [1, -1];
 			} else {
-				return 0;
+				compareRetVals = [-1, 1];
 			}
-		});
+
+			entries.sort(function compareFunc(entry1, entry2) {
+				return compareFuncHelp(0);
+
+				function compareFuncHelp(index: number): number {
+					if (entry1[obj.keys[index]] < entry2[obj.keys[index]]) {
+						return compareRetVals[0];
+					} else if (entry1[obj.keys[index]] > entry2[obj.keys[index]]) {
+						return compareRetVals[1];
+					} else {
+						if (index === obj.keys.length - 1) {
+							return 0;
+						}
+						return compareFuncHelp(index + 1);
+					}
+				}
+			});
+		}
+
 		return entries;
 	}
 
