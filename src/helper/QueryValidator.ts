@@ -24,7 +24,7 @@ export default class QueryValidator {
 		this.validateWhereFilter(id, validQueryKeys, obj.WHERE);
 
 		if (obj.TRANSFORMATIONS !== undefined) {
-			this.validateTransformations(obj.OPTIONS.COLUMNS, obj.TRANSFORMATIONS);
+			this.validateTransformations(id, validQueryKeys, obj.OPTIONS.COLUMNS, obj.TRANSFORMATIONS);
 		}
 	}
 
@@ -198,8 +198,7 @@ export default class QueryValidator {
 		}
 	}
 
-	private validateTransformations(columns: string[], obj: any) {
-		// TODO: Complete final component validation
+	private validateTransformations(id: string, fields: string[], columns: string[], obj: any) {
 		// According to EBNF, must have GROUP and APPLY when TRANSFORMATIONS is defined
 
 		if (obj.GROUP === undefined || obj.APPLY === undefined) {
@@ -208,7 +207,7 @@ export default class QueryValidator {
 
 		this.checkGroup(columns, obj.GROUP);
 
-		this.checkApply(columns, obj.APPLY);
+		this.checkApply(id, fields, columns, obj.APPLY);
 	}
 
 	private checkGroup(columns: string[], obj: any) {
@@ -222,7 +221,7 @@ export default class QueryValidator {
 		}
 	}
 
-	private checkApply(columns: string[], obj: any) {
+	private checkApply(id: string, fields: string[], columns: string[], obj: any) {
 		if (!(obj instanceof Array)) {
 			throw new InsightError("APPLY clause should be an array type");
 		}
@@ -230,15 +229,23 @@ export default class QueryValidator {
 		let supportedAggs: string[] = ["MAX", "MIN", "AVG", "COUNT", "SUM"];
 		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
 		for (let o of obj) {
-			if (!(columns.includes(Object.keys(o)[0]))) {
+			// o = { applykey: { "MAX": "courses_avg" }}
+			let applyKey: string = Object.keys(o)[0]; // There should only be a first element, no more
+			if (!(columns.includes(applyKey))) {
 				throw new InsightError("APPLY clause contains an applykey not in requested COLUMNS");
 			}
 
-			// TODO: Debug this
-			// o = { applykey: { "MAX": "courses_avg" }}
-			if (!(supportedAggs.includes(Object.keys(obj[0].o)[0]))) {
+			// o[applyKey] = { "MAX": "courses_avg" } ; "MAX" is the only key at 0th element
+			if (!(supportedAggs.includes(Object.keys(o[applyKey])[0]))) {
 				throw new InsightError("Aggregation type for APPLY column " +
-					Object.keys(o)[0] + " is unsupported");
+					applyKey + " is unsupported");
+			}
+
+			let aggValue: string = (Object.values(o[applyKey])[0] as string);
+			let aggValueArray: string[] = aggValue.split("_");
+			if (aggValueArray.length !== 2 || aggValueArray[0] !== id || !(fields.includes(aggValueArray[1]))) {
+				throw new InsightError("APPLY column " + applyKey +
+					" performs aggregation on an invalid query key");
 			}
 		}
 	}
