@@ -46,14 +46,14 @@ export default class InsightFacade implements IInsightFacade {
 			// Length of results should not include
 			// 1. First line "courses" / "rooms"
 			// 2. Empty line after final result \n character
-			if (lines[0].split(".txt")[0] === "courses") {
+			if (lines[0] === "courses") {
 				let courseSet: InsightDataset = {
 					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Courses,
 					numRows: lines.length - 2
 				};
 				this.datasetStorage.push(courseSet);
-			} else if (lines[0].split(".txt")[0] === "rooms") {
+			} else if (lines[0] === "rooms") {
 				let roomSet = {
 					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Rooms,
@@ -147,13 +147,17 @@ export default class InsightFacade implements IInsightFacade {
 
 			this.updateDatasetEntriesCache(data, setKind);
 
-			if (this.datasetEntries.length > 5000) {
-				return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
-					" results"));
+			if (obj.TRANSFORMATIONS !== undefined) {
+				if (this.datasetEntries.length > 5000) {
+					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
+						" results"));
+				}
 			}
 
 			let rh: ResultHandler = new ResultHandler();
+			// TODO: Fix craftResults with aggregated columns
 			let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
+			// let aggResults: any[] = rh.aggregateResults(obj.OPTIONS.COLUMNS, this.datasetEntries);
 			let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
 			return Promise.resolve(completedResults);
 		} catch (error: any) {

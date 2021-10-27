@@ -1,0 +1,25 @@
+{
+	"title": "Fail: TRANSFORMATIONS.APPLY aggregated column name not matching requested column aggregation name",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"],
+			"APPLY": [
+				{
+					"maxABC": {
+						"MAX": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

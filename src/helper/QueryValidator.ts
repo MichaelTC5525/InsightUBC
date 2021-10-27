@@ -23,8 +23,13 @@ export default class QueryValidator {
 
 		this.validateWhereFilter(id, validQueryKeys, obj.WHERE);
 
+		let columnsNeeded: string[] = obj.OPTIONS.COLUMNS;
 		if (obj.TRANSFORMATIONS !== undefined) {
-			this.validateTransformations(id, validQueryKeys, obj.OPTIONS.COLUMNS, obj.TRANSFORMATIONS);
+			columnsNeeded = this.validateTransformations(id, validQueryKeys, columnsNeeded, obj.TRANSFORMATIONS);
+			if (columnsNeeded.length > 0) {
+				throw new InsightError("Not all COLUMNS are assigned to a " +
+					" TRANSFORMATIONS.GROUP key or TRANSFORMATIONS.APPLY applykey");
+			}
 		}
 	}
 
@@ -198,30 +203,38 @@ export default class QueryValidator {
 		}
 	}
 
-	private validateTransformations(id: string, fields: string[], columns: string[], obj: any) {
+	private validateTransformations(id: string, fields: string[], columns: string[], obj: any): string[] {
 		// According to EBNF, must have GROUP and APPLY when TRANSFORMATIONS is defined
 
 		if (obj.GROUP === undefined || obj.APPLY === undefined) {
 			throw new InsightError("Query TRANSFORMATIONS is missing one of GROUP or APPLY");
 		}
 
-		this.checkGroup(columns, obj.GROUP);
+		columns = this.checkGroup(id, fields, columns, obj.GROUP);
 
-		this.checkApply(id, fields, columns, obj.APPLY);
+		columns = this.checkApply(id, fields, columns, obj.APPLY);
+
+		return columns;
 	}
 
-	private checkGroup(columns: string[], obj: any) {
+	private checkGroup(id: string, fields: string[], columns: string[], obj: any): string[] {
 		if (!(obj instanceof Array) || obj.length === 0) {
 			throw new InsightError("GROUP clause should be an array of length >= 1");
 		}
 		for (let k of obj) {
-			if (!(columns.includes(k))) {
-				throw new InsightError("GROUP clause contains a key not requested for in COLUMNS");
+			if (columns.includes(k)) {
+				columns.splice(columns.indexOf(k), 1);
+			}
+			let kPieces: string[] = k.split("_");
+			if (kPieces.length !== 2 || kPieces[0] !== id || !(fields.includes(kPieces[1]))) {
+				throw new InsightError("GROUP clause contains a non-dataset key");
 			}
 		}
+
+		return columns;
 	}
 
-	private checkApply(id: string, fields: string[], columns: string[], obj: any) {
+	private checkApply(id: string, fields: string[], columns: string[], obj: any): string[] {
 		if (!(obj instanceof Array)) {
 			throw new InsightError("APPLY clause should be an array type");
 		}
@@ -231,8 +244,8 @@ export default class QueryValidator {
 		for (let o of obj) {
 			// o = { applykey: { "MAX": "courses_avg" }}
 			let applyKey: string = Object.keys(o)[0]; // There should only be a first element, no more
-			if (!(columns.includes(applyKey))) {
-				throw new InsightError("APPLY clause contains an applykey not in requested COLUMNS");
+			if (columns.includes(applyKey)) {
+				columns.splice(columns.indexOf(applyKey), 1);
 			}
 
 			// o[applyKey] = { "MAX": "courses_avg" } ; "MAX" is the only key at 0th element
@@ -248,5 +261,7 @@ export default class QueryValidator {
 					" performs aggregation on an invalid query key");
 			}
 		}
+
+		return columns;
 	}
 }
