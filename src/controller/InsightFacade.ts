@@ -126,7 +126,6 @@ export default class InsightFacade implements IInsightFacade {
 		this.datasetEntries = [];
 		try {
 			let obj = query;
-
 			let datasetToSearch: string = this.getDatasetToSearch(obj);
 			if (!this.hasDataset(datasetToSearch)) {
 				throw new InsightError("Requested dataset in COLUMNS does not exist in DB");
@@ -138,13 +137,10 @@ export default class InsightFacade implements IInsightFacade {
 			for (let d of this.datasetStorage) {
 				existingSets.push(d.id);
 			}
-
 			let qValidator = new QueryValidator();
 			qValidator.validateQuery(datasetToSearch, obj, setKind, existingSets);
-
 			let qEvaluator = new QueryEvaluator();
 			data = qEvaluator.filterResults(data, obj.WHERE);
-
 			this.updateDatasetEntriesCache(data, setKind);
 
 			let rh: ResultHandler = new ResultHandler();
@@ -158,11 +154,10 @@ export default class InsightFacade implements IInsightFacade {
 				return Promise.resolve(completedResults);
 			} else {
 				// TODO
-				let dataObjs: any[] = [];
-				for (let d of data) {
-					dataObjs.push(JSON.parse(d));
+				for (let i = 0; i < data.length; i++) {
+					data[i] = JSON.parse(data[i]);
 				}
-				let groupedResults: any[][] = rh.groupResults(obj.TRANSFORMATIONS.GROUP, dataObjs);
+				let groupedResults: any[][] = rh.groupResults(obj.TRANSFORMATIONS.GROUP, data);
 				let aggregatedResults: any[] = rh.aggregateResults(obj.TRANSFORMATIONS.APPLY, groupedResults);
 				// for (let i = 0; i < aggregatedResults.length; i++) {
 				// 	aggregatedResults[i] = rh.orderResults(obj.TRANSFORMATIONS.APPLY, aggregatedResults[i]);
