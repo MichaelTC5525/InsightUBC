@@ -1,7 +1,7 @@
 import {DatasetEntry} from "../storageType/DatasetEntry";
 
 export default class ResultHandler {
-	public orderResults(obj: any | string, kind: string, entries: any[]): any[] {
+	public orderResults(obj: any | string, entries: any[]): any[] {
 		if (obj === undefined) {
 			return entries;
 		}
@@ -93,14 +93,67 @@ export default class ResultHandler {
 					resultLine += ("\"" + id + "_year\": ") + entry.getField("year");
 					break;
 			}
-
 			if (c === columns.length - 1) {
 				resultLine += "}";
 			} else {
 				resultLine += ", ";
 			}
 		}
-
 		return resultLine;
 	}
+
+	public groupResults(groupAttrs: string[], entries: any[]): any[][] {
+		let retGroups: any[][] = [];
+		for (let entry of entries) {
+			// Flag to know if this entry was put somewhere; if not, it needs a group of its own
+			let wasPushed: number = 0;
+			// Determine if all attributes of interest for this entry match those of an existing group
+			for (let array of retGroups) {
+				// Assume this array unless proven guilty
+				let pushHere: number = 1;
+				for (let attr of groupAttrs) {
+					// Check each field that a group is created based on; if there are any difference, entry should be
+					//  in a different group (array of retGroups)
+					if (array[0][attr] !== entry[attr]) {
+						pushHere = 0;
+					}
+				}
+				if (pushHere) {
+					wasPushed = 1;
+					array.push(entry);
+					break;
+				}
+			}
+			// If no existing groups matched with the attributes of this entry, create a new group
+			if (!wasPushed) {
+				retGroups.push([entry]);
+			}
+		}
+		return retGroups;
+	}
+
+	public aggregateResults(applyColumns: any[], groups: any[][]): any[] {
+		// TODO
+		let retVal: any[] = [];
+		// g = any[] = [ {"courses_dept": "math", "courses_id": "541", ...},
+		// 				 {"courses_dept": "math", "courses_id": "541", ...} ]
+		// applyColumns = any[] = [ { "columnName": { "MAX": "courses_avg" }} ]
+		for (let g of groups) {
+			for (let applyColumn of applyColumns) {
+				this.handleAggOp(g, applyColumn);
+			}
+		}
+		return retVal;
+	}
+
+	private handleAggOp(g: any[], applyColumn: any) {
+		// applyColumn = { "applyKey": { "MAX": "courses_avg" }}
+		let applyKey: string = Object.keys(applyColumn)[0];
+		// attrKey = "courses_avg"
+		let attrKey: string = (Object.values(applyColumn[applyKey])[0] as string);
+	}
+
+	// switch(Object.values(applyColumn[applyKey])) {
+	//
+	// }
 }

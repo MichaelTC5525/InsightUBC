@@ -255,9 +255,39 @@ export default class QueryValidator {
 				throw new InsightError("APPLY column " + applyKey +
 					" performs aggregation on an invalid query key");
 			}
+			this.checkAggOp(Object.keys(o[applyKey])[0], aggValueArray[1]);
+
 			applyKeys.push(applyKey);
 		}
-
 		return columns;
+	}
+
+	private checkAggOp(op: string, key: string) {
+		switch(op) {
+			case "MAX":
+			case "MIN":
+			case "AVG":
+			case "SUM":
+				switch(key) {
+					// Course string fields
+					case "dept":
+					case "id":
+					case "instructor":
+					case "title":
+					case "uuid":
+					// Room string fields
+					case "fullname":
+					case "shortname":
+					case "name":
+					case "address":
+					case "type":
+					case "furniture":
+					case "href":
+						throw new InsightError(op + " aggregation operator not compatible with query key");
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }

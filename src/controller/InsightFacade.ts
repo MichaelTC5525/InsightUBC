@@ -154,13 +154,24 @@ export default class InsightFacade implements IInsightFacade {
 						" results"));
 				}
 				let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
-				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
+				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, queryResults);
 				return Promise.resolve(completedResults);
 			} else {
 				// TODO
-				// let groupedResults: Array<any[]> = rh.groupResults(obj.TRANSFORMATIONS.GROUP, this.datasetEntries);
-				// let aggregatedResults: any[] = rh.aggregateResults(obj.TRANSFORMATIONS.APPLY, groupedResults);
-				// let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, aggregatedResults);
+				let dataObjs: any[] = [];
+				for (let d of data) {
+					dataObjs.push(JSON.parse(d));
+				}
+				let groupedResults: any[][] = rh.groupResults(obj.TRANSFORMATIONS.GROUP, dataObjs);
+				let aggregatedResults: any[] = rh.aggregateResults(obj.TRANSFORMATIONS.APPLY, groupedResults);
+				// for (let i = 0; i < aggregatedResults.length; i++) {
+				// 	aggregatedResults[i] = rh.orderResults(obj.TRANSFORMATIONS.APPLY, aggregatedResults[i]);
+				// }
+				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, aggregatedResults);
+				if (completedResults.length > 5000) {
+					return Promise.reject(new ResultTooLargeError("Query with transformations returned " +
+						completedResults.length + " groups"));
+				}
 				return Promise.resolve([]);
 			}
 		} catch (error: any) {
