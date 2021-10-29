@@ -1,0 +1,30 @@
+{
+	"title": "Fail: APPLY clause contains multiple APPLYRULEs for a single aggregated column",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"],
+			"APPLY": [
+				{
+					"maxAvg": {
+						"MAX": "courses1_avg"
+					}
+				},
+				{
+					"maxAvg": {
+						"MIN": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

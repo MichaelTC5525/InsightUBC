@@ -1,0 +1,72 @@
+{
+	"title": "Success: Query ORDER clause specifies ASC order of results with multiple keys",
+	"input":
+	{
+		"WHERE":{},
+		"OPTIONS":{
+			"COLUMNS":[
+				"courses1_avg",
+				"courses1_fail",
+				"courses1_audit",
+				"courses1_uuid"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"courses1_avg",
+					"courses1_uuid"
+				]
+			}
+		}
+	},
+	"with":[
+		{
+			"courses1_avg": 88,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "29977"
+		},
+		{
+			"courses1_avg": 88,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "29978"
+		},
+		{
+			"courses1_avg": 93.11,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "90220"
+		},
+		{
+			"courses1_avg": 93.11,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "90221"
+		},
+		{
+			"courses1_avg": 93.78,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "27486"
+		},
+		{
+			"courses1_avg": 93.78,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "27487"
+		},
+		{
+			"courses1_avg": 97.09,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "73173"
+		},
+		{
+			"courses1_avg": 97.09,
+			"courses1_fail": 0,
+			"courses1_audit": 0,
+			"courses1_uuid": "73174"
+		}
+	]
+}

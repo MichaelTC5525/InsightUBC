@@ -3,9 +3,9 @@
  * the InsightFacade system
  */
 
-import { DatasetEntry } from "./DatasetEntry";
+import {DatasetEntry} from "./DatasetEntry";
 
-export default class CourseSection implements DatasetEntry{
+export default class CourseSection implements DatasetEntry {
 	private dept: string;
 	private id: string;
 	private avg: number;
@@ -43,28 +43,28 @@ export default class CourseSection implements DatasetEntry{
 
 	public getField(field: string): string | number {
 		switch (field) {
-		case "dept":
-			return this.dept;
-		case "id":
-			return this.id;
-		case "avg":
-			return this.avg;
-		case "instr":
-			return this.instr;
-		case "title":
-			return this.title;
-		case "pass":
-			return this.pass;
-		case "fail":
-			return this.fail;
-		case "audit":
-			return this.audit;
-		case "uuid":
-			return this.uuid;
-		case "year":
-			return this.year;
-		default:
-			return -1;
+			case "dept":
+				return this.dept;
+			case "id":
+				return this.id;
+			case "avg":
+				return this.avg;
+			case "instr":
+				return this.instr;
+			case "title":
+				return this.title;
+			case "pass":
+				return this.pass;
+			case "fail":
+				return this.fail;
+			case "audit":
+				return this.audit;
+			case "uuid":
+				return this.uuid;
+			case "year":
+				return this.year;
+			default:
+				return -1;
 		}
 	}
 }

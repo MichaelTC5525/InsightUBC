@@ -1,0 +1,25 @@
+{
+	"title": "Fail: TRANSFORMATIONS.GROUP contains non-dataset key (not in form id_attr) or aggregated column name",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["maxAvg"],
+			"APPLY": [
+				{
+					"maxAvg": {
+						"MAX": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

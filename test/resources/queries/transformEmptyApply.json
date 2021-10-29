@@ -1,0 +1,619 @@
+{
+	"title": "Success: Query groups data, no aggregated columns",
+	"input":
+	{
+		"WHERE": {
+			"OR": [
+				{
+					"IS": {
+						"courses_dept": "math"
+					}
+				},
+				{
+					"IS": {
+						"courses_dept": "psyc"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses_dept",
+				"courses_id"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"courses_dept",
+				"courses_id"
+			],
+			"APPLY": []
+		}
+	},
+	"with": [
+		{
+			"courses_dept": "math",
+			"courses_id": "100"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "101"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "102"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "103"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "104"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "105"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "110"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "120"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "121"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "152"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "180"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "184"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "190"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "200"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "210"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "215"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "217"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "220"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "221"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "223"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "226"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "227"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "253"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "255"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "256"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "257"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "264"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "300"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "301"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "302"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "303"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "305"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "307"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "308"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "310"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "312"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "313"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "316"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "317"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "318"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "320"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "321"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "322"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "323"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "335"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "340"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "342"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "345"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "360"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "400"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "401"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "405"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "406"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "414"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "418"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "419"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "420"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "421"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "422"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "423"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "425"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "427"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "437"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "440"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "441"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "442"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "444"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "450"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "501"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "502"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "503"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "507"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "508"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "510"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "515"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "516"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "521"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "523"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "525"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "527"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "532"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "534"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "537"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "539"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "541"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "544"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "545"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "546"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "550"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "551"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "552"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "559"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "562"
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "589"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "101"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "102"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "207"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "208"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "217"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "218"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "260"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "301"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "302"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "304"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "307"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "311"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "314"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "315"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "319"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "320"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "321"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "325"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "331"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "333"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "335"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "336"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "349"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "358"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "359"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "360"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "361"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "363"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "365"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "366"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "367"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "368"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "401"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "404"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "409"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "449"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "460"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "461"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "462"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "501"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "508"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "523"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "530"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "531"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "536"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "537"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "541"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "542"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "549"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "560"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "591"
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "594"
+		}
+	]
+}

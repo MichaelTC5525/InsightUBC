@@ -1,0 +1,33 @@
+{
+	"title": "Fail: Query has a WHERE clause with more than one attribute / key",
+	"input":
+	{
+		"WHERE": {
+			"IS": {
+				"courses1_dept": "math"
+			},
+			"AND": [
+				{
+					"GT": {
+						"courses1_avg": 50
+					}
+				},
+				{
+					"IS": {
+						"courses1_id": "541"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"courses1_id",
+				"courses1_avg"
+			],
+			"ORDER": "courses1_avg"
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

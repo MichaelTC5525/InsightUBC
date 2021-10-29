@@ -74,7 +74,6 @@ export default class DatasetZipReader {
 				if (r.RoomNumber === undefined || r.Building === undefined || r.Capacity === undefined) {
 					continue;
 				}
-				result.push(new Room(r.RoomNumber, r.Building, r.Capacity));
 			}
 		}
 		return result;

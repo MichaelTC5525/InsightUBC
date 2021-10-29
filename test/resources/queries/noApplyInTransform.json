@@ -1,0 +1,18 @@
+{
+	"title": "Fail: TRANSFORMATIONS missing APPLY clause",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
