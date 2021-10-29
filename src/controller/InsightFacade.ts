@@ -132,7 +132,6 @@ export default class InsightFacade implements IInsightFacade {
 			}
 			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
 			let setKind: string = data[0];
-
 			let existingSets: string[] = [];
 			for (let d of this.datasetStorage) {
 				existingSets.push(d.id);
@@ -153,21 +152,18 @@ export default class InsightFacade implements IInsightFacade {
 				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, queryResults);
 				return Promise.resolve(completedResults);
 			} else {
-				// TODO
 				for (let i = 0; i < data.length; i++) {
 					data[i] = JSON.parse(data[i]);
 				}
 				let groupedResults: any[][] = rh.groupResults(obj.TRANSFORMATIONS.GROUP, data);
-				let aggregatedResults: any[] = rh.aggregateResults(obj.TRANSFORMATIONS.APPLY, groupedResults);
-				// for (let i = 0; i < aggregatedResults.length; i++) {
-				// 	aggregatedResults[i] = rh.orderResults(obj.TRANSFORMATIONS.APPLY, aggregatedResults[i]);
-				// }
+				let aggregatedResults: any[] = rh.aggregateResults(obj.OPTIONS.COLUMNS,
+					obj.TRANSFORMATIONS.APPLY, groupedResults);
 				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, aggregatedResults);
 				if (completedResults.length > 5000) {
 					return Promise.reject(new ResultTooLargeError("Query with transformations returned " +
 						completedResults.length + " groups"));
 				}
-				return Promise.resolve([]);
+				return Promise.resolve(completedResults);
 			}
 		} catch (error: any) {
 			if (error instanceof SyntaxError) {
@@ -180,7 +176,6 @@ export default class InsightFacade implements IInsightFacade {
 	public listDatasets(): Promise<InsightDataset[]> {
 		return Promise.resolve(this.datasetStorage);
 	}
-
 
 	private baseValidateDataset(id: string): boolean {
 		// Validate ID string using basic format scheme

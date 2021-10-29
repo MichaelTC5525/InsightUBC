@@ -1,4 +1,6 @@
 import {DatasetEntry} from "../storageType/DatasetEntry";
+import Decimal from "decimal.js";
+import {InsightError} from "../controller/IInsightFacade";
 
 export default class ResultHandler {
 	public orderResults(obj: any | string, entries: any[]): any[] {
@@ -102,6 +104,17 @@ export default class ResultHandler {
 		return resultLine;
 	}
 
+	/**
+	 * Makes it such that all results from filtering are placed into a group (in the form of array) in which the
+	 * attributes listed in the TRANSFORMATIONS.GROUP are the same for all the entries of that group. Does not consolidate
+	 * such that entries are merged into one using the attributes of that group
+	 *
+	 * @param groupAttrs the attributes that must be the same for all entries in a particular group
+	 * @param entries all of the filtered results, with all attributes still present
+	 *
+	 * @return an array of arrays; each array in the overarching one contains entries that have the same value in each
+	 * of the required group attributes
+	 */
 	public groupResults(groupAttrs: string[], entries: any[]): any[][] {
 		let retGroups: any[][] = [];
 		for (let entry of entries) {
@@ -132,28 +145,101 @@ export default class ResultHandler {
 		return retGroups;
 	}
 
-	public aggregateResults(applyColumns: any[], groups: any[][]): any[] {
-		// TODO
+	public aggregateResults(resultColumns: string[], applyColumns: any[], groups: any[][]): any[] {
 		let retVal: any[] = [];
+		if (applyColumns.length === 0) {
+			for (let g of groups) {
+				let obj: any = {};
+				// Only need to worry about the columns in the OPTIONS.COLUMNS; GROUP array may be superset
+				for (let c of resultColumns) {
+					obj[c] = g[0][c];
+				}
+				retVal.push(obj);
+			}
+			return retVal;
+		}
+
 		// g = any[] = [ {"courses_dept": "math", "courses_id": "541", ...},
 		// 				 {"courses_dept": "math", "courses_id": "541", ...} ]
 		// applyColumns = any[] = [ { "columnName": { "MAX": "courses_avg" }} ]
 		for (let g of groups) {
 			for (let applyColumn of applyColumns) {
-				this.handleAggOp(g, applyColumn);
+				retVal.push(this.getAggregatedEntry(resultColumns, applyColumn, g));
 			}
 		}
 		return retVal;
 	}
 
-	private handleAggOp(g: any[], applyColumn: any) {
-		// applyColumn = { "applyKey": { "MAX": "courses_avg" }}
-		let applyKey: string = Object.keys(applyColumn)[0];
-		// attrKey = "courses_avg"
-		let attrKey: string = (Object.values(applyColumn[applyKey])[0] as string);
+	private getAggregatedEntry(columns: string[], applyColumn: any, group: any[]): any {
+		let aggResult: any = {};
+		for (let c of columns) {
+			if (c.split("_").length === 2) {
+				// Add the columns that are non-aggregation columns for this group as set single values
+				// Any group in the overarching groups will have at least one entry, otherwise a group wasn't created
+				aggResult[c] = group[0][c];
+			} else {
+				// Aggregated column
+				this.handleAggOp(aggResult, applyColumn, group);
+			}
+		}
+		return aggResult;
 	}
 
-	// switch(Object.values(applyColumn[applyKey])) {
-	//
-	// }
+	private handleAggOp(aggResult: any, applyColumn: any, group: any[]) {
+		// applyColumn = { "applyKey": { "MAX": "courses_avg" }}
+		let applyKey: string = Object.keys(applyColumn)[0];
+		// aggOp = "MAX"
+		let aggOp: string = Object.keys(applyColumn[applyKey])[0];
+		// attrKey = "courses_avg"
+		let attrKey: string = Object.values(applyColumn[applyKey])[0] as string;
+		// For MAX, MIN, COUNT
+		let valToAdd: number = 0;
+		// For AVG
+		let decTotal: Decimal = new Decimal(0.0);
+		// Used as an intermediate place to run aggregations on isolated single columns
+		let tempVals: any[] = [];
+		for (let entry of group) {
+			tempVals.push(entry[attrKey]);
+		}
+		let uniqueVals: any[] = [];
+		switch (aggOp) {
+			case "MAX":
+				valToAdd = tempVals[0];
+				for (let n = 1; n < tempVals.length - 1; n++) {
+					valToAdd = Math.max(valToAdd, tempVals[n]);
+				}
+				break;
+			case "MIN":
+				valToAdd = tempVals[0];
+				for (let n = 1; n < tempVals.length - 1; n++) {
+					valToAdd = Math.min(valToAdd, tempVals[n]);
+				}
+				break;
+			case "AVG":
+				for (let v of tempVals) {
+					v = new Decimal(v);
+					decTotal.add(v);
+				}
+				valToAdd = Number((decTotal.toNumber() / tempVals.length).toFixed(2));
+				break;
+			case "COUNT":
+				for (let n = 0; n < tempVals.length - 1; n++) {
+					if (!uniqueVals.includes(tempVals[n])) {
+						uniqueVals.push(tempVals[n]);
+					}
+				}
+				valToAdd = uniqueVals.length;
+				break;
+			case "SUM":
+				for (let v in tempVals) {
+					// Validation makes sure that under SUM, no string values will be added
+					valToAdd += v as unknown as number;
+				}
+				valToAdd = Number(Number(valToAdd).toFixed(2));
+				break;
+			default:
+				throw new InsightError("Unreachable: aggOp should be validated");
+		}
+		aggResult[applyKey] = valToAdd;
+	}
 }

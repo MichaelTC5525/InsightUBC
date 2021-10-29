@@ -1,0 +1,1380 @@
+{
+	"title": "Query processes multiple columns with aggregations",
+	"input":
+	{
+		"WHERE": {
+			"OR": [
+				{
+					"IS": {
+						"courses_dept": "math"
+					}
+				},
+				{
+					"IS": {
+						"courses_dept": "psyc"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses_dept",
+				"courses_id",
+				"minAvg",
+				"avgAvg",
+				"maxAvg",
+				"countInstructor",
+				"sumPass"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"courses_dept",
+				"courses_id"
+			],
+			"APPLY": [
+				{
+					"minAvg":{
+						"MIN": "courses_avg"
+					}
+				},
+				{
+					"avgAvg":{
+						"AVG": "courses_avg"
+					}
+				},
+				{
+					"maxAvg":{
+						"MAX": "courses_avg"
+					}
+				},
+				{
+					"countInstructor":{
+						"COUNT": "courses_instructor"
+					}
+				},
+				{
+					"sumPass":{
+						"SUM": "courses_pass"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"courses_dept": "math",
+			"courses_id": "100",
+			"minAvg": 57.35,
+			"avgAvg": 69.86,
+			"maxAvg": 80,
+			"countInstructor": 53,
+			"sumPass": 20174
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "101",
+			"minAvg": 56.96,
+			"avgAvg": 65.33,
+			"maxAvg": 74.85,
+			"countInstructor": 68,
+			"sumPass": 21266
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "102",
+			"minAvg": 57.56,
+			"avgAvg": 69.96,
+			"maxAvg": 78.93,
+			"countInstructor": 35,
+			"sumPass": 11126
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "103",
+			"minAvg": 55.3,
+			"avgAvg": 67.67,
+			"maxAvg": 74.85,
+			"countInstructor": 32,
+			"sumPass": 10330
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "104",
+			"minAvg": 60.91,
+			"avgAvg": 69.11,
+			"maxAvg": 81.36,
+			"countInstructor": 44,
+			"sumPass": 15644
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "105",
+			"minAvg": 53.06,
+			"avgAvg": 66.92,
+			"maxAvg": 78.69,
+			"countInstructor": 62,
+			"sumPass": 17976
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "110",
+			"minAvg": 51.49,
+			"avgAvg": 61.74,
+			"maxAvg": 69.94,
+			"countInstructor": 13,
+			"sumPass": 3568
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "120",
+			"minAvg": 70.6,
+			"avgAvg": 77.77,
+			"maxAvg": 83.75,
+			"countInstructor": 9,
+			"sumPass": 661
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "121",
+			"minAvg": 68.06,
+			"avgAvg": 74.92,
+			"maxAvg": 81.29,
+			"countInstructor": 7,
+			"sumPass": 618
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "152",
+			"minAvg": 58.82,
+			"avgAvg": 65.81,
+			"maxAvg": 70,
+			"countInstructor": 34,
+			"sumPass": 11248
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "180",
+			"minAvg": 46.52,
+			"avgAvg": 61.09,
+			"maxAvg": 75,
+			"countInstructor": 27,
+			"sumPass": 7628
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "184",
+			"minAvg": 50.13,
+			"avgAvg": 63.01,
+			"maxAvg": 76.12,
+			"countInstructor": 46,
+			"sumPass": 11010
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "190",
+			"minAvg": 60.04,
+			"avgAvg": 66.78,
+			"maxAvg": 81.23,
+			"countInstructor": 2,
+			"sumPass": 1126
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "200",
+			"minAvg": 56.6,
+			"avgAvg": 67.18,
+			"maxAvg": 74.48,
+			"countInstructor": 51,
+			"sumPass": 17522
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "210",
+			"minAvg": 65.67,
+			"avgAvg": 70,
+			"maxAvg": 78.03,
+			"countInstructor": 6,
+			"sumPass": 868
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "215",
+			"minAvg": 59.18,
+			"avgAvg": 70.48,
+			"maxAvg": 83.19,
+			"countInstructor": 40,
+			"sumPass": 5308
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "217",
+			"minAvg": 67.98,
+			"avgAvg": 76,
+			"maxAvg": 90.25,
+			"countInstructor": 11,
+			"sumPass": 1586
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "220",
+			"minAvg": 55.64,
+			"avgAvg": 64.43,
+			"maxAvg": 75.79,
+			"countInstructor": 20,
+			"sumPass": 4702
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "221",
+			"minAvg": 62.99,
+			"avgAvg": 68.92,
+			"maxAvg": 74.26,
+			"countInstructor": 27,
+			"sumPass": 12706
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "223",
+			"minAvg": 69.38,
+			"avgAvg": 75.13,
+			"maxAvg": 78.25,
+			"countInstructor": 8,
+			"sumPass": 1106
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "226",
+			"minAvg": 69.86,
+			"avgAvg": 75.66,
+			"maxAvg": 82.63,
+			"countInstructor": 7,
+			"sumPass": 662
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "227",
+			"minAvg": 77,
+			"avgAvg": 81.26,
+			"maxAvg": 87.71,
+			"countInstructor": 6,
+			"sumPass": 362
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "253",
+			"minAvg": 60.41,
+			"avgAvg": 69.83,
+			"maxAvg": 77.46,
+			"countInstructor": 40,
+			"sumPass": 12214
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "255",
+			"minAvg": 54.78,
+			"avgAvg": 68.57,
+			"maxAvg": 91.1,
+			"countInstructor": 38,
+			"sumPass": 6882
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "256",
+			"minAvg": 64.05,
+			"avgAvg": 70.45,
+			"maxAvg": 80.08,
+			"countInstructor": 11,
+			"sumPass": 5038
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "257",
+			"minAvg": 53.5,
+			"avgAvg": 68.83,
+			"maxAvg": 81.94,
+			"countInstructor": 22,
+			"sumPass": 4266
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "264",
+			"minAvg": 58.89,
+			"avgAvg": 62.85,
+			"maxAvg": 66.26,
+			"countInstructor": 5,
+			"sumPass": 1762
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "300",
+			"minAvg": 59.78,
+			"avgAvg": 66.24,
+			"maxAvg": 71.5,
+			"countInstructor": 20,
+			"sumPass": 3094
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "301",
+			"minAvg": 66.51,
+			"avgAvg": 70.31,
+			"maxAvg": 76.73,
+			"countInstructor": 8,
+			"sumPass": 944
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "302",
+			"minAvg": 61.79,
+			"avgAvg": 69.96,
+			"maxAvg": 78.11,
+			"countInstructor": 15,
+			"sumPass": 3582
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "303",
+			"minAvg": 63.59,
+			"avgAvg": 68.84,
+			"maxAvg": 74.01,
+			"countInstructor": 5,
+			"sumPass": 1370
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "305",
+			"minAvg": 63.2,
+			"avgAvg": 66.67,
+			"maxAvg": 69.62,
+			"countInstructor": 4,
+			"sumPass": 776
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "307",
+			"minAvg": 62,
+			"avgAvg": 69.21,
+			"maxAvg": 78.12,
+			"countInstructor": 18,
+			"sumPass": 4088
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "308",
+			"minAvg": 67.28,
+			"avgAvg": 71.38,
+			"maxAvg": 74.84,
+			"countInstructor": 7,
+			"sumPass": 1104
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "310",
+			"minAvg": 57.78,
+			"avgAvg": 66.19,
+			"maxAvg": 69.91,
+			"countInstructor": 4,
+			"sumPass": 158
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "312",
+			"minAvg": 58.24,
+			"avgAvg": 68.66,
+			"maxAvg": 75.78,
+			"countInstructor": 11,
+			"sumPass": 1482
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "313",
+			"minAvg": 66.94,
+			"avgAvg": 70.53,
+			"maxAvg": 76.93,
+			"countInstructor": 4,
+			"sumPass": 162
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "316",
+			"minAvg": 64.03,
+			"avgAvg": 73.43,
+			"maxAvg": 81.61,
+			"countInstructor": 22,
+			"sumPass": 3058
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "317",
+			"minAvg": 61.83,
+			"avgAvg": 69.03,
+			"maxAvg": 76.58,
+			"countInstructor": 23,
+			"sumPass": 4060
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "318",
+			"minAvg": 66.22,
+			"avgAvg": 69.8,
+			"maxAvg": 73.53,
+			"countInstructor": 6,
+			"sumPass": 1238
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "320",
+			"minAvg": 65.04,
+			"avgAvg": 70.47,
+			"maxAvg": 75.54,
+			"countInstructor": 9,
+			"sumPass": 1090
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "321",
+			"minAvg": 63.92,
+			"avgAvg": 69.28,
+			"maxAvg": 72.75,
+			"countInstructor": 8,
+			"sumPass": 500
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "322",
+			"minAvg": 69.9,
+			"avgAvg": 73.03,
+			"maxAvg": 76.18,
+			"countInstructor": 7,
+			"sumPass": 616
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "323",
+			"minAvg": 67.25,
+			"avgAvg": 73.75,
+			"maxAvg": 78.69,
+			"countInstructor": 4,
+			"sumPass": 128
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "335",
+			"minAvg": 68.71,
+			"avgAvg": 79.11,
+			"maxAvg": 85.92,
+			"countInstructor": 7,
+			"sumPass": 1087
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "340",
+			"minAvg": 62.79,
+			"avgAvg": 69.94,
+			"maxAvg": 75.74,
+			"countInstructor": 14,
+			"sumPass": 3668
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "342",
+			"minAvg": 63.62,
+			"avgAvg": 71.71,
+			"maxAvg": 77.67,
+			"countInstructor": 7,
+			"sumPass": 1224
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "345",
+			"minAvg": 66.66,
+			"avgAvg": 71.24,
+			"maxAvg": 74.74,
+			"countInstructor": 6,
+			"sumPass": 504
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "360",
+			"minAvg": 73.16,
+			"avgAvg": 78.2,
+			"maxAvg": 81.67,
+			"countInstructor": 3,
+			"sumPass": 314
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "400",
+			"minAvg": 62.84,
+			"avgAvg": 68.55,
+			"maxAvg": 76.46,
+			"countInstructor": 9,
+			"sumPass": 1658
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "401",
+			"minAvg": 64.19,
+			"avgAvg": 73.96,
+			"maxAvg": 80.72,
+			"countInstructor": 5,
+			"sumPass": 314
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "405",
+			"minAvg": 72.72,
+			"avgAvg": 80.32,
+			"maxAvg": 87.64,
+			"countInstructor": 6,
+			"sumPass": 380
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "406",
+			"minAvg": 72.34,
+			"avgAvg": 79.23,
+			"maxAvg": 84.16,
+			"countInstructor": 3,
+			"sumPass": 212
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "414",
+			"minAvg": 74.67,
+			"avgAvg": 80.54,
+			"maxAvg": 86.73,
+			"countInstructor": 4,
+			"sumPass": 460
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "418",
+			"minAvg": 72.7,
+			"avgAvg": 80.74,
+			"maxAvg": 89.89,
+			"countInstructor": 6,
+			"sumPass": 240
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "419",
+			"minAvg": 75.25,
+			"avgAvg": 82.37,
+			"maxAvg": 88.8,
+			"countInstructor": 5,
+			"sumPass": 102
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "420",
+			"minAvg": 71.91,
+			"avgAvg": 80.81,
+			"maxAvg": 90.57,
+			"countInstructor": 8,
+			"sumPass": 212
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "421",
+			"minAvg": 61.75,
+			"avgAvg": 83.1,
+			"maxAvg": 91.38,
+			"countInstructor": 7,
+			"sumPass": 108
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "422",
+			"minAvg": 67.2,
+			"avgAvg": 77.69,
+			"maxAvg": 84.08,
+			"countInstructor": 9,
+			"sumPass": 168
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "423",
+			"minAvg": 79.14,
+			"avgAvg": 84.25,
+			"maxAvg": 90,
+			"countInstructor": 4,
+			"sumPass": 60
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "425",
+			"minAvg": 67.38,
+			"avgAvg": 82.21,
+			"maxAvg": 91.33,
+			"countInstructor": 4,
+			"sumPass": 66
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "427",
+			"minAvg": 83.25,
+			"avgAvg": 86.78,
+			"maxAvg": 89.6,
+			"countInstructor": 4,
+			"sumPass": 26
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "437",
+			"minAvg": 65.17,
+			"avgAvg": 74.32,
+			"maxAvg": 88.6,
+			"countInstructor": 5,
+			"sumPass": 162
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "440",
+			"minAvg": 75.36,
+			"avgAvg": 83.11,
+			"maxAvg": 90.43,
+			"countInstructor": 6,
+			"sumPass": 128
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "441",
+			"minAvg": 72.09,
+			"avgAvg": 73.7,
+			"maxAvg": 76.38,
+			"countInstructor": 2,
+			"sumPass": 198
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "442",
+			"minAvg": 72.39,
+			"avgAvg": 74.34,
+			"maxAvg": 76.59,
+			"countInstructor": 2,
+			"sumPass": 218
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "444",
+			"minAvg": 80.89,
+			"avgAvg": 82.68,
+			"maxAvg": 84.8,
+			"countInstructor": 2,
+			"sumPass": 86
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "450",
+			"minAvg": 87.8,
+			"avgAvg": 87.8,
+			"maxAvg": 87.8,
+			"countInstructor": 2,
+			"sumPass": 10
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "501",
+			"minAvg": 84.86,
+			"avgAvg": 88.43,
+			"maxAvg": 93.8,
+			"countInstructor": 6,
+			"sumPass": 96
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "502",
+			"minAvg": 86.14,
+			"avgAvg": 90.96,
+			"maxAvg": 96.44,
+			"countInstructor": 5,
+			"sumPass": 84
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "503",
+			"minAvg": 79.17,
+			"avgAvg": 88.74,
+			"maxAvg": 92.4,
+			"countInstructor": 3,
+			"sumPass": 88
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "507",
+			"minAvg": 75.5,
+			"avgAvg": 84.23,
+			"maxAvg": 92.63,
+			"countInstructor": 8,
+			"sumPass": 122
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "508",
+			"minAvg": 86.2,
+			"avgAvg": 90.44,
+			"maxAvg": 93.5,
+			"countInstructor": 5,
+			"sumPass": 116
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "510",
+			"minAvg": 85,
+			"avgAvg": 90.26,
+			"maxAvg": 95.67,
+			"countInstructor": 7,
+			"sumPass": 104
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "515",
+			"minAvg": 86,
+			"avgAvg": 89.5,
+			"maxAvg": 92,
+			"countInstructor": 3,
+			"sumPass": 34
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "516",
+			"minAvg": 83.2,
+			"avgAvg": 90.68,
+			"maxAvg": 96.25,
+			"countInstructor": 6,
+			"sumPass": 130
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "521",
+			"minAvg": 80.71,
+			"avgAvg": 87.21,
+			"maxAvg": 91.56,
+			"countInstructor": 5,
+			"sumPass": 172
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "523",
+			"minAvg": 88.8,
+			"avgAvg": 91.14,
+			"maxAvg": 93.11,
+			"countInstructor": 4,
+			"sumPass": 54
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "525",
+			"minAvg": 80,
+			"avgAvg": 89.76,
+			"maxAvg": 97.25,
+			"countInstructor": 4,
+			"sumPass": 120
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "527",
+			"minAvg": 86,
+			"avgAvg": 91.6,
+			"maxAvg": 99.78,
+			"countInstructor": 6,
+			"sumPass": 86
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "532",
+			"minAvg": 88.75,
+			"avgAvg": 92.15,
+			"maxAvg": 97.48,
+			"countInstructor": 4,
+			"sumPass": 118
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "534",
+			"minAvg": 88.75,
+			"avgAvg": 91.22,
+			"maxAvg": 95.56,
+			"countInstructor": 4,
+			"sumPass": 120
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "537",
+			"minAvg": 81.43,
+			"avgAvg": 87.8,
+			"maxAvg": 91.75,
+			"countInstructor": 5,
+			"sumPass": 68
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "539",
+			"minAvg": 84.56,
+			"avgAvg": 88.62,
+			"maxAvg": 91.5,
+			"countInstructor": 4,
+			"sumPass": 66
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "541",
+			"minAvg": 88,
+			"avgAvg": 93,
+			"maxAvg": 97.09,
+			"countInstructor": 3,
+			"sumPass": 70
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "544",
+			"minAvg": 84.56,
+			"avgAvg": 90.17,
+			"maxAvg": 94.67,
+			"countInstructor": 5,
+			"sumPass": 146
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "545",
+			"minAvg": 88,
+			"avgAvg": 91.47,
+			"maxAvg": 96.83,
+			"countInstructor": 7,
+			"sumPass": 112
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "546",
+			"minAvg": 91.73,
+			"avgAvg": 91.91,
+			"maxAvg": 92.08,
+			"countInstructor": 2,
+			"sumPass": 48
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "550",
+			"minAvg": 87.4,
+			"avgAvg": 89.18,
+			"maxAvg": 92.3,
+			"countInstructor": 3,
+			"sumPass": 210
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "551",
+			"minAvg": 87.25,
+			"avgAvg": 90.03,
+			"maxAvg": 91.14,
+			"countInstructor": 2,
+			"sumPass": 70
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "552",
+			"minAvg": 87.5,
+			"avgAvg": 89.59,
+			"maxAvg": 94.33,
+			"countInstructor": 2,
+			"sumPass": 62
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "559",
+			"minAvg": 89.27,
+			"avgAvg": 89.75,
+			"maxAvg": 90.24,
+			"countInstructor": 2,
+			"sumPass": 56
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "562",
+			"minAvg": 84.4,
+			"avgAvg": 85.53,
+			"maxAvg": 86.67,
+			"countInstructor": 2,
+			"sumPass": 22
+		},
+		{
+			"courses_dept": "math",
+			"courses_id": "589",
+			"minAvg": 85,
+			"avgAvg": 90.34,
+			"maxAvg": 96.33,
+			"countInstructor": 1,
+			"sumPass": 76
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "101",
+			"minAvg": 63.01,
+			"avgAvg": 68.36,
+			"maxAvg": 73.05,
+			"countInstructor": 16,
+			"sumPass": 27329
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "102",
+			"minAvg": 60.79,
+			"avgAvg": 68.51,
+			"maxAvg": 72.26,
+			"countInstructor": 15,
+			"sumPass": 27706
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "207",
+			"minAvg": 65.07,
+			"avgAvg": 68.75,
+			"maxAvg": 72.6,
+			"countInstructor": 7,
+			"sumPass": 5018
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "208",
+			"minAvg": 66.02,
+			"avgAvg": 68.24,
+			"maxAvg": 70.2,
+			"countInstructor": 9,
+			"sumPass": 6042
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "217",
+			"minAvg": 64.93,
+			"avgAvg": 69.1,
+			"maxAvg": 72.05,
+			"countInstructor": 22,
+			"sumPass": 11620
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "218",
+			"minAvg": 56.85,
+			"avgAvg": 67.59,
+			"maxAvg": 74.33,
+			"countInstructor": 12,
+			"sumPass": 10030
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "260",
+			"minAvg": 70.9,
+			"avgAvg": 72.68,
+			"maxAvg": 73.92,
+			"countInstructor": 4,
+			"sumPass": 812
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "301",
+			"minAvg": 71.27,
+			"avgAvg": 72.09,
+			"maxAvg": 72.86,
+			"countInstructor": 2,
+			"sumPass": 2240
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "302",
+			"minAvg": 64.73,
+			"avgAvg": 70.89,
+			"maxAvg": 75.07,
+			"countInstructor": 18,
+			"sumPass": 9252
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "304",
+			"minAvg": 61.36,
+			"avgAvg": 68.24,
+			"maxAvg": 71.77,
+			"countInstructor": 13,
+			"sumPass": 7733
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "307",
+			"minAvg": 65.82,
+			"avgAvg": 70.45,
+			"maxAvg": 75.44,
+			"countInstructor": 7,
+			"sumPass": 12330
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "311",
+			"minAvg": 66.64,
+			"avgAvg": 69.14,
+			"maxAvg": 71.47,
+			"countInstructor": 2,
+			"sumPass": 1566
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "314",
+			"minAvg": 43.33,
+			"avgAvg": 70.1,
+			"maxAvg": 74.79,
+			"countInstructor": 10,
+			"sumPass": 16555
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "315",
+			"minAvg": 50,
+			"avgAvg": 69.38,
+			"maxAvg": 83,
+			"countInstructor": 12,
+			"sumPass": 11281
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "319",
+			"minAvg": 67.34,
+			"avgAvg": 71.62,
+			"maxAvg": 73.54,
+			"countInstructor": 4,
+			"sumPass": 3390
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "320",
+			"minAvg": 53.56,
+			"avgAvg": 67.94,
+			"maxAvg": 75.67,
+			"countInstructor": 5,
+			"sumPass": 3868
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "321",
+			"minAvg": 69.96,
+			"avgAvg": 71.36,
+			"maxAvg": 72.44,
+			"countInstructor": 3,
+			"sumPass": 730
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "325",
+			"minAvg": 68.98,
+			"avgAvg": 70.07,
+			"maxAvg": 71.24,
+			"countInstructor": 3,
+			"sumPass": 558
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "331",
+			"minAvg": 65.78,
+			"avgAvg": 69.2,
+			"maxAvg": 71.24,
+			"countInstructor": 4,
+			"sumPass": 4660
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "333",
+			"minAvg": 64.09,
+			"avgAvg": 70.48,
+			"maxAvg": 75.18,
+			"countInstructor": 8,
+			"sumPass": 4972
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "335",
+			"minAvg": 68.06,
+			"avgAvg": 68.06,
+			"maxAvg": 68.06,
+			"countInstructor": 2,
+			"sumPass": 292
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "336",
+			"minAvg": 67.79,
+			"avgAvg": 70.74,
+			"maxAvg": 74.08,
+			"countInstructor": 2,
+			"sumPass": 1228
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "349",
+			"minAvg": 84.67,
+			"avgAvg": 88.41,
+			"maxAvg": 90.7,
+			"countInstructor": 6,
+			"sumPass": 234
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "358",
+			"minAvg": 69.68,
+			"avgAvg": 71.18,
+			"maxAvg": 73.57,
+			"countInstructor": 4,
+			"sumPass": 2136
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "359",
+			"minAvg": 81.64,
+			"avgAvg": 84.77,
+			"maxAvg": 87.03,
+			"countInstructor": 3,
+			"sumPass": 448
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "360",
+			"minAvg": 65.5,
+			"avgAvg": 72.23,
+			"maxAvg": 75.1,
+			"countInstructor": 6,
+			"sumPass": 878
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "361",
+			"minAvg": 66.71,
+			"avgAvg": 68.61,
+			"maxAvg": 73.62,
+			"countInstructor": 4,
+			"sumPass": 2450
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "363",
+			"minAvg": 67.08,
+			"avgAvg": 68.94,
+			"maxAvg": 71.67,
+			"countInstructor": 2,
+			"sumPass": 524
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "365",
+			"minAvg": 69.19,
+			"avgAvg": 72.33,
+			"maxAvg": 79.17,
+			"countInstructor": 4,
+			"sumPass": 1550
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "366",
+			"minAvg": 74.14,
+			"avgAvg": 76.66,
+			"maxAvg": 78.81,
+			"countInstructor": 3,
+			"sumPass": 738
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "367",
+			"minAvg": 68.77,
+			"avgAvg": 71.68,
+			"maxAvg": 74.36,
+			"countInstructor": 4,
+			"sumPass": 3384
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "368",
+			"minAvg": 71.94,
+			"avgAvg": 72.78,
+			"maxAvg": 74.46,
+			"countInstructor": 3,
+			"sumPass": 1344
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "401",
+			"minAvg": 67.34,
+			"avgAvg": 69.69,
+			"maxAvg": 73.05,
+			"countInstructor": 4,
+			"sumPass": 1924
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "404",
+			"minAvg": 69.97,
+			"avgAvg": 72.21,
+			"maxAvg": 74.3,
+			"countInstructor": 2,
+			"sumPass": 276
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "409",
+			"minAvg": 75.35,
+			"avgAvg": 77.42,
+			"maxAvg": 79.42,
+			"countInstructor": 2,
+			"sumPass": 356
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "449",
+			"minAvg": 85.75,
+			"avgAvg": 88.68,
+			"maxAvg": 90.33,
+			"countInstructor": 6,
+			"sumPass": 214
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "460",
+			"minAvg": 70.73,
+			"avgAvg": 72.23,
+			"maxAvg": 73.13,
+			"countInstructor": 4,
+			"sumPass": 626
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "461",
+			"minAvg": 67.25,
+			"avgAvg": 71.77,
+			"maxAvg": 74.69,
+			"countInstructor": 5,
+			"sumPass": 444
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "462",
+			"minAvg": 70.22,
+			"avgAvg": 72.09,
+			"maxAvg": 75,
+			"countInstructor": 6,
+			"sumPass": 826
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "501",
+			"minAvg": 92,
+			"avgAvg": 94.14,
+			"maxAvg": 96,
+			"countInstructor": 2,
+			"sumPass": 58
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "508",
+			"minAvg": 87.4,
+			"avgAvg": 88.44,
+			"maxAvg": 90.44,
+			"countInstructor": 2,
+			"sumPass": 25
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "523",
+			"minAvg": 88.75,
+			"avgAvg": 89.04,
+			"maxAvg": 89.33,
+			"countInstructor": 2,
+			"sumPass": 40
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "530",
+			"minAvg": 87.17,
+			"avgAvg": 88.67,
+			"maxAvg": 91.25,
+			"countInstructor": 4,
+			"sumPass": 76
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "531",
+			"minAvg": 86.33,
+			"avgAvg": 87.76,
+			"maxAvg": 91.5,
+			"countInstructor": 5,
+			"sumPass": 76
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "536",
+			"minAvg": 86.14,
+			"avgAvg": 88.23,
+			"maxAvg": 89.6,
+			"countInstructor": 2,
+			"sumPass": 88
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "537",
+			"minAvg": 89.17,
+			"avgAvg": 92.26,
+			"maxAvg": 95.75,
+			"countInstructor": 5,
+			"sumPass": 74
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "541",
+			"minAvg": 88.33,
+			"avgAvg": 91.34,
+			"maxAvg": 95.25,
+			"countInstructor": 4,
+			"sumPass": 74
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "542",
+			"minAvg": 88.5,
+			"avgAvg": 90.08,
+			"maxAvg": 91.5,
+			"countInstructor": 3,
+			"sumPass": 78
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "549",
+			"minAvg": 70,
+			"avgAvg": 88.75,
+			"maxAvg": 97,
+			"countInstructor": 1,
+			"sumPass": 216
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "560",
+			"minAvg": 87.75,
+			"avgAvg": 89.29,
+			"maxAvg": 91.6,
+			"countInstructor": 4,
+			"sumPass": 100
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "591",
+			"minAvg": 87.1,
+			"avgAvg": 88.43,
+			"maxAvg": 89.5,
+			"countInstructor": 3,
+			"sumPass": 94
+		},
+		{
+			"courses_dept": "psyc",
+			"courses_id": "594",
+			"minAvg": 86.67,
+			"avgAvg": 87.5,
+			"maxAvg": 89.25,
+			"countInstructor": 2,
+			"sumPass": 52
+		}
+	]
+}

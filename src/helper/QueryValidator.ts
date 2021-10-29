@@ -23,7 +23,10 @@ export default class QueryValidator {
 
 		this.validateWhereFilter(id, validQueryKeys, obj.WHERE);
 
-		let columnsNeeded: string[] = obj.OPTIONS.COLUMNS;
+		let columnsNeeded: string[] = [];
+		for (let c of obj.OPTIONS.COLUMNS) {
+			columnsNeeded.push(c);
+		}
 		if (obj.TRANSFORMATIONS !== undefined) {
 			columnsNeeded = this.validateTransformations(id, validQueryKeys, columnsNeeded, obj.TRANSFORMATIONS);
 			if (columnsNeeded.length > 0) {

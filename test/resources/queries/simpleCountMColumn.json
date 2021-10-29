@@ -1,0 +1,48 @@
+{
+	"title": "Success: Query counts unique occurrences in a numerical column",
+	"input":
+	{
+		"WHERE": {
+			"OR": [
+				{
+					"IS": {
+						"courses_dept": "math"
+					}
+				},
+				{
+					"IS": {
+						"courses_dept": "psyc"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses_dept",
+				"numPassed"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"courses_dept"
+			],
+			"APPLY": [
+				{
+					"numPassed":{
+						"COUNT": "courses_pass"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"courses_dept": "math",
+			"numPassed": 353
+		},
+		{
+			"courses_dept": "psyc",
+			"numPassed": 358
+		}
+	]
+}

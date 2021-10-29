@@ -5,7 +5,7 @@
 
 import { DatasetEntry } from "./DatasetEntry";
 
-export default class Room implements DatasetEntry{
+export default class Room implements DatasetEntry {
 	private readonly fullname: string;
 	private readonly shortname: string;
 	private readonly number: string;
@@ -16,7 +16,7 @@ export default class Room implements DatasetEntry{
 	private readonly seats: number;
 	private readonly type: string;
 	private readonly furniture: string;
-	private readonly href: string
+	private readonly href: string;
 
 	constructor(fullname: string, shortname: string, number: string, address: string, lat: number,
 		lon: number, seats: number, type: string, furniture: string, href: string) {
