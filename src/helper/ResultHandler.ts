@@ -161,16 +161,15 @@ export default class ResultHandler {
 
 		// g = any[] = [ {"courses_dept": "math", "courses_id": "541", ...},
 		// 				 {"courses_dept": "math", "courses_id": "541", ...} ]
-		// applyColumns = any[] = [ { "columnName": { "MAX": "courses_avg" }} ]
+
 		for (let g of groups) {
-			for (let applyColumn of applyColumns) {
-				retVal.push(this.getAggregatedEntry(resultColumns, applyColumn, g));
-			}
+			retVal.push(this.getAggregatedEntry(resultColumns, applyColumns, g));
 		}
 		return retVal;
 	}
 
-	private getAggregatedEntry(columns: string[], applyColumn: any, group: any[]): any {
+	// applyColumns = any[] = [ { "columnName": { "MAX": "courses_avg" }} ]
+	private getAggregatedEntry(columns: string[], applyColumns: any[], group: any[]): any {
 		let aggResult: any = {};
 		for (let c of columns) {
 			if (c.split("_").length === 2) {
@@ -178,68 +177,80 @@ export default class ResultHandler {
 				// Any group in the overarching groups will have at least one entry, otherwise a group wasn't created
 				aggResult[c] = group[0][c];
 			} else {
+				let index: number = 0;
 				// Aggregated column
-				this.handleAggOp(aggResult, applyColumn, group);
+				for (let rule of applyColumns) {
+					if (Object.keys(rule)[0] === c) {
+						index = applyColumns.indexOf(rule);
+						break;
+					}
+				}
+				this.handleAggColumn(aggResult, applyColumns[index], group);
 			}
 		}
 		return aggResult;
 	}
 
-	private handleAggOp(aggResult: any, applyColumn: any, group: any[]) {
+	private handleAggColumn(aggResult: any, applyColumn: any, group: any[]) {
 		// applyColumn = { "applyKey": { "MAX": "courses_avg" }}
 		let applyKey: string = Object.keys(applyColumn)[0];
 		// aggOp = "MAX"
 		let aggOp: string = Object.keys(applyColumn[applyKey])[0];
 		// attrKey = "courses_avg"
 		let attrKey: string = Object.values(applyColumn[applyKey])[0] as string;
-		// For MAX, MIN, COUNT
-		let valToAdd: number = 0;
-		// For AVG
-		let decTotal: Decimal = new Decimal(0.0);
+
 		// Used as an intermediate place to run aggregations on isolated single columns
 		let tempVals: any[] = [];
 		for (let entry of group) {
 			tempVals.push(entry[attrKey]);
 		}
+
+		let valToAdd: number = this.handleAggOp(tempVals, aggOp);
+		aggResult[applyKey] = valToAdd;
+	}
+
+	private handleAggOp(tempVals: any[], aggOp: string): number {
+		let valToAdd: number = 0;
+		let decTotal: Decimal = new Decimal(0);
 		let uniqueVals: any[] = [];
 		switch (aggOp) {
 			case "MAX":
 				valToAdd = tempVals[0];
-				for (let n = 1; n < tempVals.length - 1; n++) {
+				for (let n = 1; n < tempVals.length; n++) {
 					valToAdd = Math.max(valToAdd, tempVals[n]);
 				}
 				break;
 			case "MIN":
 				valToAdd = tempVals[0];
-				for (let n = 1; n < tempVals.length - 1; n++) {
+				for (let n = 1; n < tempVals.length; n++) {
 					valToAdd = Math.min(valToAdd, tempVals[n]);
 				}
 				break;
 			case "AVG":
 				for (let v of tempVals) {
 					v = new Decimal(v);
-					decTotal.add(v);
+					decTotal = Decimal.add(decTotal, v);
 				}
 				valToAdd = Number((decTotal.toNumber() / tempVals.length).toFixed(2));
 				break;
 			case "COUNT":
-				for (let n = 0; n < tempVals.length - 1; n++) {
-					if (!uniqueVals.includes(tempVals[n])) {
-						uniqueVals.push(tempVals[n]);
+				for (let v of tempVals) {
+					if (!uniqueVals.includes(v)) {
+						uniqueVals.push(v);
 					}
 				}
 				valToAdd = uniqueVals.length;
 				break;
 			case "SUM":
-				for (let v in tempVals) {
-					// Validation makes sure that under SUM, no string values will be added
-					valToAdd += v as unknown as number;
+				for (let v of tempVals) {
+					v = new Decimal(v);
+					decTotal = Decimal.add(decTotal, v);
 				}
-				valToAdd = Number(Number(valToAdd).toFixed(2));
+				valToAdd = Number(Number(decTotal).toFixed(2));
 				break;
 			default:
 				throw new InsightError("Unreachable: aggOp should be validated");
 		}
-		aggResult[applyKey] = valToAdd;
+		return valToAdd;
 	}
 }
