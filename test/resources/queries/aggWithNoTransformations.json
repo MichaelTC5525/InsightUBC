@@ -1,0 +1,15 @@
+{
+	"title": "Fail: Query attempts to create aggregation column with no TRANSFORMATIONS",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

@@ -1,0 +1,46 @@
+{
+	"title": "Success: General rooms dataset query, validation of TRANSFORMATIONS",
+	"input":
+	{
+		"WHERE": {
+			"AND": [
+				{
+					"IS": {
+						"courses1_dept": "math"
+					}
+				},
+				{
+					"GT": {
+						"courses1_avg": 95
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": ["maxAvg"]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"],
+			"APPLY": [
+				{
+					"maxAvg": {
+						"MAX": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"courses1_dept": "math",
+			"maxAvg": 97.09
+		}
+	]
+}

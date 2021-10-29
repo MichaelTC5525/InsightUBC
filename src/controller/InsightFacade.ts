@@ -46,14 +46,14 @@ export default class InsightFacade implements IInsightFacade {
 			// Length of results should not include
 			// 1. First line "courses" / "rooms"
 			// 2. Empty line after final result \n character
-			if (lines[0].split(".txt")[0] === "courses") {
+			if (lines[0] === "courses") {
 				let courseSet: InsightDataset = {
 					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Courses,
 					numRows: lines.length - 2
 				};
 				this.datasetStorage.push(courseSet);
-			} else if (lines[0].split(".txt")[0] === "rooms") {
+			} else if (lines[0] === "rooms") {
 				let roomSet = {
 					id: name.split(".txt")[0],
 					kind: InsightDatasetKind.Rooms,
@@ -126,33 +126,45 @@ export default class InsightFacade implements IInsightFacade {
 		this.datasetEntries = [];
 		try {
 			let obj = query;
-
 			let datasetToSearch: string = this.getDatasetToSearch(obj);
+			if (!this.hasDataset(datasetToSearch)) {
+				throw new InsightError("Requested dataset in COLUMNS does not exist in DB");
+			}
 			let data: string[] = fs.readFileSync(this.dataFolder + datasetToSearch + ".txt").toString().split("\n");
 			let setKind: string = data[0];
-
 			let existingSets: string[] = [];
 			for (let d of this.datasetStorage) {
 				existingSets.push(d.id);
 			}
-
 			let qValidator = new QueryValidator();
-			qValidator.validateQuery(obj, setKind, existingSets);
-
+			qValidator.validateQuery(datasetToSearch, obj, setKind, existingSets);
 			let qEvaluator = new QueryEvaluator();
 			data = qEvaluator.filterResults(data, obj.WHERE);
-
 			this.updateDatasetEntriesCache(data, setKind);
 
-			if (this.datasetEntries.length > 5000) {
-				return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
-					" results"));
-			}
-
 			let rh: ResultHandler = new ResultHandler();
-			let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
-			let completedResults = rh.orderResults(obj.OPTIONS.ORDER, setKind, queryResults);
-			return Promise.resolve(completedResults);
+			if (obj.TRANSFORMATIONS === undefined) {
+				if (this.datasetEntries.length > 5000) {
+					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
+						" results"));
+				}
+				let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
+				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, queryResults);
+				return Promise.resolve(completedResults);
+			} else {
+				for (let i = 0; i < data.length; i++) {
+					data[i] = JSON.parse(data[i]);
+				}
+				let groupedResults: any[][] = rh.groupResults(obj.TRANSFORMATIONS.GROUP, data);
+				let aggregatedResults: any[] = rh.aggregateResults(obj.OPTIONS.COLUMNS,
+					obj.TRANSFORMATIONS.APPLY, groupedResults);
+				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, aggregatedResults);
+				if (completedResults.length > 5000) {
+					return Promise.reject(new ResultTooLargeError("Query with transformations returned " +
+						completedResults.length + " groups"));
+				}
+				return Promise.resolve(completedResults);
+			}
 		} catch (error: any) {
 			if (error instanceof SyntaxError) {
 				return Promise.reject(new InsightError("Query is improperly formatted; invalid JSON"));
@@ -164,7 +176,6 @@ export default class InsightFacade implements IInsightFacade {
 	public listDatasets(): Promise<InsightDataset[]> {
 		return Promise.resolve(this.datasetStorage);
 	}
-
 
 	private baseValidateDataset(id: string): boolean {
 		// Validate ID string using basic format scheme
@@ -223,7 +234,13 @@ export default class InsightFacade implements IInsightFacade {
 				return setToQuery[0];
 			}
 		}
-		throw new InsightError("Pre-validation: Query must contain at least one COLUMN in form 'id_attribute'");
+		// If columns didn't include a 'id_attr', then a TRANSFORMATIONS.GROUP must be present, with this form
+		try {
+			setToQuery = obj.TRANSFORMATIONS.GROUP[0].split("_");
+		} catch (error: any) {
+			throw new InsightError(error);
+		}
+		return setToQuery[0];
 	}
 
 	private updateDatasetEntriesCache(from: string[], kind: string) {
@@ -236,7 +253,8 @@ export default class InsightFacade implements IInsightFacade {
 						pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else if (kind === "rooms") {
 					// TODO: More Room attributes? Add here
-					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2]));
+					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2], pushVals[3], pushVals[4],
+						pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else {
 					throw new InsightError("Filtered results list are of unidentifiable dataset type");
 				}

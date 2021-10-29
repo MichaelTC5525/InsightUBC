@@ -1,0 +1,25 @@
+{
+	"title": "Fail: Query attempts to aggregate a column using unsupported aggregation operation",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"courses1_dept",
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"],
+			"APPLY": [
+				{
+					"maxAvg": {
+						"DESTROY": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

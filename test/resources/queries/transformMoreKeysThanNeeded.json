@@ -1,0 +1,27 @@
+{
+	"title": "Success: All COLUMNS satisifed in TRANSFORMATIONS, some keys in TRANSFORMATIONS are excess",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"maxAvg"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["courses1_dept"],
+			"APPLY": [
+				{
+					"maxAvg": {
+						"MAX": "courses1_avg"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"maxAvg": 97.09
+		}
+	]
+}
