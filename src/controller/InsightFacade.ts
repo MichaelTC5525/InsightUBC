@@ -244,7 +244,6 @@ export default class InsightFacade implements IInsightFacade {
 					this.datasetEntries.push(new CourseSection(pushVals[0], pushVals[1], pushVals[2], pushVals[3],
 						pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else if (kind === "rooms") {
-					// TODO: More Room attributes? Add here
 					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2], pushVals[3], pushVals[4],
 						pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else {

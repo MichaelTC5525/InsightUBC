@@ -43,17 +43,17 @@ export default class FSOperator {
 		} else if (kind === InsightDatasetKind.Rooms) {
 			entries += "rooms\n";
 			for (let c of content) {
-				let line: string = "{ \"" + id + "_fullName\": " + (c as Room).getField("fullName") + ", " +
-					"\"" + id + "_shortName\": \"" + (c as Room).getField("shortName") + "\", " +
-					"\"" + id + "_number\": " + (c as Room).getField("number") + "\", " +
-					"\"" + id + "_name\": " + (c as Room).getField("name") + "\", " +
-					"\"" + id + "_address\": " + (c as Room).getField("address") + "\", " +
+				let line: string = "{ \"" + id + "_fullname\": \"" + (c as Room).getField("fullname") + "\", " +
+					"\"" + id + "_shortname\": \"" + (c as Room).getField("shortname") + "\", " +
+					"\"" + id + "_number\": \"" + (c as Room).getField("number") + "\", " +
+					"\"" + id + "_name\": \"" + (c as Room).getField("name") + "\", " +
+					"\"" + id + "_address\": \"" + (c as Room).getField("address") + "\", " +
 					"\"" + id + "_lat\": " + (c as Room).getField("lat") + ", " +
 					"\"" + id + "_lon\": " + (c as Room).getField("lon") + ", " +
 					"\"" + id + "_seats\": " + (c as Room).getField("seats") + ", " +
-					"\"" + id + "_type\": " + (c as Room).getField("type") + "\", " +
-					"\"" + id + "_furniture\": " + (c as Room).getField("furniture") + "\", " +
-					"\"" + id + "_href\": " + (c as Room).getField("href")	+ " }";
+					"\"" + id + "_type\": \"" + (c as Room).getField("type") + "\", " +
+					"\"" + id + "_furniture\": \"" + (c as Room).getField("furniture") + "\", " +
+					"\"" + id + "_href\": \"" + (c as Room).getField("href")	+ "\" }";
 				entries += (line + "\n");
 			}
 		} else {

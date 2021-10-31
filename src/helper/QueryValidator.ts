@@ -156,7 +156,14 @@ export default class QueryValidator {
 			case id + "_title":
 			case id + "_uuid":
 			// String Room fields
-			case id + "_building":
+			case id + "_fullname":
+			case id + "_shortname":
+			case id + "_number":
+			case id + "_name":
+			case id + "_address":
+			case id + "_type":
+			case id + "_furniture":
+			case id + "_href":
 				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
 					!fields.includes(key.split("_")[1])) {
 					throw new InsightError("WHERE clause contains invalid string comparison key");
@@ -177,8 +184,9 @@ export default class QueryValidator {
 			case id + "_audit":
 			case id + "_year":
 			// Number Room fields
-			case id + "_roomNumber":
-			case id + "_capacity":
+			case id + "_lat":
+			case id + "_lon":
+			case id + "_seats":
 				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
 					!fields.includes(key.split("_")[1])) {
 					throw new InsightError("WHERE clause contains invalid numerical comparison key");
@@ -195,15 +203,11 @@ export default class QueryValidator {
 
 	private validateTransformations(id: string, fields: string[], columns: string[], obj: any): string[] {
 		// According to EBNF, must have GROUP and APPLY when TRANSFORMATIONS is defined
-
 		if (obj.GROUP === undefined || obj.APPLY === undefined) {
 			throw new InsightError("Query TRANSFORMATIONS is missing one of GROUP or APPLY");
 		}
-
 		columns = this.checkGroup(id, fields, columns, obj.GROUP);
-
 		columns = this.checkApply(id, fields, columns, obj.APPLY);
-
 		return columns;
 	}
 
@@ -220,7 +224,6 @@ export default class QueryValidator {
 				throw new InsightError("GROUP clause contains a non-dataset key");
 			}
 		}
-
 		return columns;
 	}
 
@@ -228,12 +231,9 @@ export default class QueryValidator {
 		if (!(obj instanceof Array)) {
 			throw new InsightError("APPLY clause should be an array type");
 		}
-
 		let supportedAggs: string[] = ["MAX", "MIN", "AVG", "COUNT", "SUM"];
-
 		// Used to ensure applyKey uniqueness
 		let applyKeys: string[] = [];
-
 		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
 		for (let o of obj) {
 			// o = { applykey: { "MAX": "courses_avg" }}

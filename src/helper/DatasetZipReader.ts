@@ -4,7 +4,8 @@ import CourseSection from "../storageType/CourseSection";
 import {DatasetEntry} from "../storageType/DatasetEntry";
 import Room from "../storageType/Room";
 import * as p5 from "parse5";
-import {ChildNode, Document} from "parse5";
+import {Document} from "parse5";
+import RoomParser from "./RoomParser";
 
 const http = require("http");
 
@@ -53,79 +54,10 @@ export default class DatasetZipReader {
 		let buildingNames: string[] = [];
 		let buildingCodes: string[] = [];
 		let buildingAddresses: string[] = [];
-		this.extractBuildingInfoInto(filePaths, buildingNames, buildingCodes, buildingAddresses, document);
+
+		let rp: RoomParser = new RoomParser();
+		rp.extractBuildingInfoInto(filePaths, buildingNames, buildingCodes, buildingAddresses, document);
 		return [filePaths, buildingNames, buildingCodes, buildingAddresses];
-	}
-
-	private extractBuildingInfoInto(filePaths: string[], buildingNames: string[], buildingCodes: string[],
-		buildingAddresses: string[], node: any) {
-		// Setup base case ; sanity check that a link is only pushed if it is intending to go somewhere within ZIP
-		if (node.nodeName === "a") {
-			this.extractFromLink(node, filePaths, buildingNames);
-		} else if (node.nodeName === "td") {
-			if (node.attrs) {
-				for (let attr of node.attrs) {
-					if (attr.name === "class") {
-						if (attr.value === "views-field views-field-field-building-code") {
-							for (let n of node.childNodes) {
-								if (n.nodeName === "#text") {
-									// No duplicate codes
-									if (!buildingCodes.includes(n.value.replace("\n", "").trim())) {
-										buildingCodes.push(n.value.replace("\n", "").trim());
-									}
-								}
-							}
-						}
-						if (attr.value === "views-field views-field-field-building-address") {
-							for (let n of node.childNodes) {
-								// Allow for locations to have the same address when not distinguished by units or other
-								if (n.nodeName === "#text") {
-									buildingAddresses.push(n.value.replace("\n", "").trim());
-								}
-							}
-						}
-						if (attr.value === "views-field views-field-title") {
-							for (let childNode of node.childNodes) {
-								this.extractBuildingInfoInto(filePaths, buildingNames, buildingCodes,
-									buildingAddresses, childNode);
-							}
-						}
-					}
-				}
-			}
-		} else {
-			if (node.childNodes) {
-				for (let childNode of node.childNodes) {
-					this.extractBuildingInfoInto(filePaths, buildingNames, buildingCodes, buildingAddresses, childNode);
-				}
-			}
-		}
-	}
-
-	private extractFromLink(node: any, filePaths: string[], buildingNames: string[]) {
-		if (node.attrs && node.attrs.length > 1) {
-			for (let attr of node.attrs) {
-				if (attr.name === "href") {
-					if (attr.value.substr(0, 2) === "./") {
-						if (!filePaths.includes(attr.value)) {
-							filePaths.push(attr.value);
-						}
-					}
-				}
-				if (attr.name === "title") {
-					if (attr.value === "Building Details and Map") {
-						for (let n of node.childNodes) {
-							if (n.nodeName === "#text") {
-								// No duplicate names
-								if (!buildingNames.includes(n.value)) {
-									buildingNames.push(n.value);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 
 	private handleRoomFiles(folder: string, contentZip: JSZip, indexInfo: string[][]): Promise<DatasetEntry[]> {
@@ -142,57 +74,101 @@ export default class DatasetZipReader {
 		}
 
 		return Promise.all(promises).then((filesContent) => {
-			// indexInfo has fullname, shortname, address
-			// filesContent has number, seats, type, furniture
-			// lat, lon from http request
-			// href from specific file <a href="https://students.ubc.ca/...
+			/**
+			 * indexInfo has fullname, shortname, address
+			 * filesContent has number, seats, type, furniture
+			 * lat, lon from http request
+			 * href from specific file <a href="https://students.ubc.ca/...
+			 */
 			let retEntries: DatasetEntry[] = [];
 
-			// TODO: extract number, seats, type, furniture from a linked file
-			let roomDets: Array<[string, number, string, string]>;
-			for (let f of filesContent) {
-				// Parse, gives number, seats, type, furniture
-				// TODO: make room entries
-				let doc: Document = p5.parse(f);
-				retEntries.concat(this.findRoomRows(doc, null));
+			/**
+			 * roomDets is an Array of tuples
+			 * - each tuple of roomDets includes:
+			 * [0] = (rooms_number)
+			 * [1] = (rooms_seats)
+			 * [2] = (rooms_type)
+			 * [3] = (rooms_furniture)
+			 * [4] = (rooms_href)
+			 */
+
+			let geoCoords: Array<[number, number]> = [];
+			for (let f = 0; f < filesContent.length; f++) {
+				// Request coordinates first; if invalid, no need to save this building's rooms
+				// TODO: lat and lon incorrect
+				// let tempGeoCoords = this.requestCoords(indexInfo[3][f]);
+				let tempGeoCoords: [number | null, number | null] = [-49, 123];
+				if (tempGeoCoords === [null, null]) {
+					continue;
+				}
+				let doc: Document = p5.parse(filesContent[f]);
+				let roomDets: Array<[string, number, string, string, string]> = [];
+				roomDets = this.extractRoomDetails(doc);
+				geoCoords.push((tempGeoCoords as [number, number]));
+
+				// Add entries, where one iteration for the building iterates over multiple rooms
+				// If building has no rooms, roomDets is empty, and will not push any new entries
+				for (const room of roomDets) {
+					retEntries.push(new Room(indexInfo[1][f], indexInfo[2][f], room[0],
+						indexInfo[3][f], geoCoords[f][0], geoCoords[f][0],
+						room[1], room[2], room[3], room[4]));
+				}
 			}
-			let index: number = 0;
-			// indexInfo[0] is filePaths, indexInfo[1] is building names, indexInfo[2] is building codes, indexInfo[3] is addresses
-			// retEntries.push(new Room(indexInfo[1][index], indexInfo[2][index], number, indexInfo[3][index]));
 			return Promise.resolve(retEntries);
 		});
 	}
 
-	private findRoomRows(document: Document, childNode: ChildNode | null): DatasetEntry[] {
-		let obj: any = {};
-		let buildingAddress: string = "6245%20Agronomy%20Road%20V6T%201Z4";
-		buildingAddress.replace(" ", "%20");
+	private requestCoords(buildingAddress: string): [number | null, number | null] {
+		// TODO: lat and lon returning undefined
+		// TODO !!! lat and lon are HARDCODED for testing purposes JUST FOR NOW! CHANGE THIS!
+		let ret: [number | null, number | null] = [null, null];
+
+		while (buildingAddress.includes(" ")) {
+			buildingAddress = buildingAddress.replace(" ", "%20");
+		}
 
 		// Credits to https://nodejs.org/en/knowledge/HTTP/clients/how-to-create-a-HTTP-request/
 		const options = {
-			host: "http://cs310.students.cs.ubc.ca",
+			host: "cs310.students.cs.ubc.ca",
 			path: "/api/v1/project_team115/" + buildingAddress,
 			port: 11316,
-			method: "GET"
+			method: "GET",
 		};
 
-		let callback = function (response: any) {
+		return http.request(options, (response: any) => {
 			response.on("end", (data: any) => {
 				if (response.statusCode !== 200) {
-					return;
+					return ret;
 				}
 				let geoResponse = JSON.parse(data);
-				obj.lat = geoResponse.lat;
-				obj.lon = geoResponse.lon;
+				ret[0] = geoResponse.lat;
+				ret[1] = geoResponse.lon;
 			});
-		};
 
-		return http.request(options, callback).then();
+			return ret;
+		});
+	}
 
-		let rows: DatasetEntry[] = [];
-		// TODO: find the table in there
+	private extractRoomDetails(document: any):
+		Array<[string, number, string, string, string]> {
+		let entries: Array<[string, number, string, string, string]> = [];
 
-		return rows;
+		let roomNums: string[] = [];
+		let roomSeats: number[] = [];
+		let roomTypes: string[] = [];
+		let roomFurnitures: string[] = [];
+		let roomHrefs: string[] = [];
+
+		let rp: RoomParser = new RoomParser();
+		rp.extractRoomsInto(roomNums, roomSeats, roomTypes, roomFurnitures, roomHrefs, document);
+
+		for (let i = 0; i < roomNums.length; i++) {
+			let entry: [string, number, string, string, string] =
+				[roomNums[i], roomSeats[i], roomTypes[i], roomFurnitures[i], roomHrefs[i]];
+			entries.push(entry);
+		}
+
+		return entries;
 	}
 
 	private handleCourseFiles(files: string[]) {
