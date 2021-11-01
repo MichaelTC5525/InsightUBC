@@ -16,6 +16,7 @@ import ResultHandler from "../helper/ResultHandler";
 import { DatasetEntry } from "../storageType/DatasetEntry";
 import CourseSection from "../storageType/CourseSection";
 import Room from "../storageType/Room";
+import ResultCrafter from "../helper/ResultCrafter";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -136,19 +137,19 @@ export default class InsightFacade implements IInsightFacade {
 			for (let d of this.datasetStorage) {
 				existingSets.push(d.id);
 			}
-			let qValidator = new QueryValidator();
-			qValidator.validateQuery(datasetToSearch, obj, setKind, existingSets);
+			new QueryValidator().validateQuery(datasetToSearch, obj, setKind, existingSets);
 			let qEvaluator = new QueryEvaluator();
 			data = qEvaluator.filterResults(data, obj.WHERE);
 			this.updateDatasetEntriesCache(data, setKind);
-
 			let rh: ResultHandler = new ResultHandler();
+			let rc: ResultCrafter = new ResultCrafter();
 			if (obj.TRANSFORMATIONS === undefined) {
 				if (this.datasetEntries.length > 5000) {
 					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
 						" results"));
 				}
-				let queryResults: any[] = rh.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, this.datasetEntries);
+				let queryResults: any[] = rc.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, setKind,
+					this.datasetEntries);
 				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, queryResults);
 				return Promise.resolve(completedResults);
 			} else {
@@ -244,8 +245,8 @@ export default class InsightFacade implements IInsightFacade {
 					this.datasetEntries.push(new CourseSection(pushVals[0], pushVals[1], pushVals[2], pushVals[3],
 						pushVals[4], pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
 				} else if (kind === "rooms") {
-					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2], pushVals[3], pushVals[4],
-						pushVals[5], pushVals[6], pushVals[7], pushVals[8], pushVals[9]));
+					this.datasetEntries.push(new Room(pushVals[0], pushVals[1], pushVals[2], pushVals[4], pushVals[5],
+						pushVals[6], pushVals[7], pushVals[8], pushVals[9], pushVals[10]));
 				} else {
 					throw new InsightError("Filtered results list are of unidentifiable dataset type");
 				}

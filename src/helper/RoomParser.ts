@@ -125,7 +125,7 @@ export default class RoomParser {
 		if (node.attrs && node.attrs.length > 1) {
 			for (let attr of node.attrs) {
 				if (attr.name === "href") {
-					if (attr.value.substr(0, 23) === "http://students.ubc.ca/") {
+					if (attr.value.substr(0, 29) === "http://students.ubc.ca/campus") {
 						if (!roomHrefs.includes(attr.value)) {
 							roomHrefs.push(attr.value);
 						}
