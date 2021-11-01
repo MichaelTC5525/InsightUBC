@@ -1,0 +1,198 @@
+{
+	"title": "Success: Query has an empty APPLY block on a Rooms dataset",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_fullname",
+				"rooms_shortname"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_fullname",
+				"rooms_shortname"
+			],
+			"APPLY": []
+		}
+	},
+	"with": [
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"rooms_shortname": "ALRD"
+		},
+		{
+			"rooms_fullname": "Anthropology and Sociology",
+			"rooms_shortname": "ANSO"
+		},
+		{
+			"rooms_fullname": "Aquatic Ecosystems Research Laboratory",
+			"rooms_shortname": "AERL"
+		},
+		{
+			"rooms_fullname": "Auditorium Annex",
+			"rooms_shortname": "AUDX"
+		},
+		{
+			"rooms_fullname": "Biological Sciences",
+			"rooms_shortname": "BIOL"
+		},
+		{
+			"rooms_fullname": "Brock Hall Annex",
+			"rooms_shortname": "BRKX"
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_shortname": "BUCH"
+		},
+		{
+			"rooms_fullname": "Centre for Interactive  Research on Sustainability",
+			"rooms_shortname": "CIRS"
+		},
+		{
+			"rooms_fullname": "Chemical and Biological Engineering Building",
+			"rooms_shortname": "CHBE"
+		},
+		{
+			"rooms_fullname": "Chemistry",
+			"rooms_shortname": "CHEM"
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_shortname": "CEME"
+		},
+		{
+			"rooms_fullname": "Earth and Ocean Sciences - Main",
+			"rooms_shortname": "EOSM"
+		},
+		{
+			"rooms_fullname": "Earth Sciences Building",
+			"rooms_shortname": "ESB"
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_shortname": "FNH"
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_shortname": "FSC"
+		},
+		{
+			"rooms_fullname": "Frank Forward",
+			"rooms_shortname": "FORW"
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"rooms_shortname": "LASR"
+		},
+		{
+			"rooms_fullname": "Friedman Building",
+			"rooms_shortname": "FRDM"
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_shortname": "GEOG"
+		},
+		{
+			"rooms_fullname": "Hebb",
+			"rooms_shortname": "HEBB"
+		},
+		{
+			"rooms_fullname": "Hennings",
+			"rooms_shortname": "HENN"
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_shortname": "ANGU"
+		},
+		{
+			"rooms_fullname": "Hugh Dempster Pavilion",
+			"rooms_shortname": "DMP"
+		},
+		{
+			"rooms_fullname": "Iona Building",
+			"rooms_shortname": "IONA"
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_shortname": "IBLC"
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_shortname": "SOWK"
+		},
+		{
+			"rooms_fullname": "Leonard S. Klinck (also known as CSCI)",
+			"rooms_shortname": "LSK"
+		},
+		{
+			"rooms_fullname": "Life Sciences Centre",
+			"rooms_shortname": "LSC"
+		},
+		{
+			"rooms_fullname": "MacLeod",
+			"rooms_shortname": "MCLD"
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_shortname": "MCML"
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_shortname": "MATH"
+		},
+		{
+			"rooms_fullname": "Mathematics Annex",
+			"rooms_shortname": "MATX"
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_shortname": "SCRF"
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_shortname": "ORCH"
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_shortname": "PHRM"
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_shortname": "PCOH"
+		},
+		{
+			"rooms_fullname": "Robert F. Osborne Centre",
+			"rooms_shortname": "OSBO"
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_shortname": "SPPH"
+		},
+		{
+			"rooms_fullname": "Student Recreation Centre",
+			"rooms_shortname": "SRC"
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"rooms_shortname": "UCLL"
+		},
+		{
+			"rooms_fullname": "War Memorial Gymnasium",
+			"rooms_shortname": "MGYM"
+		},
+		{
+			"rooms_fullname": "Wesbrook",
+			"rooms_shortname": "WESB"
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_shortname": "SWNG"
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_shortname": "WOOD"
+		}
+	]
+}

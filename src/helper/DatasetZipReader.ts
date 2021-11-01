@@ -40,7 +40,9 @@ export default class DatasetZipReader {
 				return p5.parse(indexContent);
 			}).then((document) => {
 				let indexInfo = this.findIndexBuildingInfo(document);
-				return this.handleRoomFiles(folder, contentZip, indexInfo);
+				return this.requestCoords(indexInfo);
+			}).then((entryParts) => {
+				return this.handleRoomFiles(folder, contentZip, entryParts[0], entryParts[1]);
 			}).then((entries: DatasetEntry[]) => {
 				return Promise.resolve(entries);
 			});
@@ -60,7 +62,66 @@ export default class DatasetZipReader {
 		return [filePaths, buildingNames, buildingCodes, buildingAddresses];
 	}
 
-	private handleRoomFiles(folder: string, contentZip: JSZip, indexInfo: string[][]): Promise<DatasetEntry[]> {
+	private requestCoords(indexInfo: string[][]): Promise<[string[][], Array<[number, number]>]> {
+		let coordsPromises: Array<Promise<[number | null, number | null]>> = [];
+
+		for (let address of indexInfo[3]) {
+			// Replace spaces for HTTP requests
+			while (address.includes(" ")) {
+				address = address.replace(" ", "%20");
+			}
+
+			let newPromise: Promise<[number | null, number | null]> = this.makeHTTPromise(address);
+			coordsPromises.push(newPromise);
+
+			// Revert to normal spaces for the DatasetEntry to be pushed
+			while (address.includes("%20")) {
+				address = address.replace("%20", " ");
+			}
+		}
+
+		return Promise.all(coordsPromises).then((responses: any[]) => {
+			return [indexInfo, responses];
+		});
+	}
+
+	private makeHTTPromise(address: string): Promise<any> {
+		return new Promise<any>((resolve) => {
+			// Credits to https://nodejs.org/en/knowledge/HTTP/clients/how-to-create-a-HTTP-request/
+			const options = {
+				host: "cs310.students.cs.ubc.ca",
+				path: "/api/v1/project_team115/" + address,
+				port: 11316,
+				method: "GET",
+			};
+
+			http.request(options, (response: any) => {
+				let ret: [number | null, number | null] = [null, null];
+				let data: string = "";
+				response.on("data", (chunk: any) => {
+					data += chunk;
+				});
+				response.on("end", () => {
+					if (response.statusCode !== 200) {
+						resolve(ret);
+					}
+					let geoResponse = JSON.parse(data);
+					if (geoResponse.lat && geoResponse.lon) {
+						ret[0] = geoResponse.lat;
+						ret[1] = geoResponse.lon;
+					} else {
+						ret[0] = null;
+						ret[1] = null;
+					}
+				});
+
+				resolve(ret);
+			}).end();
+		});
+	}
+
+	private handleRoomFiles(folder: string, contentZip: JSZip, indexInfo: string[][],
+		geoCoords: Array<[number | null, number | null]>): Promise<DatasetEntry[]> {
 		let promises: Array<Promise<string>> = [];
 		for (let file of indexInfo[0]) {
 			// <a href = "./campus/directories/ ... " ; remove prefix ./
@@ -77,75 +138,38 @@ export default class DatasetZipReader {
 			/**
 			 * indexInfo has fullname, shortname, address
 			 * filesContent has number, seats, type, furniture
-			 * lat, lon from http request
+			 * lat, lon from http request --> "geoCoords" parameter
 			 * href from specific file <a href="https://students.ubc.ca/...
 			 */
 			let retEntries: DatasetEntry[] = [];
 
-			/**
-			 * roomDets is an Array of tuples
-			 * - each tuple of roomDets includes:
-			 * [0] = (rooms_number)
-			 * [1] = (rooms_seats)
-			 * [2] = (rooms_type)
-			 * [3] = (rooms_furniture)
-			 * [4] = (rooms_href)
-			 */
-
-			let geoCoords: Array<[number, number]> = [];
 			for (let f = 0; f < filesContent.length; f++) {
 				// Request coordinates first; if invalid, no need to save this building's rooms
-				// TODO: lat and lon incorrect
-				// let tempGeoCoords = this.requestCoords(indexInfo[3][f]);
-				let tempGeoCoords: [number | null, number | null] = [-49, 123];
-				if (tempGeoCoords === [null, null]) {
-					continue;
-				}
 				let doc: Document = p5.parse(filesContent[f]);
+				/**
+				 * roomDets is an Array of tuples
+				 * - each tuple of roomDets includes:
+				 * [0] = (rooms_number)
+				 * [1] = (rooms_seats)
+				 * [2] = (rooms_type)
+				 * [3] = (rooms_furniture)
+				 * [4] = (rooms_href)
+				 */
 				let roomDets: Array<[string, number, string, string, string]> = [];
 				roomDets = this.extractRoomDetails(doc);
-				geoCoords.push((tempGeoCoords as [number, number]));
 
+				if (geoCoords[f] === [null, null]) {
+					continue;
+				}
 				// Add entries, where one iteration for the building iterates over multiple rooms
 				// If building has no rooms, roomDets is empty, and will not push any new entries
 				for (const room of roomDets) {
 					retEntries.push(new Room(indexInfo[1][f], indexInfo[2][f], room[0],
-						indexInfo[3][f], geoCoords[f][0], geoCoords[f][0],
+						indexInfo[3][f], (geoCoords[f][0] as number), (geoCoords[f][1] as number),
 						room[1], room[2], room[3], room[4]));
 				}
 			}
 			return Promise.resolve(retEntries);
-		});
-	}
-
-	private requestCoords(buildingAddress: string): [number | null, number | null] {
-		// TODO: lat and lon returning undefined
-		// TODO !!! lat and lon are HARDCODED for testing purposes JUST FOR NOW! CHANGE THIS!
-		let ret: [number | null, number | null] = [null, null];
-
-		while (buildingAddress.includes(" ")) {
-			buildingAddress = buildingAddress.replace(" ", "%20");
-		}
-
-		// Credits to https://nodejs.org/en/knowledge/HTTP/clients/how-to-create-a-HTTP-request/
-		const options = {
-			host: "cs310.students.cs.ubc.ca",
-			path: "/api/v1/project_team115/" + buildingAddress,
-			port: 11316,
-			method: "GET",
-		};
-
-		return http.request(options, (response: any) => {
-			response.on("end", (data: any) => {
-				if (response.statusCode !== 200) {
-					return ret;
-				}
-				let geoResponse = JSON.parse(data);
-				ret[0] = geoResponse.lat;
-				ret[1] = geoResponse.lon;
-			});
-
-			return ret;
 		});
 	}
 
