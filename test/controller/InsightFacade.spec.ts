@@ -32,7 +32,8 @@ describe("InsightFacade", function () {
 		skipOverSet: "./test/resources/archives/skipOverSet.zip",
 		rooms: "./test/resources/archives/rooms.zip",
 		ignoreFolderRoomsSet: "./test/resources/archives/ignoreFolderRoomsSet.zip",
-		missingIndex: "./test/resources/archives/missingIndex.zip"
+		missingIndex: "./test/resources/archives/missingIndex.zip",
+		missingBuildingFiles: "./test/resources/archives/missingBuildingFiles.zip"
 	};
 
 	before(function () {
@@ -175,6 +176,17 @@ describe("InsightFacade", function () {
 					const content: string = datasetContents.get("ignoreFolderRoomsSet") ?? "";
 					const expected: string[] = ["ignoreFolderRoomsSet"];
 					return insightFacade.addDataset("ignoreFolderRoomsSet", content, InsightDatasetKind.Rooms)
+						.then((result: string[]) => {
+							expect(result).to.deep.equal(expected);
+						});
+				});
+			});
+
+			context("Success: Add a Rooms dataset where some files linked in index.htm are missing", () => {
+				it("Should add a rooms dataset with no error, with lesser number of rooms than a full dataset", () => {
+					const content: string = datasetContents.get("missingBuildingFiles") ?? "";
+					const expected: string[] = ["missingBuildingFiles"];
+					return insightFacade.addDataset("missingBuildingFiles", content, InsightDatasetKind.Rooms)
 						.then((result: string[]) => {
 							expect(result).to.deep.equal(expected);
 						});
@@ -498,6 +510,24 @@ describe("InsightFacade", function () {
 			});
 		});
 
+		context("Success: Retrieve a Room dataset that was added with missing building files", () => {
+			it("Should return a list with a numRows less than the full number of rooms", async () => {
+				const content: string = datasetContents.get("missingBuildingFiles") ?? "";
+				await insightFacade.addDataset("missingBuildingFiles", content, InsightDatasetKind.Rooms);
+
+				const expected: InsightDataset = {
+					id: "missingBuildingFiles",
+					kind: InsightDatasetKind.Rooms,
+					numRows: 61
+				};
+
+				return insightFacade.listDatasets()
+					.then((result: any[]) => {
+						expect(result).to.have.deep.members([expected]);
+					});
+			});
+		});
+
 		describe("InsightFacade Integration Tests", function () {
 			context("Customer end-to-end interaction", () => {
 				it("Success: Add and remove a dataset, with listDatasets reflecting changes", () => {
@@ -603,26 +633,46 @@ describe("InsightFacade", function () {
 					expect(actual).to.have.length(expected.length);
 					expect(actual).to.have.deep.members(expected);
 
-					const orderKey: string | any = input.OPTIONS.ORDER;
-					if (orderKey !== undefined) {
-						if (typeof orderKey === "string") {
+					const order: string | any = input.OPTIONS.ORDER;
+					if (order !== undefined) {
+						if (typeof order === "string") {
 							for (let i = 1; i < actual.length; i++) {
-								if (actual[i - 1][orderKey] > actual[i][orderKey]) {
+								if (actual[i - 1][order] > actual[i][order]) {
 									fail("Incorrect ordering");
 								}
 							}
 						} else {
-							// TODO: add in testing support for multi-key ordering
-							if (orderKey.dir === "DOWN") {
+							let maxIdx: number = order.keys.length;
+							if (order.dir === "DOWN") {
 								for (let i = 1; i < actual.length; i++) {
-									if (actual[i - 1][orderKey.keys[0]] < actual[i][orderKey.keys[0]]) {
+									if (actual[i - 1][order.keys[0]] < actual[i][order.keys[0]]) {
 										fail("Incorrect ordering");
+									} else if (actual[i - 1][order.keys[0]] === actual[i][order.keys[0]]) {
+										for (let j = 1; j < maxIdx; j++) {
+											if (actual[i - 1][order.keys[j]] < actual[i][order.keys[j]]) {
+												fail("Incorrect ordering");
+											} else if (actual[i - 1][order.keys[j]] === actual[i][order.keys[j]]) {
+												continue;
+											} else {
+												break;
+											}
+										}
 									}
 								}
 							} else {
 								for (let i = 1; i < actual.length; i++) {
-									if (actual[i - 1][orderKey.keys[0]] > actual[i][orderKey.keys[0]]) {
+									if (actual[i - 1][order.keys[0]] > actual[i][order.keys[0]]) {
 										fail("Incorrect ordering");
+									} else if (actual[i - 1][order.keys[0]] === actual[i][order.keys[0]]) {
+										for (let j = 1; j < maxIdx; j++) {
+											if (actual[i - 1][order.keys[j]] > actual[i][order.keys[j]]) {
+												fail("Incorrect ordering");
+											} else if (actual[i - 1][order.keys[j]] === actual[i][order.keys[j]]) {
+												continue;
+											} else {
+												break;
+											}
+										}
 									}
 								}
 							}

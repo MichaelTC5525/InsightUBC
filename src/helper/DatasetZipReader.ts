@@ -6,8 +6,7 @@ import Room from "../storageType/Room";
 import * as p5 from "parse5";
 import {Document} from "parse5";
 import RoomParser from "./RoomParser";
-
-const http = require("http");
+import HTTProcessor from "./HTTProcessor";
 
 export default class DatasetZipReader {
 	/**
@@ -71,7 +70,8 @@ export default class DatasetZipReader {
 				address = address.replace(" ", "%20");
 			}
 
-			let newPromise: Promise<[number | null, number | null]> = this.makeHTTPromise(address);
+			let httpProcessor: HTTProcessor = new HTTProcessor();
+			let newPromise: Promise<[number | null, number | null]> = httpProcessor.makeHTTPromise(address);
 			coordsPromises.push(newPromise);
 
 			// Revert to normal spaces for the DatasetEntry to be pushed
@@ -82,41 +82,6 @@ export default class DatasetZipReader {
 
 		return Promise.all(coordsPromises).then((responses: any[]) => {
 			return [indexInfo, responses];
-		});
-	}
-
-	private makeHTTPromise(address: string): Promise<any> {
-		return new Promise<any>((resolve) => {
-			// Credits to https://nodejs.org/en/knowledge/HTTP/clients/how-to-create-a-HTTP-request/
-			const options = {
-				host: "cs310.students.cs.ubc.ca",
-				path: "/api/v1/project_team115/" + address,
-				port: 11316,
-				method: "GET",
-			};
-
-			http.request(options, (response: any) => {
-				let ret: [number | null, number | null] = [null, null];
-				let data: string = "";
-				response.on("data", (chunk: any) => {
-					data += chunk;
-				});
-				response.on("end", () => {
-					if (response.statusCode !== 200) {
-						resolve(ret);
-					}
-					let geoResponse = JSON.parse(data);
-					if (geoResponse.lat && geoResponse.lon) {
-						ret[0] = geoResponse.lat;
-						ret[1] = geoResponse.lon;
-					} else {
-						ret[0] = null;
-						ret[1] = null;
-					}
-				});
-
-				resolve(ret);
-			}).end();
 		});
 	}
 
