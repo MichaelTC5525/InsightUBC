@@ -1,0 +1,33 @@
+{
+	"title": "Fail: MAX Aggregation type used with a string type query key",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"maxAddress"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"maxAddress":{
+						"MAX": "rooms_address"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

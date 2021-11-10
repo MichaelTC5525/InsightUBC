@@ -1,0 +1,51 @@
+{
+	"title": "Fail: APPLY contains two aggregations with the same name",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"avgSeats",
+				"maxSeats"
+			],
+			"ORDER":{
+				"dir": "DOWN",
+				"keys":[
+					"rooms_lat",
+					"rooms_lon"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"avgSeats":{
+						"AVG": "rooms_seats"
+					}
+				},
+				{
+					"avgSeats":{
+						"COUNT": "rooms_address"
+					}
+				},
+				{
+					"maxSeats":{
+						"MAX": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

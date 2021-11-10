@@ -1,0 +1,33 @@
+{
+	"title": "Fail: Query uses MIN aggregation type with string query key",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"minAddress"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"minAddress":{
+						"MIN": "rooms_address"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

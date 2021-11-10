@@ -1,0 +1,50 @@
+{
+	"title": "Fail: Query contains a GT, LT, or EQ with a string query key",
+	"input":
+	{
+		"WHERE": {
+			"GT":{
+				"rooms_address": "1821 Agronomy Road"
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"avgSeats",
+				"maxSeats"
+			],
+			"ORDER":{
+				"dir": "DOWN",
+				"keys":[
+					"rooms_lat",
+					"rooms_lon"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"avgSeats":{
+						"AVG": "rooms_seats"
+					}
+				},
+				{
+					"maxSeats":{
+						"MAX": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
