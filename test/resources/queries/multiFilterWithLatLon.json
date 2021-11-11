@@ -1,0 +1,1959 @@
+{
+	"title": "Success: Query has multiple filters with lat/lon coordinates included",
+	"input":
+	{
+		"WHERE": {
+			"AND":[
+				{
+					"GT": {
+						"rooms_lon": -129
+					}
+				},
+				{
+					"LT":{
+						"rooms_seats": 70
+					}
+				}
+			]
+
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_fullname",
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"rooms_fullname",
+					"rooms_seats",
+					"rooms_lat",
+					"rooms_lon"
+				]
+			}
+		}
+	},
+	"with": [
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 44
+		},
+		{
+			"rooms_fullname": "Allard Hall (LAW)",
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Anthropology and Sociology",
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 26
+		},
+		{
+			"rooms_fullname": "Anthropology and Sociology",
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 33
+		},
+		{
+			"rooms_fullname": "Anthropology and Sociology",
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 37
+		},
+		{
+			"rooms_fullname": "Auditorium Annex",
+			"rooms_address": "1924 West Mall",
+			"rooms_lat": 49.2666,
+			"rooms_lon": -123.25655,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Auditorium Annex",
+			"rooms_address": "1924 West Mall",
+			"rooms_lat": 49.2666,
+			"rooms_lon": -123.25655,
+			"rooms_seats": 21
+		},
+		{
+			"rooms_fullname": "Biological Sciences",
+			"rooms_address": "6270 University Boulevard",
+			"rooms_lat": 49.26479,
+			"rooms_lon": -123.25249,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Biological Sciences",
+			"rooms_address": "6270 University Boulevard",
+			"rooms_lat": 49.26479,
+			"rooms_lon": -123.25249,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Brock Hall Annex",
+			"rooms_address": "1874 East Mall",
+			"rooms_lat": 49.26862,
+			"rooms_lon": -123.25237,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 18
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 26
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 31
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 42
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 56
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Buchanan",
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Chemical and Biological Engineering Building",
+			"rooms_address": "2360 East Mall V6T 1Z3",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.24718,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 22
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 26
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 34
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 45
+		},
+		{
+			"rooms_fullname": "Civil and Mechanical Engineering",
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 62
+		},
+		{
+			"rooms_fullname": "Earth and Ocean Sciences - Main",
+			"rooms_address": "6339 Stores Road",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.25198,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 28
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 43
+		},
+		{
+			"rooms_fullname": "Food, Nutrition and Health",
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 18
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 36
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Forest Sciences Centre",
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 65
+		},
+		{
+			"rooms_fullname": "Frank Forward",
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 35
+		},
+		{
+			"rooms_fullname": "Frank Forward",
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 44
+		},
+		{
+			"rooms_fullname": "Frank Forward",
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 63
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 51
+		},
+		{
+			"rooms_fullname": "Frederic Lasserre",
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 21
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 39
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 42
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Geography",
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Hebb",
+			"rooms_address": "2045 East Mall",
+			"rooms_lat": 49.2661,
+			"rooms_lon": -123.25165,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Hebb",
+			"rooms_address": "2045 East Mall",
+			"rooms_lat": 49.2661,
+			"rooms_lon": -123.25165,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Hebb",
+			"rooms_address": "2045 East Mall",
+			"rooms_lat": 49.2661,
+			"rooms_lon": -123.25165,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Hennings",
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Hennings",
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Hennings",
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 36
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 35
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 37
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 41
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 41
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 41
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 44
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 44
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 53
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 54
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 58
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 68
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 68
+		},
+		{
+			"rooms_fullname": "Henry Angus",
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 68
+		},
+		{
+			"rooms_fullname": "Hugh Dempster Pavilion",
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Hugh Dempster Pavilion",
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Iona Building",
+			"rooms_address": "6000 Iona Drive",
+			"rooms_lat": 49.27106,
+			"rooms_lon": -123.25042,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 10
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Irving K Barber Learning Centre",
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 50
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 29
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 29
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 31
+		},
+		{
+			"rooms_fullname": "Jack Bell Building for the School of Social Work",
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 68
+		},
+		{
+			"rooms_fullname": "Leonard S. Klinck (also known as CSCI)",
+			"rooms_address": "6356 Agricultural Road",
+			"rooms_lat": 49.26545,
+			"rooms_lon": -123.25533,
+			"rooms_seats": 42
+		},
+		{
+			"rooms_fullname": "MacLeod",
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "MacLeod",
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "MacLeod",
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 6
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 6
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 32
+		},
+		{
+			"rooms_fullname": "MacMillan",
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "Mathematics",
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 34
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 38
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Neville Scarfe",
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 60
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 20
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "Orchard Commons",
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7
+		},
+		{
+			"rooms_fullname": "Pharmaceutical Sciences Building",
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 14
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Ponderosa Commons: Oak House",
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "Robert F. Osborne Centre",
+			"rooms_address": "6108 Thunderbird Boulevard",
+			"rooms_lat": 49.26047,
+			"rooms_lon": -123.24467,
+			"rooms_seats": 39
+		},
+		{
+			"rooms_fullname": "Robert F. Osborne Centre",
+			"rooms_address": "6108 Thunderbird Boulevard",
+			"rooms_lat": 49.26047,
+			"rooms_lon": -123.24467,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 14
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 28
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "School of Population and Public Health",
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 66
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 48
+		},
+		{
+			"rooms_fullname": "The Leon and Thea Koerner University Centre",
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 55
+		},
+		{
+			"rooms_fullname": "War Memorial Gymnasium",
+			"rooms_address": "6081 University Blvd",
+			"rooms_lat": 49.2663,
+			"rooms_lon": -123.2466,
+			"rooms_seats": 25
+		},
+		{
+			"rooms_fullname": "War Memorial Gymnasium",
+			"rooms_address": "6081 University Blvd",
+			"rooms_lat": 49.2663,
+			"rooms_lon": -123.2466,
+			"rooms_seats": 40
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "West Mall Swing Space",
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 10
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 10
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 10
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 12
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 14
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 16
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 21
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 30
+		},
+		{
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)",
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 30
+		}
+	]
+}
