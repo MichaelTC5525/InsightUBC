@@ -2,12 +2,24 @@
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-		<title>310 Frontend</title>
+		<title>InsightUBC Database System: Home</title>
 		<link href="/style.css" rel="stylesheet" />
 	</head>
 	<body>
-		<button id="click-me-button" class="button" >Click Me!</button>
-
+		<h1>Welcome to the InsightUBC Database System</h1>
+		<br>
+		<div id="datasetOp" class="opButtons">
+			<button id="addDatasetButton" class="button">Add a new dataset to InsightUBC</button>
+			<button id="removeDatasetButton" class="button">Remove a dataset from InsightUBC</button>
+		</div>
+		<br/>
+		<div id="otherOp" class="opButtons">
+			<button id="performQueryButton" class="button">Query an existing dataset</button>
+			<a href="http://localhost:4321/datasets">
+				<button id="listDatasetsButton" class="button" >List the currently stored datasets</button>
+			</a>
+		</div>
+		<br>
 		<script type="text/javascript" src="/frontend.js"></script>
 	</body>
 </html>
