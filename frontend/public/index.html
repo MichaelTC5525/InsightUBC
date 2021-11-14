@@ -7,12 +7,23 @@
 	</head>
 	<body>
 		<h1>Welcome to the InsightUBC Database System</h1>
-		<br>
-		<div id="datasetOp" class="opButtons">
-			<button id="addDatasetButton" class="button">Add a new dataset to InsightUBC</button>
-			<button id="removeDatasetButton" class="button">Remove a dataset from InsightUBC</button>
-		</div>
-		<br/>
+		<p>This is a space where you can work with an InsightFacade system</p>
+		<h2>Add a new Dataset to InsightUBC</h2>
+		<form id="addDatasetForm">
+			<p>Dataset ID: <input type="text" id="addID" name="addID"></p>
+			<p>Type of Dataset:</p>
+			<input type="radio" id="addCourses" name="setType" value="courses"><label for="addCourses">Courses</label><br>
+			<input type="radio" id="addRooms" name="setType" value="rooms"><label for="addRooms">Rooms</label><br/>
+			<p>Content File: <input type="file" id="addFile" accept="application/x-zip-compressed"></p>
+			<input type="submit" value="Submit">
+		</form>
+		<hr/>
+		<h2>Remove a Dataset from InsightUBC</h2>
+		<form id="removeDatasetForm">
+			<p>Dataset ID to remove: <input type="text" id="toRemoveID" name="toRemoveID"></p>
+			<input type="submit" id = "removeDatasetButton" value="Submit">
+		</form>
+		<hr/>
 		<div id="otherOp" class="opButtons">
 			<button id="performQueryButton" class="button">Query an existing dataset</button>
 			<a href="http://localhost:4321/datasets">

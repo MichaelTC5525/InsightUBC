@@ -1,15 +1,3 @@
-#datasetOp {
-	background-color: aquamarine;
-}
-
-#otherOp {
-	background-color: chartreuse;
-}
-
-.opButtons {
-	align-content: center;
-}
-
 .button {
 	background-color: #3f51b5;
 	border: none;
