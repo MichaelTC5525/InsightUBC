@@ -1,6 +1,8 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
+import InsightFacade from "../controller/InsightFacade";
+import {InsightDataset, InsightDatasetKind, InsightError, NotFoundError} from "../controller/IInsightFacade";
 
 export default class Server {
 	private readonly port: number;
@@ -18,7 +20,7 @@ export default class Server {
 		// NOTE: you can serve static frontend files in from your express server
 		// by uncommenting the line below. This makes files in ./frontend/public
 		// accessible at http://localhost:<port>/
-		// this.express.use(express.static("./frontend/public"))
+		this.express.use(express.static("./frontend/public"));
 	}
 
 	/**
@@ -84,7 +86,13 @@ export default class Server {
 		// http://localhost:4321/echo/hello
 		this.express.get("/echo/:msg", Server.echo);
 
-		// TODO: your other endpoints should go here
+		this.express.put("/dataset/:id/:kind", Server.addDataset);
+
+		this.express.delete("/dataset/:id/", Server.removeDataset);
+
+		this.express.post("/query", Server.performQuery);
+
+		this.express.get("/datasets", Server.getDatasets);
 
 	}
 
@@ -106,6 +114,68 @@ export default class Server {
 			return `${msg}...${msg}`;
 		} else {
 			return "Message not provided";
+		}
+	}
+
+	private static async addDataset(req: Request, res: Response) {
+		try {
+			console.log(`Server::addDataset(ID = ${req.params.id}, KIND = ${req.params.kind})`);
+			let insightFacade = new InsightFacade();
+
+			// Perform conversion from raw buffer string to base64 encoding for InsightFacade
+			const content: string = Buffer.from(req.body).toString("base64");
+
+			await insightFacade.addDataset(req.params.id, content, req.params.kind as InsightDatasetKind)
+				.then((result: string[]) => {
+					res.status(200).json({result: result});
+				});
+		} catch (err: any) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static async removeDataset(req: Request, res: Response) {
+		try {
+			console.log(`Server::removeDataset(${req.params.id})`);
+			let insightFacade = new InsightFacade();
+			await insightFacade.removeDataset(req.params.id)
+				.then((result: string) => {
+					res.status(200).json({result: result});
+				}).catch((error: any) => {
+					if (error instanceof NotFoundError) {
+						res.status(404).json({error: error});
+					} else {
+						throw error;
+					}
+				});
+		} catch (err: any) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static async performQuery(req: Request, res: Response) {
+		try {
+			console.log("Server::performQuery()");
+			let insightFacade = new InsightFacade();
+			await insightFacade.performQuery(req.body)
+				.then((result: any[]) => {
+					res.status(200).json({result: result});
+				});
+		} catch (err: any) {
+			res.status(400).json({error: err});
+		}
+	}
+
+	private static async getDatasets(req: Request, res: Response) {
+		try {
+			console.log("Server::getDatasets()");
+			let insightFacade = new InsightFacade();
+			await insightFacade.listDatasets().then((result: InsightDataset[]) => {
+				res.status(200).json({result: result});
+			});
+		} catch (err: any) {
+			// Should be unreachable in most cases, listDatasets() always resolves; present only for try-catch block
+			res.status(400).json({error: err});
 		}
 	}
 }
