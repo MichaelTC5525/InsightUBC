@@ -86,14 +86,11 @@ export default class Server {
 		// http://localhost:4321/echo/hello
 		this.express.get("/echo/:msg", Server.echo);
 
-		// TODO: change required paths to appropriate HTTP methods or verbs; this for debugging only
-		this.express.get("/dataset/:id/:kind", Server.addDefaultDataset);
-		// this.express.put("/dataset/:id/:kind", Server.addDataset);
+		this.express.put("/dataset/:id/:kind", Server.addDataset);
 
-		this.express.get("/dataset/:id/", Server.removeDataset);
-		// this.express.delete("/dataset/:id/", Server.removeDataset);
+		this.express.delete("/dataset/:id/", Server.removeDataset);
 
-		// this.express.post("/:query", Server.performQuery);
+		this.express.post("/query", Server.performQuery);
 
 		this.express.get("/datasets", Server.getDatasets);
 
@@ -122,38 +119,12 @@ export default class Server {
 
 	private static async addDataset(req: Request, res: Response) {
 		try {
-			console.log(`Server::addDataset(${req.params.id}, ${req.params.kind})`);
+			console.log(`Server::addDataset(ID = ${req.params.id}, KIND = ${req.params.kind})`);
 			let insightFacade = new InsightFacade();
 
-			// TODO: Confirm that the raw content of the ZIP file is passed thru the body of the request
-			const content: string = new Buffer(req.body).toString("base64");
+			// Perform conversion from raw buffer string to base64 encoding for InsightFacade
+			const content: string = Buffer.from(req.body).toString("base64");
 
-			await insightFacade.addDataset(req.params.id, content, req.params.kind as InsightDatasetKind)
-				.then((result: string[]) => {
-					res.status(200).json({result: result});
-				});
-		} catch (err: any) {
-			res.status(400).json({error: err});
-		}
-	}
-
-	private static async addDefaultDataset(req: Request, res: Response) {
-		try {
-			console.log(`Server::addDefaultDataset(${req.params.id}, ${req.params.kind})`);
-			let insightFacade = new InsightFacade();
-			// TODO: hardcode for now as a GET request for debugging; may remove this route
-			const content = "UEsDBBQAAAAIAHenMVNsYLJ5NgIAAE8RAAAPAAAAY291cnNlcy9NQVRINTQx7Zdba9swFID/StCzMZZy8eWtdB" +
-				"t7GKzQwRhjFCVWYi2yVGTZXlv633dsx8ROS6qmtdkgj0dHOteP4+MHpFmWC4Oinw/IcKZvGN8k5u5mzQuGIuw0h5JLZu5Q5Dvo" +
-				"GzcCNCihOlWSryZUUjHhyEHXbGW4kqDDHgb5AzOUCxDRzkrGCibBtilVbfqrSZhGkeegL6oE46S9x/9UEai8UfIYRcSfBYueuo" +
-				"6z1teH90yrvdR6gqv7Q5NwXSXRymu+3olXWq1Zlinwh241TankW2eSUkGXfEsh/Is85h1nm87bxpRqLX/nJok1K2vhB6OVSeJh" +
-				"0tbAlFVgtfbaxDErUBS6kPhHqZUQDFINu+Ht+tD6aZrTybMqRSdDJmvhM1wDQ2DpEoqYVe2az3DdoixrWlSCdEWzrPb3qe4TPL" +
-				"woNnAwdf0AntL0Ngc9yper6mm+/A0NBjmlJkGPzjvyogqmqRADMOOPwsyZEGtCZgeEEDtCiMVE8Z7QEcyP0BGG/n9DhxccoWPq" +
-				"krCLx6IbzZvwIFZ4LA7xCMZlw3Z6vJ6P4MzHv8RHG0XLB8Z2gNisI0/hCHG3Bn04/Cn2p6PAASsIdSb8ni6ZEO+yinhHUCFuNR" +
-				"P3qGDcDe4trGDPs4Kl8njwsfFdLxwXmNMnykvQzHrqoaA5Y/IqTA631sCOkhN3krBbhz4hoUdIr0yDETLMX878ODOLYZbYwIqY" +
-				"55bYiqIRgTl9rLwETX/qDAXNGZFnEfnlIE3lFp49/gVQSwECFAAUAAAACAB3pzFTbGCyeTYCAABPEQAADwAAAAAAAAABACAAAA" +
-				"AAAAAAY291cnNlcy9NQVRINTQxUEsFBgAAAAABAAEAPQAAAGMCAAAAAA==";
-
-			// Currently an object promise, not the actual data yet
 			await insightFacade.addDataset(req.params.id, content, req.params.kind as InsightDatasetKind)
 				.then((result: string[]) => {
 					res.status(200).json({result: result});
@@ -186,7 +157,7 @@ export default class Server {
 		try {
 			console.log("Server::performQuery()");
 			let insightFacade = new InsightFacade();
-			await insightFacade.performQuery(req.params.query)
+			await insightFacade.performQuery(req.body)
 				.then((result: any[]) => {
 					res.status(200).json({result: result});
 				});
@@ -203,6 +174,7 @@ export default class Server {
 				res.status(200).json({result: result});
 			});
 		} catch (err: any) {
+			// Should be unreachable in most cases, listDatasets() always resolves; present only for try-catch block
 			res.status(400).json({error: err});
 		}
 	}
