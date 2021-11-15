@@ -1,6 +1,7 @@
 document.getElementById("addDatasetForm").addEventListener("submit", handleAdd);
 document.getElementById("removeDatasetForm").addEventListener("submit", handleRemove);
-document.getElementById("performQueryButton").addEventListener("click", handleQuery);
+document.getElementById("queryForm").addEventListener("submit", handleQuery);
+// document.getElementById("performQueryButton").addEventListener("click", handleQuery);
 // document.getElementById("listDatasetsButton").addEventListener("click", handleList);
 
 async function handleAdd() {
@@ -13,7 +14,16 @@ async function handleAdd() {
 	}
 
 	// TODO: Extract actual raw content from ZIP file
-	let content = document.getElementById("addFile").value;
+	alert("well");
+
+	const zipReader = document.getElementById("addFile").files[0].stream().getReader();
+
+	let content;
+	await zipReader.read().then((text) => {
+		content = text.value;
+	}).catch((error) => {
+		console.log(error);
+	});
 	alert(content);
 	await fetch("http://localhost:4321/dataset/" + id + "/" + kind, {
 		method: "PUT",
@@ -40,22 +50,17 @@ async function handleRemove() {
 async function handleQuery() {
 	// TODO: obtain query components from a form
 	alert("TODO: Query a dataset");
+	let query = {};
+
+
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
-		body: JSON.stringify(
-			{
-				"WHERE": {
+		body: query
+	}).then(
+		response => response.json()
+	).then(
 
-				},
-				"OPTIONS": {
-					"COLUMNS":[
-
-					]
-				}
-			}
-		)
-	})
-
+	);
 }
 
 // TODO: functionally equivalent to setting HTML link to /datasets page; safe to remove if needed

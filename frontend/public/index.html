@@ -21,11 +21,16 @@
 		<h2>Remove a Dataset from InsightUBC</h2>
 		<form id="removeDatasetForm">
 			<p>Dataset ID to remove: <input type="text" id="toRemoveID" name="toRemoveID"></p>
-			<input type="submit" id = "removeDatasetButton" value="Submit">
+			<input type="submit" id="removeDatasetButton" value="Submit">
+		</form>
+		<hr/>
+		<h2>Query an existing InsightUBC dataset</h2>
+		<form id="queryForm">
+			<p>Dataset to Query: <input type="text" id="querySet" name="querySet"></p>
+			<input type="submit" id="queryButton" value="Submit Query">
 		</form>
 		<hr/>
 		<div id="otherOp" class="opButtons">
-			<button id="performQueryButton" class="button">Query an existing dataset</button>
 			<a href="http://localhost:4321/datasets">
 				<button id="listDatasetsButton" class="button" >List the currently stored datasets</button>
 			</a>
