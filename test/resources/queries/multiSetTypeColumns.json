@@ -1,0 +1,17 @@
+{
+	"title": "Fail: Query attempts to request columns from course and room type datasets",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_fullname",
+				"rooms_shortname",
+				"rooms_dept",
+				"rooms_uuid"
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
