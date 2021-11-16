@@ -70,6 +70,10 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Dataset ID or content invalid"));
 		}
 
+		if (kind !== "courses" && kind !== "rooms") {
+			return Promise.reject(new InsightError("Dataset type must be either 'courses' or 'rooms'"));
+		}
+
 		if (this.hasDataset(id)) {
 			return Promise.reject(new InsightError("Requested dataset ID already exists in InsightUBC"));
 		}
