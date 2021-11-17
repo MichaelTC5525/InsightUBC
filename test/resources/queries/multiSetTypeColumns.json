@@ -1,0 +1,15 @@
+{
+	"title": "Fail: Query contains columns specific to courses and rooms at the same time",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_dept",
+				"rooms_address"
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

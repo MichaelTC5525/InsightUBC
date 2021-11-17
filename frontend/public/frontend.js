@@ -7,14 +7,6 @@ document.getElementById("queryRoomsType").addEventListener("change", unlockColum
 document.getElementById("yesOrder").addEventListener("change", unlockOrders);
 document.getElementById("noOrder").addEventListener("change", unlockOrders);
 
-for (let i of document.getElementsByName("columnsCourseSelect")) {
-	i.addEventListener("change", editOrderKeys);
-}
-
-for (let i of document.getElementsByName("columnsRoomSelect")) {
-	i.addEventListener("change", editOrderKeys);
-}
-
 async function handleAdd() {
 	let id = document.getElementById("addID").value;
 	let kind;
@@ -25,26 +17,24 @@ async function handleAdd() {
 	}
 
 	// TODO: Extract actual raw content from ZIP file
+	let reader = new FileReader();
+	await reader.readAsArrayBuffer(document.getElementById("addFile").files[0]);
+	alert(reader.result);
+	let content = reader.result;
 
-	const zipReader = document.getElementById("addFile").files[0].stream().getReader();
-
-	let content;
-	await zipReader.read().then((text) => {
-		content = text.value;
-	}).catch((error) => {
-		console.log(error);
-	});
-	alert(content);
 	let url = "http://localhost:4321/dataset/" + id + "/" + kind;
-	alert(url);
 	await fetch(url, {
 		method: "PUT",
 		body: content
 	}).then(
 		response => response.json()
-	).then(
-		data => console.log(data)
-	);
+	).then((response) => {
+		if (response.result) {
+			alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
+		} else {
+			alert(response.error);
+		}
+	});
 }
 
 async function handleRemove() {
@@ -56,17 +46,10 @@ async function handleRemove() {
 	}).then(
 		response => response.json()
 	).then((response) => {
-		// TODO: create confirmation messages?
-		if (response.statusCode === 200) {
-			let confirmationElement = document.createElement("p");
-			let confirmationMsg = document.createTextNode("Dataset " + setID + " successfully removed from InsightUBC");
-			confirmationElement.appendChild(confirmationMsg);
-			document.getElementById("removeDatasetForm").appendChild(confirmationElement);
+		if (response.result) {
+			alert("Dataset \"" + response.result + "\" successfully removed from InsightUBC");
 		} else {
-			let errorElement = document.createElement("p");
-			let errorMsg = document.createTextNode("Error " + response.statusCode + ": " + response.err);
-			errorElement.appendChild(errorMsg);
-			document.getElementById("removeDatasetForm").appendChild(errorElement);
+			alert(response.error);
 		}
 	});
 
@@ -105,9 +88,13 @@ async function handleQuery() {
 		body: query
 	}).then(
 		response => response.json()
-	).then(
-
-	);
+	).then((response) => {
+		if (response.result) {
+			// TODO: determine how to display queried results
+		} else {
+			alert(response.error);
+		}
+	});
 }
 
 function unlockColumns() {
@@ -118,12 +105,30 @@ function unlockColumns() {
 		for (let column of document.getElementsByName("columnsRoomSelect")) {
 			column.disabled = true;
 		}
+
+		if (document.getElementById("yesOrder").checked) {
+			for (let key of document.getElementsByName("columnsCourseOrder")) {
+				key.disabled = false;
+			}
+			for (let key of document.getElementsByName("columnsRoomOrder")) {
+				key.disabled = true;
+			}
+		}
 	} else {
 		for (let column of document.getElementsByName("columnsCourseSelect")) {
 			column.disabled = true;
 		}
 		for (let column of document.getElementsByName("columnsRoomSelect")) {
 			column.disabled = false;
+		}
+
+		if (document.getElementById("yesOrder").checked) {
+			for (let key of document.getElementsByName("columnsRoomOrder")) {
+				key.disabled = false;
+			}
+			for (let key of document.getElementsByName("columnsCourseOrder")) {
+				key.disabled = true;
+			}
 		}
 	}
 }
@@ -133,27 +138,29 @@ function unlockOrders() {
 		for (let dir of document.getElementsByName("orderDir")) {
 			dir.disabled = false;
 		}
-		for (let key of document.getElementsByName("orderKeys")) {
-			key.disabled = false;
+
+		if (document.getElementById("queryCoursesType").checked) {
+			for (let key of document.getElementsByName("columnsCourseOrder")) {
+				key.disabled = false;
+			}
+		} else if (document.getElementById("queryRoomsType").checked) {
+			for (let key of document.getElementsByName("columnsRoomOrder")) {
+				key.disabled = false;
+			}
 		}
+
 	} else {
 		for (let dir of document.getElementsByName("orderDir")) {
 			dir.disabled = true;
 		}
-		for (let key of document.getElementsByName("orderKeys")) {
+
+		for (let key of document.getElementsByName("columnsCourseOrder")) {
+			key.disabled = true;
+		}
+
+		for (let key of document.getElementsByName("columnsRoomOrder")) {
 			key.disabled = true;
 		}
 	}
 }
 
-function editOrderKeys() {
-	// TODO: dynamically add elements?
-	let placeToPlace = document.getElementById("dynamicOrderKeysList");
-
-	let input = document.createElement("input");
-	input.setAttribute("id", )
-	input.setAttribute("type", "checkbox");
-
-	let label = document.createElement
-	placeToPlace.appendChild(document.createElement())
-}

@@ -19,69 +19,110 @@
 		<hr/>
 		<h2>Add a new Dataset to InsightUBC</h2>
 		<form id="addDatasetForm">
-			<p>Dataset ID: <input type="text" id="addID" name="addID"></p>
+			<p>Dataset ID: <input type="text" id="addID" name="addID" required></p>
 			<p>Type of Dataset:</p>
-			<input type="radio" id="addCourses" name="setType" value="courses"><label for="addCourses">Courses</label>
+			<input type="radio" id="addCourses" name="setType" value="courses" required><label for="addCourses">Courses</label>
 			<input type="radio" id="addRooms" name="setType" value="rooms"><label for="addRooms">Rooms</label><br/>
-			<p>Content File: <input type="file" id="addFile" accept="application/x-zip-compressed"></p>
+			<p>Content File: <input type="file" id="addFile" accept="application/x-zip-compressed" required></p>
 			<input type="submit" value="Submit">
 		</form>
 		<hr/>
 		<h2>Remove a Dataset from InsightUBC</h2>
 		<form id="removeDatasetForm">
-			<p>Dataset ID to remove: <input type="text" id="toRemoveID" name="toRemoveID"></p>
+			<p>Dataset ID to remove: <input type="text" id="toRemoveID" name="toRemoveID" required></p>
 			<input type="submit" id="removeDatasetButton" value="Submit">
 		</form>
 		<hr/>
 		<h2>Query an existing InsightUBC dataset</h2>
 		<form id="queryForm">
-			<p>Dataset to Query: <input type="text" id="querySet" name="querySet"></p>
+			<p>Dataset to Query: <input type="text" id="querySet" name="querySet" required></p>
 			<p>Type of Dataset:</p>
-			<input type="radio" id="queryCoursesType" name="querySetType" value="unlockCourseColumns"><label for="queryCoursesType">Courses</label>
+			<input type="radio" id="queryCoursesType" name="querySetType" value="unlockCourseColumns" required><label for="queryCoursesType">Courses</label>
 			<input type="radio" id="queryRoomsType" name="querySetType" value="unlockRoomColumns"><label for="queryRoomsType">Rooms</label><br/>
 
 			<h3>Filter</h3>
 			<h3>Options</h3>
-			<h4>Columns</h4>
-			<p>Select the columns to display in the results:</p>
-			<p>
-				<input type="checkbox" id="selectCourseDept" name="columnsCourseSelect" value="_dept" disabled><label for="selectCourseDept">Course Department</label><br>
-				<input type="checkbox" id="selectCourseID" name="columnsCourseSelect" value="_id" disabled><label for="selectCourseID">Course ID</label><br>
-				<input type="checkbox" id="selectCourseAvg" name="columnsCourseSelect" value="_avg" disabled><label for="selectCourseAvg">Course Average</label><br>
-				<input type="checkbox" id="selectCourseInstr" name="columnsCourseSelect" value="_instructor" disabled><label for="selectCourseInstr">Course Instructor</label><br>
-				<input type="checkbox" id="selectCourseTitle" name="columnsCourseSelect" value="_title" disabled><label for="selectCourseTitle">Course Title</label><br>
-				<input type="checkbox" id="selectCoursePass" name="columnsCourseSelect" value="_pass" disabled><label for="selectCoursePass">Number of Passing students</label><br>
-				<input type="checkbox" id="selectCourseFail" name="columnsCourseSelect" value="_fail" disabled><label for="selectCourseFail">Number of Failing students</label><br>
-				<input type="checkbox" id="selectCourseAudit" name="columnsCourseSelect" value="_audit" disabled><label for="selectCourseAudit">Number of Auditing students</label><br>
-				<input type="checkbox" id="selectCourseUUID" name="columnsCourseSelect" value="_uuid" disabled><label for="selectCourseUUID">Course UUID</label><br>
-				<input type="checkbox" id="selectCourseYear" name="columnsCourseSelect" value="_year" disabled><label for="selectCourseYear">Course Year</label><br/>
-			</p>
-			<p>
-				<input type="checkbox" id="selectBuildingFN" name="columnsRoomSelect" value="_fullname" disabled><label for="selectBuildingFN">Building Name</label><br>
-				<input type="checkbox" id="selectBuildingSN" name="columnsRoomSelect" value="_shortname" disabled><label for="selectBuildingSN">Building Code</label><br>
-				<input type="checkbox" id="selectRoomNumber" name="columnsRoomSelect" value="_number" disabled><label for="selectRoomNumber">Room Number</label><br>
-				<input type="checkbox" id="selectRoomFN" name="columnsRoomSelect" value="_name" disabled><label for="selectRoomFN">Room Name</label><br>
-				<input type="checkbox" id="selectRoomsAddress" name="columnsRoomSelect" value="_address" disabled><label for="selectRoomsAddress">Building Address</label><br>
-				<input type="checkbox" id="selectBuildingLat" name="columnsRoomSelect" value="_lat" disabled><label for="selectBuildingLat">Building Geo Latitude</label><br>
-				<input type="checkbox" id="selectBuildingLon" name="columnsRoomSelect" value="_lon" disabled><label for="selectBuildingLon">Building Geo Longitude</label><br>
-				<input type="checkbox" id="selectSeats" name="columnsRoomSelect" value="_seats" disabled><label for="selectSeats">Room Capacity</label><br>
-				<input type="checkbox" id="selectRoomType" name="columnsRoomSelect" value="_type" disabled><label for="selectRoomType">Room Type</label><br>
-				<input type="checkbox" id="selectRoomFurniture" name="columnsRoomSelect" value="_furniture" disabled><label for="selectRoomFurniture">Room Furniture</label><br>
-				<input type="checkbox" id="selectRoomHREF" name="columnsRoomSelect" value="_href" disabled><label for="selectRoomHREF">More info link</label><br/>
-			</p>
-
-			<h4>Order</h4>
-			<p>Do you need your results to be sorted?
-				<input type="radio" id="yesOrder" name="isOrdered"><label for="yesOrder">Yes</label>
-				<input type="radio" id="noOrder" name="isOrdered" checked><label for="noOrder">No</label>
-			</p>
-			<p>Select the direction to sort the results:
-				<input type="radio" id="upOrder" name="orderDir" value="UP" disabled checked><label for="upOrder">UP (ascending)</label>
-				<input type="radio" id="downOrder" name="orderDir" value="DOWN" disabled><label for="downOrder">DOWN (descending)</label>
-			</p>
-			<p id="dynamicOrderKeysList"></p>
-
-			<h3>Transformations</h3>
+			<table id="options">
+				<thead>
+					<tr>
+						<th><h4>Columns</h4></th>
+						<th><h4>Order</h4></th>
+						<th><h4>Transformations</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<p>
+								<input type="checkbox" id="selectCourseDept" name="columnsCourseSelect" value="_dept" disabled><label for="selectCourseDept">Course Department</label><br>
+								<input type="checkbox" id="selectCourseID" name="columnsCourseSelect" value="_id" disabled><label for="selectCourseID">Course ID</label><br>
+								<input type="checkbox" id="selectCourseAvg" name="columnsCourseSelect" value="_avg" disabled><label for="selectCourseAvg">Course Average</label><br>
+								<input type="checkbox" id="selectCourseInstr" name="columnsCourseSelect" value="_instructor" disabled><label for="selectCourseInstr">Course Instructor</label><br>
+								<input type="checkbox" id="selectCourseTitle" name="columnsCourseSelect" value="_title" disabled><label for="selectCourseTitle">Course Title</label><br>
+								<input type="checkbox" id="selectCoursePass" name="columnsCourseSelect" value="_pass" disabled><label for="selectCoursePass">Number of Passing students</label><br>
+								<input type="checkbox" id="selectCourseFail" name="columnsCourseSelect" value="_fail" disabled><label for="selectCourseFail">Number of Failing students</label><br>
+								<input type="checkbox" id="selectCourseAudit" name="columnsCourseSelect" value="_audit" disabled><label for="selectCourseAudit">Number of Auditing students</label><br>
+								<input type="checkbox" id="selectCourseUUID" name="columnsCourseSelect" value="_uuid" disabled><label for="selectCourseUUID">Course UUID</label><br>
+								<input type="checkbox" id="selectCourseYear" name="columnsCourseSelect" value="_year" disabled><label for="selectCourseYear">Course Year</label><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="selectBuildingFN" name="columnsRoomSelect" value="_fullname" disabled><label for="selectBuildingFN">Building Name</label><br>
+								<input type="checkbox" id="selectBuildingSN" name="columnsRoomSelect" value="_shortname" disabled><label for="selectBuildingSN">Building Code</label><br>
+								<input type="checkbox" id="selectRoomNumber" name="columnsRoomSelect" value="_number" disabled><label for="selectRoomNumber">Room Number</label><br>
+								<input type="checkbox" id="selectRoomFN" name="columnsRoomSelect" value="_name" disabled><label for="selectRoomFN">Room Name</label><br>
+								<input type="checkbox" id="selectRoomsAddress" name="columnsRoomSelect" value="_address" disabled><label for="selectRoomsAddress">Building Address</label><br>
+								<input type="checkbox" id="selectBuildingLat" name="columnsRoomSelect" value="_lat" disabled><label for="selectBuildingLat">Building Geo Latitude</label><br>
+								<input type="checkbox" id="selectBuildingLon" name="columnsRoomSelect" value="_lon" disabled><label for="selectBuildingLon">Building Geo Longitude</label><br>
+								<input type="checkbox" id="selectRoomSeats" name="columnsRoomSelect" value="_seats" disabled><label for="selectRoomSeats">Room Capacity</label><br>
+								<input type="checkbox" id="selectRoomType" name="columnsRoomSelect" value="_type" disabled><label for="selectRoomType">Room Type</label><br>
+								<input type="checkbox" id="selectRoomFurniture" name="columnsRoomSelect" value="_furniture" disabled><label for="selectRoomFurniture">Room Furniture</label><br>
+								<input type="checkbox" id="selectRoomHREF" name="columnsRoomSelect" value="_href" disabled><label for="selectRoomHREF">More info link</label><br/>
+							</p>
+						</td>
+						<td>
+							<p>Do you need your results to be sorted?
+								<input type="radio" id="yesOrder" name="isOrdered" required><label for="yesOrder">Yes</label>
+								<input type="radio" id="noOrder" name="isOrdered" checked><label for="noOrder">No</label>
+							</p>
+							<p>Select the direction to sort the results:
+								<input type="radio" id="upOrder" name="orderDir" value="UP" disabled checked required><label for="upOrder">UP (ascending)</label>
+								<input type="radio" id="downOrder" name="orderDir" value="DOWN" disabled><label for="downOrder">DOWN (descending)</label>
+							</p>
+							<p>
+								<input type="checkbox" id="orderCourseDept" name="columnsCourseOrder" value="_dept" disabled><label for="orderCourseDept">Course Department</label><br>
+								<input type="checkbox" id="orderCourseID" name="columnsCourseOrder" value="_id" disabled><label for="orderCourseID">Course ID</label><br>
+								<input type="checkbox" id="orderCourseAvg" name="columnsCourseOrder" value="_avg" disabled><label for="orderCourseAvg">Course Average</label><br>
+								<input type="checkbox" id="orderCourseInstr" name="columnsCourseOrder" value="_instructor" disabled><label for="orderCourseInstr">Course Instructor</label><br>
+								<input type="checkbox" id="orderCourseTitle" name="columnsCourseOrder" value="_title" disabled><label for="orderCourseTitle">Course Title</label><br>
+								<input type="checkbox" id="orderCoursePass" name="columnsCourseOrder" value="_pass" disabled><label for="orderCoursePass">Number of Passing students</label><br>
+								<input type="checkbox" id="orderCourseFail" name="columnsCourseOrder" value="_fail" disabled><label for="orderCourseFail">Number of Failing students</label><br>
+								<input type="checkbox" id="orderCourseAudit" name="columnsCourseOrder" value="_audit" disabled><label for="orderCourseAudit">Number of Auditing students</label><br>
+								<input type="checkbox" id="orderCourseUUID" name="columnsCourseOrder" value="_uuid" disabled><label for="orderCourseUUID">Course UUID</label><br>
+								<input type="checkbox" id="orderCourseYear" name="columnsCourseOrder" value="_year" disabled><label for="orderCourseYear">Course Year</label><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="orderBuildingFN" name="columnsRoomOrder" value="_fullname" disabled><label for="orderBuildingFN">Building Name</label><br>
+								<input type="checkbox" id="orderBuildingSN" name="columnsRoomOrder" value="_shortname" disabled><label for="orderBuildingSN">Building Code</label><br>
+								<input type="checkbox" id="orderRoomNumber" name="columnsRoomOrder" value="_number" disabled><label for="orderRoomNumber">Room Number</label><br>
+								<input type="checkbox" id="orderRoomFN" name="columnsRoomOrder" value="_name" disabled><label for="orderRoomFN">Room Name</label><br>
+								<input type="checkbox" id="orderRoomsAddress" name="columnsRoomOrder" value="_address" disabled><label for="orderRoomsAddress">Building Address</label><br>
+								<input type="checkbox" id="orderBuildingLat" name="columnsRoomOrder" value="_lat" disabled><label for="orderBuildingLat">Building Geo Latitude</label><br>
+								<input type="checkbox" id="orderBuildingLon" name="columnsRoomOrder" value="_lon" disabled><label for="orderBuildingLon">Building Geo Longitude</label><br>
+								<input type="checkbox" id="orderRoomSeats" name="columnsRoomOrder" value="_seats" disabled><label for="orderRoomSeats">Room Capacity</label><br>
+								<input type="checkbox" id="orderRoomType" name="columnsRoomOrder" value="_type" disabled><label for="orderRoomType">Room Type</label><br>
+								<input type="checkbox" id="orderRoomFurniture" name="columnsRoomOrder" value="_furniture" disabled><label for="orderRoomFurniture">Room Furniture</label><br>
+								<input type="checkbox" id="orderRoomHREF" name="columnsRoomOrder" value="_href" disabled><label for="orderRoomHREF">More info link</label><br/>
+							</p>
+						</td>
+						<td>
+							<p>Do you require any groupings or aggregations?
+								<input type="radio" id="yesTransform" name="isTransformed" required><label for="yesTransform">Yes</label>
+								<input type="radio" id="noTransform" name="isTransformed" checked><label for="noTransform">No</label>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 			<input type="submit" id="queryButton" value="Submit Query">
 		</form>
 		<hr/>
