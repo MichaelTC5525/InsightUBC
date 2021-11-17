@@ -128,6 +128,8 @@ export default class Server {
 			await insightFacade.addDataset(req.params.id, content, req.params.kind as InsightDatasetKind)
 				.then((result: string[]) => {
 					res.status(200).json({result: result});
+				}).catch((error: any) => {
+					res.status(400).json({error: error});
 				});
 		} catch (err: any) {
 			res.status(400).json({error: err});
@@ -145,7 +147,7 @@ export default class Server {
 					if (error instanceof NotFoundError) {
 						res.status(404).json({error: error});
 					} else {
-						throw error;
+						res.status(400).json({error: error});
 					}
 				});
 		} catch (err: any) {
@@ -160,6 +162,8 @@ export default class Server {
 			await insightFacade.performQuery(req.body)
 				.then((result: any[]) => {
 					res.status(200).json({result: result});
+				}).catch((error: any) => {
+					res.status(400).json({error: error});
 				});
 		} catch (err: any) {
 			res.status(400).json({error: err});
