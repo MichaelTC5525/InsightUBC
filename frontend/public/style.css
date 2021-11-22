@@ -2,7 +2,7 @@
 	text-align:center;
 }
 
-#columnsWarning {
+.warning {
 	color:red;
 }
 
@@ -11,8 +11,10 @@
 	border-collapse: collapse;
 }
 
-#options {
-	width: 100%;
+#options, #transforms {
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
 }
 
 .button {

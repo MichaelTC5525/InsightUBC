@@ -27,6 +27,8 @@ export default class InsightFacade implements IInsightFacade {
 	private readonly datasetStorage: InsightDataset[];
 	private datasetEntries: DatasetEntry[];
 	private dataFolder: string = "./data/";
+
+	private static readonly MAX_LINES = 5000;
 	/**
 	 * On creating a new InsightFacade instance, we should read the ./data file system directory
 	 * in order to ensure that we reload any existing datasets that were left from a previous
@@ -148,9 +150,9 @@ export default class InsightFacade implements IInsightFacade {
 			let rh: ResultHandler = new ResultHandler();
 			let rc: ResultCrafter = new ResultCrafter();
 			if (obj.TRANSFORMATIONS === undefined) {
-				if (this.datasetEntries.length > 5000) {
+				if (this.datasetEntries.length > InsightFacade.MAX_LINES) {
 					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
-						" results"));
+						" results, which exceeds the maximum of " + InsightFacade.MAX_LINES));
 				}
 				let queryResults: any[] = rc.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, setKind,
 					this.datasetEntries);

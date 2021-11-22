@@ -7,6 +7,14 @@ document.getElementById("queryRoomsType").addEventListener("change", unlockColum
 document.getElementById("yesOrder").addEventListener("change", unlockOrders);
 document.getElementById("noOrder").addEventListener("change", unlockOrders);
 
+for (let e of document.getElementsByName("columnsCourseOrder")) {
+	e.addEventListener("change", unlockOrderNums);
+}
+
+for (let e of document.getElementsByName("columnsRoomOrder")) {
+	e.addEventListener("change", unlockOrderNums);
+}
+
 async function handleAdd() {
 	let id = document.getElementById("addID").value;
 	let kind;
@@ -83,14 +91,30 @@ async function handleQuery() {
 		}
 	}
 
+	// TODO: Get the ordering keys, use colnums to decide which to put through first into the ORDER.keys array
+
+	if (document.getElementById("yesOrder").checked) {
+		query.OPTIONS.ORDER = {};
+		if (document.getElementById("upOrder").checked) {
+			query.OPTIONS.ORDER.dir = "UP";
+		} else {
+			query.OPTIONS.ORDER.dir = "DOWN";
+		}
+	}
+
+	alert(query);
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
-		body: query
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(query)
 	}).then(
 		response => response.json()
 	).then((response) => {
 		if (response.result) {
 			// TODO: determine how to display queried results
+			alert(response.result);
 		} else {
 			alert(response.error);
 		}
@@ -113,6 +137,8 @@ function unlockColumns() {
 			for (let key of document.getElementsByName("columnsRoomOrder")) {
 				key.disabled = true;
 			}
+
+			unlockOrderNums();
 		}
 	} else {
 		for (let column of document.getElementsByName("columnsCourseSelect")) {
@@ -129,6 +155,8 @@ function unlockColumns() {
 			for (let key of document.getElementsByName("columnsCourseOrder")) {
 				key.disabled = true;
 			}
+
+			unlockOrderNums();
 		}
 	}
 }
@@ -160,6 +188,28 @@ function unlockOrders() {
 
 		for (let key of document.getElementsByName("columnsRoomOrder")) {
 			key.disabled = true;
+		}
+	}
+}
+
+function unlockOrderNums() {
+	for (let e of document.getElementsByName("columnsCourseOrder")) {
+		if (e.checked && !e.disabled) {
+			document.getElementById(e.id + "_colnum").disabled = false;
+			document.getElementById(e.id + "_colnum").required = true;
+		} else {
+			document.getElementById(e.id + "_colnum").disabled = true;
+			document.getElementById(e.id + "_colnum").required = false;
+		}
+	}
+
+	for (let f of document.getElementsByName("columnsRoomOrder")) {
+		if (f.checked && !f.disabled) {
+			document.getElementById(f.id + "_colnum").disabled = false;
+			document.getElementById(f.id + "_colnum").required = true;
+		} else {
+			document.getElementById(f.id + "_colnum").disabled = true;
+			document.getElementById(f.id + "_colnum").required = false;
 		}
 	}
 }
