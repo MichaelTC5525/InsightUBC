@@ -14,7 +14,11 @@
 #options, #transforms {
 	margin-left: auto;
 	margin-right: auto;
-	width: 75%;
+	width: 100%
+}
+
+#options {
+	column-width: fit-content;
 }
 
 .button {

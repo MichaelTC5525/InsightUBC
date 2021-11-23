@@ -7,12 +7,32 @@ document.getElementById("queryRoomsType").addEventListener("change", unlockColum
 document.getElementById("yesOrder").addEventListener("change", unlockOrders);
 document.getElementById("noOrder").addEventListener("change", unlockOrders);
 
+document.getElementById("yesGroup").addEventListener("change", unlockGroups);
+document.getElementById("noGroup").addEventListener("change", unlockGroups);
+
 for (let e of document.getElementsByName("columnsCourseOrder")) {
 	e.addEventListener("change", unlockOrderNums);
 }
 
 for (let e of document.getElementsByName("columnsRoomOrder")) {
 	e.addEventListener("change", unlockOrderNums);
+}
+
+// https://gist.github.com/synthet1c/9019ad368f2c814838654115322ec198
+function readFile(selector) {
+	const input = document.querySelector(selector)
+	return new Promise((resolve, reject) => {
+		const read = e => {
+			const reader = new FileReader()
+			reader.onload = () => resolve({
+				contents: reader.result,
+				name: input.value.slice(input.value.lastIndexOf('\\') + 1)
+			})
+			reader.onerror = reject
+			reader.readAsArrayBuffer(input.files[0])
+		}
+		input.addEventListener('change', read)
+	})
 }
 
 async function handleAdd() {
@@ -24,25 +44,39 @@ async function handleAdd() {
 		kind = document.getElementById("addRooms").value;
 	}
 
-	// TODO: Extract actual raw content from ZIP file
-	let reader = new FileReader();
-	await reader.readAsArrayBuffer(document.getElementById("addFile").files[0]);
-	alert(reader.result);
-	let content = reader.result;
-
+	// // TODO: Extract actual raw content from ZIP file
+	// let reader = new FileReader();
+	// await reader.readAsArrayBuffer(document.getElementById("addFile").files[0]);
+	alert("Here we go");
+	let content = await readFile('#addFile')
+	console.log(content);
 	let url = "http://localhost:4321/dataset/" + id + "/" + kind;
-	await fetch(url, {
+	const response = await fetch(url, {
 		method: "PUT",
 		body: content
-	}).then(
-		response => response.json()
-	).then((response) => {
-		if (response.result) {
-			alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
-		} else {
-			alert(response.error);
-		}
-	});
+	}).json();
+
+	if (response.result) {
+		alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
+	} else {
+		alert(response.error);
+	}
+}
+
+async function previewFile() {
+	const content = document.querySelector('#addFile');
+	const [file] = document.querySelector('input[type=file]').files;
+	const reader = new FileReader();
+
+	reader.addEventListener("load", () => {
+		// this will then display a text file
+		content.innerText = reader.result;
+	}, false);
+
+	if (file) {
+		await reader.readAsText(file);
+	}
+	return content.innerText;
 }
 
 async function handleRemove() {
@@ -140,6 +174,15 @@ function unlockColumns() {
 
 			unlockOrderNums();
 		}
+
+		if (document.getElementById("yesGroup").checked) {
+			for (let key of document.getElementsByName("columnsCourseGroup")) {
+				key.disabled = false;
+			}
+			for (let key of document.getElementsByName("columnsRoomGroup")) {
+				key.disabled = true;
+			}
+		}
 	} else {
 		for (let column of document.getElementsByName("columnsCourseSelect")) {
 			column.disabled = true;
@@ -157,6 +200,16 @@ function unlockColumns() {
 			}
 
 			unlockOrderNums();
+		}
+
+		if (document.getElementById("yesGroup").checked) {
+			for (let key of document.getElementsByName("columnsCourseGroup")) {
+				key.disabled = true;
+			}
+
+			for (let key of document.getElementsByName("columnsRoomGroup")) {
+				key.disabled = false;
+			}
 		}
 	}
 }
@@ -210,6 +263,29 @@ function unlockOrderNums() {
 		} else {
 			document.getElementById(f.id + "_colnum").disabled = true;
 			document.getElementById(f.id + "_colnum").required = false;
+		}
+	}
+}
+
+function unlockGroups() {
+	if (document.getElementById("yesGroup").checked) {
+		if (document.getElementById("queryCoursesType").checked) {
+			for (let key of document.getElementsByName("columnsCourseGroup")) {
+				key.disabled = false;
+			}
+		} else if (document.getElementById("queryRoomsType").checked) {
+			for (let key of document.getElementsByName("columnsRoomGroup")) {
+				key.disabled = false;
+			}
+		}
+
+	} else {
+		for (let key of document.getElementsByName("columnsCourseGroup")) {
+			key.disabled = true;
+		}
+
+		for (let key of document.getElementsByName("columnsRoomGroup")) {
+			key.disabled = true;
 		}
 	}
 }

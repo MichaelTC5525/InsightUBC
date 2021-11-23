@@ -90,7 +90,7 @@
 								<input type="radio" id="downOrder" name="orderDir" value="DOWN" disabled><label for="downOrder">DOWN (descending)</label>
 							</p>
 							<p>Select the columns on which to sort. With each selected column, specify the order number for it. Ties in earlier keys will be broken by values in later ones (low to high).</p>
-							<p class="warning">Ensure that values in the order numbers are distinct and also do not conflict with columns specified later in <strong>"Aggregated Columns"</strong>.</p>
+							<p class="warning">Ensure that values in the order numbers are distinct and also do not conflict with any columns specified later in <strong>"Aggregated Columns"</strong>.</p>
 							<p>
 								<input type="checkbox" id="orderCourseDept" name="columnsCourseOrder" value="_dept" disabled><label for="orderCourseDept">Course Department</label>
 								<input type="text" id="orderCourseDept_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
@@ -176,6 +176,32 @@
 							<p>Does the output need to be grouped?
 								<input type="radio" id="yesGroup" name="isGrouped" required><label for="yesGroup">Yes</label>
 								<input type="radio" id="noGroup" name="isGrouped" checked><label for="noGroup">No</label>
+							</p>
+							<p>Select the columns on which to create groupings:</p>
+							<p>
+								<input type="checkbox" id="groupCourseDept" name="columnsCourseGroup" value="_dept" disabled><label for="groupCourseDept">Course Department</label><br>
+								<input type="checkbox" id="groupCourseID" name="columnsCourseGroup" value="_id" disabled><label for="groupCourseID">Course ID</label><br>
+								<input type="checkbox" id="groupCourseAvg" name="columnsCourseGroup" value="_avg" disabled><label for="groupCourseAvg">Course Average</label><br>
+								<input type="checkbox" id="groupCourseInstr" name="columnsCourseGroup" value="_instructor" disabled><label for="groupCourseInstr">Course Instructor</label><br>
+								<input type="checkbox" id="groupCourseTitle" name="columnsCourseGroup" value="_title" disabled><label for="groupCourseTitle">Course Title</label><br>
+								<input type="checkbox" id="groupCoursePass" name="columnsCourseGroup" value="_pass" disabled><label for="groupCoursePass">Number of Passing students</label><br>
+								<input type="checkbox" id="groupCourseFail" name="columnsCourseGroup" value="_fail" disabled><label for="groupCourseFail">Number of Failing students</label><br>
+								<input type="checkbox" id="groupCourseAudit" name="columnsCourseGroup" value="_audit" disabled><label for="groupCourseAudit">Number of Auditing students</label><br>
+								<input type="checkbox" id="groupCourseUUID" name="columnsCourseGroup" value="_uuid" disabled><label for="groupCourseUUID">Course UUID</label><br>
+								<input type="checkbox" id="groupCourseYear" name="columnsCourseGroup" value="_year" disabled><label for="groupCourseYear">Course Year</label><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="groupBuildingFN" name="columnsRoomGroup" value="_fullname" disabled><label for="groupBuildingFN">Building Name</label><br>
+								<input type="checkbox" id="groupBuildingSN" name="columnsRoomGroup" value="_shortname" disabled><label for="groupBuildingSN">Building Code</label><br>
+								<input type="checkbox" id="groupRoomNumber" name="columnsRoomGroup" value="_number" disabled><label for="groupRoomNumber">Room Number</label><br>
+								<input type="checkbox" id="groupRoomFN" name="columnsRoomGroup" value="_name" disabled><label for="groupRoomFN">Room Name</label><br>
+								<input type="checkbox" id="groupRoomsAddress" name="columnsRoomGroup" value="_address" disabled><label for="groupRoomsAddress">Building Address</label><br>
+								<input type="checkbox" id="groupBuildingLat" name="columnsRoomGroup" value="_lat" disabled><label for="groupBuildingLat">Building Geo Latitude</label><br>
+								<input type="checkbox" id="groupBuildingLon" name="columnsRoomGroup" value="_lon" disabled><label for="groupBuildingLon">Building Geo Longitude</label><br>
+								<input type="checkbox" id="groupRoomSeats" name="columnsRoomGroup" value="_seats" disabled><label for="groupRoomSeats">Room Capacity</label><br>
+								<input type="checkbox" id="groupRoomType" name="columnsRoomGroup" value="_type" disabled><label for="groupRoomType">Room Type</label><br>
+								<input type="checkbox" id="groupRoomFurniture" name="columnsRoomGroup" value="_furniture" disabled><label for="groupRoomFurniture">Room Furniture</label><br>
+								<input type="checkbox" id="groupRoomHREF" name="columnsRoomGroup" value="_href" disabled><label for="groupRoomHREF">More info link</label><br/>
 							</p>
 						</td>
 						<td>
