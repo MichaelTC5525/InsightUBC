@@ -18,24 +18,9 @@ for (let e of document.getElementsByName("columnsRoomOrder")) {
 	e.addEventListener("change", unlockOrderNums);
 }
 
-// https://gist.github.com/synthet1c/9019ad368f2c814838654115322ec198
-function readFile(selector) {
-	const input = document.querySelector(selector)
-	return new Promise((resolve, reject) => {
-		const read = e => {
-			const reader = new FileReader()
-			reader.onload = () => resolve({
-				contents: reader.result,
-				name: input.value.slice(input.value.lastIndexOf('\\') + 1)
-			})
-			reader.onerror = reject
-			reader.readAsArrayBuffer(input.files[0])
-		}
-		input.addEventListener('change', read)
-	})
-}
+async function handleAdd(event) {
+	event.preventDefault();
 
-async function handleAdd() {
 	let id = document.getElementById("addID").value;
 	let kind;
 	if (document.getElementById("addCourses").checked) {
@@ -44,39 +29,22 @@ async function handleAdd() {
 		kind = document.getElementById("addRooms").value;
 	}
 
-	// // TODO: Extract actual raw content from ZIP file
-	// let reader = new FileReader();
-	// await reader.readAsArrayBuffer(document.getElementById("addFile").files[0]);
-	alert("Here we go");
-	let content = await readFile('#addFile')
-	console.log(content);
 	let url = "http://localhost:4321/dataset/" + id + "/" + kind;
-	const response = await fetch(url, {
+	await fetch(url, {
 		method: "PUT",
-		body: content
-	}).json();
+		body: document.getElementById("addFile").files[0]
+	}).then(
+		response => response.json()
+	).then((response) => {
+		if (response.result) {
+			alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
 
-	if (response.result) {
-		alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
-	} else {
-		alert(response.error);
-	}
-}
-
-async function previewFile() {
-	const content = document.querySelector('#addFile');
-	const [file] = document.querySelector('input[type=file]').files;
-	const reader = new FileReader();
-
-	reader.addEventListener("load", () => {
-		// this will then display a text file
-		content.innerText = reader.result;
-	}, false);
-
-	if (file) {
-		await reader.readAsText(file);
-	}
-	return content.innerText;
+			// Force reload
+			document.location = document.location;
+		} else {
+			alert(response.error);
+		}
+	});
 }
 
 async function handleRemove() {
@@ -97,7 +65,9 @@ async function handleRemove() {
 
 }
 
-async function handleQuery() {
+async function handleQuery(event) {
+	// No reloading the page, allow for adding DOM elements
+	event.preventDefault();
 	// TODO: obtain query components from a form
 	// Default form of query, must have these pieces, even if empty
 	let query = {"WHERE":{}, "OPTIONS":{"COLUMNS":[]}};
@@ -147,12 +117,15 @@ async function handleQuery() {
 		response => response.json()
 	).then((response) => {
 		if (response.result) {
-			// TODO: determine how to display queried results
-			alert(response.result);
+			displayResults(response.result);
 		} else {
 			alert(response.error);
 		}
 	});
+}
+
+function displayResults() {
+	// TODO: Show the results in a table? Add to DOM
 }
 
 function unlockColumns() {
