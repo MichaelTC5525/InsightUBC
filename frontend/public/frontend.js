@@ -1,3 +1,5 @@
+document.getElementById("listDatasetsButton").addEventListener("click", handleList)
+
 document.getElementById("addDatasetForm").addEventListener("submit", handleAdd);
 document.getElementById("removeDatasetForm").addEventListener("submit", handleRemove);
 document.getElementById("queryForm").addEventListener("submit", handleQuery);
@@ -16,6 +18,27 @@ for (let e of document.getElementsByName("columnsCourseOrder")) {
 
 for (let e of document.getElementsByName("columnsRoomOrder")) {
 	e.addEventListener("change", unlockOrderNums);
+}
+
+async function handleList(event) {
+	event.preventDefault();
+
+	let url = "http://localhost:4321/datasets";
+	await fetch(url, {
+		method: "GET"
+	}).then(
+		response => response.json()
+	).then((response) => {
+		let datasets = "";
+		for (let i = 0; i < response.result.length - 1; i++) {
+			datasets += (i + 1) + ". " + response.result[i].id + " - Type: " +
+				response.result[i].kind + " - Number of entries: " + response.result[i].numRows + "\n";
+		}
+		datasets += (response.result.length) + ". " + response.result[response.result.length - 1].id +
+			" - Type: " + response.result[response.result.length - 1].kind +
+			" - Number of entries: " + response.result[response.result.length - 1].numRows;
+		alert("The current dataset IDs present in InsightUBC are: \n" + datasets);
+	});
 }
 
 async function handleAdd(event) {
@@ -37,7 +60,7 @@ async function handleAdd(event) {
 		response => response.json()
 	).then((response) => {
 		if (response.result) {
-			alert("Dataset " + id + " was successfully added; current set IDs are:\n[" + response.result + "]");
+			alert("Dataset \"" + id + "\" was successfully added; current set IDs are:\n[" + response.result + "]");
 
 			// Force reload
 			document.location = document.location;
@@ -80,7 +103,7 @@ async function handleQuery(event) {
 	let courseColumns = document.getElementsByName("columnsCourseSelect");
 	let roomColumns = document.getElementsByName("columnsRoomSelect");
 
-	// Columns lists will be of type HTMLElement[]
+	// Columns lists will be of type HTMLInputElement[] with the checked option because of type="checkbox"
 	if (setTypeCourses.checked) {
 		for (let cc of courseColumns) {
 			if (cc.checked) {
@@ -95,8 +118,6 @@ async function handleQuery(event) {
 		}
 	}
 
-	// TODO: Get the ordering keys, use colnums to decide which to put through first into the ORDER.keys array
-
 	if (document.getElementById("yesOrder").checked) {
 		query.OPTIONS.ORDER = {};
 		if (document.getElementById("upOrder").checked) {
@@ -104,9 +125,33 @@ async function handleQuery(event) {
 		} else {
 			query.OPTIONS.ORDER.dir = "DOWN";
 		}
+
+		query.OPTIONS.ORDER.keys = getOrderKeys(querySet);
 	}
 
-	alert(query);
+	// TODO: Transformations / agg columns
+
+	if (document.getElementById("yesGroup").checked) {
+		query.TRANSFORMATIONS = {};
+		query.TRANSFORMATIONS.GROUP = [];
+		query.TRANSFORMATIONS.APPLY = [];
+
+		for (let g of document.getElementsByName("columnsCourseGroup")) {
+			if (!g.disabled && g.checked) {
+				query.TRANSFORMATIONS.GROUP.push(querySet + g.value);
+			}
+		}
+
+		for (let g of document.getElementsByName("columnsRoomGroup")) {
+			if (!g.disabled && g.checked) {
+				query.TRANSFORMATIONS.GROUP.push(querySet + g.value);
+			}
+		}
+
+		query.TRANSFORMATIONS.APPLY = getAggColumns(querySet);
+	}
+
+	alert(JSON.stringify(query));
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
 		headers: {
@@ -124,8 +169,56 @@ async function handleQuery(event) {
 	});
 }
 
+function getOrderKeys(querySet) {
+	let retVal = [];
+	let courseOrder = document.getElementsByName("orderCourseColumnNumbers");
+	let roomOrder = document.getElementsByName("orderRoomColumnNumbers");
+
+	// First pass, obtain the values inputted to the Order Key # boxes
+	let vals = [];
+	if (document.getElementById("queryCoursesType").checked) {
+		for (let colNum of courseOrder) {
+			if (!colNum.disabled) {
+				vals.push(colNum.value);
+			}
+		}
+	} else {
+		for (let colNum of roomOrder) {
+			if (!colNum.disabled) {
+				vals.push(colNum.value);
+			}
+		}
+	}
+	vals.sort();
+	// Second pass; get the columns to order on, and place them into the query IN ORDER
+	for (let v of vals) {
+		if (document.getElementById("queryCoursesType").checked) {
+			for (let colNum of courseOrder) {
+				if (colNum.value === v) {
+					retVal.push(querySet + document.getElementById(colNum.id.split("_")[0]).value)
+				}
+			}
+		} else {
+			for (let colNum of roomOrder) {
+				if (colNum.value === v) {
+					retVal.push(querySet + document.getElementById(colNum.id.split("_")[0]).value)
+				}
+			}
+		}
+	}
+	return retVal;
+}
+
+// TODO
+function getAggColumns(querySet) {
+
+}
+
 function displayResults() {
 	// TODO: Show the results in a table? Add to DOM
+	document.getElementsByTagName("body")[0].appendChild(
+		document.createElement("p").appendChild(
+			document.createTextNode("HELLO WORLD")));
 }
 
 function unlockColumns() {
