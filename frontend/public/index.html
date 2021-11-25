@@ -205,7 +205,9 @@
 						<td>
 							<!-- TODO -->
 							<p>Create any aggregated columns here. Specify a custom name for your column, the aggregation type to run, and the column on which to run it.</p>
-							<p class="warning">If creating more than one aggregated column, create them line by line; do not skip lines or later ones will not appear in results</p>
+							<p class="warning">Aggregations will only be created where column names are defined, selecting an aggregation type without a name has no effect.<br>
+								Be mindful of the type of dataset being queried, as it will affect what columns can be used in an aggregation.</p>
+							<p class="warning">Aggregated columns are only available when Transformations - Grouping is enabled.</p>
 							<table id="aggColumns">
 								<thead>
 									<tr>
@@ -216,10 +218,9 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td><input type="text" name="aggNames" placeholder="Name of aggregate column"> =></td>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
 										<td>
-											<select id="aggType0" name="aggTypes">
-												<option value="">--</option>
+											<select id="aggType0" name="aggTypes" disabled>
 												<option value="MAX">MAX</option>
 												<option value="MIN">MIN</option>
 												<option value="AVG">AVG</option>
@@ -228,8 +229,7 @@
 											</select>
 										</td>
 										<td>
-											<select id="aggColumn0" name="aggOnColumn">
-												<option value="">--</option>
+											<select id="aggColumn0" name="aggOnColumn" disabled>
 												<option value="_dept">Course Department</option>
 												<option value="_id">Course ID</option>
 												<option value="_avg">Course Average</option>
@@ -255,10 +255,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td><input type="text" name="aggNames" placeholder="Name of aggregate column"> =></td>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
 										<td>
-											<select id="aggType1" name="aggTypes">
-												<option value="">--</option>
+											<select id="aggType1" name="aggTypes" disabled>
 												<option value="MAX">MAX</option>
 												<option value="MIN">MIN</option>
 												<option value="AVG">AVG</option>
@@ -267,8 +266,7 @@
 											</select>
 										</td>
 										<td>
-											<select id="aggColumn1" name="aggOnColumn">
-												<option value="">--</option>
+											<select id="aggColumn1" name="aggOnColumn" disabled>
 												<option value="_dept">Course Department</option>
 												<option value="_id">Course ID</option>
 												<option value="_avg">Course Average</option>
@@ -294,10 +292,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td><input type="text" name="aggNames" placeholder="Name of aggregate column"> =></td>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
 										<td>
-											<select id="aggType2" name="aggTypes">
-												<option value="">--</option>
+											<select id="aggType2" name="aggTypes" disabled>
 												<option value="MAX">MAX</option>
 												<option value="MIN">MIN</option>
 												<option value="AVG">AVG</option>
@@ -306,8 +303,7 @@
 											</select>
 										</td>
 										<td>
-											<select id="aggColumn2" name="aggOnColumn">
-												<option value="">--</option>
+											<select id="aggColumn2" name="aggOnColumn" disabled>
 												<option value="_dept">Course Department</option>
 												<option value="_id">Course ID</option>
 												<option value="_avg">Course Average</option>
@@ -333,10 +329,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td><input type="text" name="aggNames" placeholder="Name of aggregate column"> =></td>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
 										<td>
-											<select id="aggType3" name="aggTypes">
-												<option value="">--</option>
+											<select id="aggType3" name="aggTypes" disabled>
 												<option value="MAX">MAX</option>
 												<option value="MIN">MIN</option>
 												<option value="AVG">AVG</option>
@@ -345,8 +340,7 @@
 											</select>
 										</td>
 										<td>
-											<select id="aggColumn3" name="aggOnColumn">
-												<option value="">--</option>
+											<select id="aggColumn3" name="aggOnColumn" disabled>
 												<option value="_dept">Course Department</option>
 												<option value="_id">Course ID</option>
 												<option value="_avg">Course Average</option>
@@ -372,10 +366,9 @@
 										</td>
 									</tr>
 									<tr>
-										<td><input type="text" name="aggNames" placeholder="Name of aggregate column"> =></td>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
 										<td>
-											<select id="aggType4" name="aggTypes">
-												<option value="">--</option>
+											<select id="aggType4" name="aggTypes" disabled>
 												<option value="MAX">MAX</option>
 												<option value="MIN">MIN</option>
 												<option value="AVG">AVG</option>
@@ -384,8 +377,192 @@
 											</select>
 										</td>
 										<td>
-											<select id="aggColumn4" name="aggOnColumn">
-												<option value="">--</option>
+											<select id="aggColumn4" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType5" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn5" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType6" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn6" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType7" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn7" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType8" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn8" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType9" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn9" name="aggOnColumn" disabled>
 												<option value="_dept">Course Department</option>
 												<option value="_id">Course ID</option>
 												<option value="_avg">Course Average</option>

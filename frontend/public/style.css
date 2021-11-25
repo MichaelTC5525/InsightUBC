@@ -21,6 +21,25 @@
 	column-width: fit-content;
 }
 
+#resultHeader {
+	text-align: center;
+	color:green;
+}
+
+#results {
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+	border-color: darkgreen;
+	width: 90%;
+}
+
+.resultData {
+	border-color: darkgreen;
+	text-align: center;
+	color: darkgreen;
+}
+
 .button {
 	background-color: #3f51b5;
 	border: none;

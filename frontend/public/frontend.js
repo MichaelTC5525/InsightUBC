@@ -9,8 +9,8 @@ document.getElementById("queryRoomsType").addEventListener("change", unlockColum
 document.getElementById("yesOrder").addEventListener("change", unlockOrders);
 document.getElementById("noOrder").addEventListener("change", unlockOrders);
 
-document.getElementById("yesGroup").addEventListener("change", unlockGroups);
-document.getElementById("noGroup").addEventListener("change", unlockGroups);
+document.getElementById("yesGroup").addEventListener("change", unlockGroupsAndAggs);
+document.getElementById("noGroup").addEventListener("change", unlockGroupsAndAggs);
 
 for (let e of document.getElementsByName("columnsCourseOrder")) {
 	e.addEventListener("change", unlockOrderNums);
@@ -34,10 +34,16 @@ async function handleList(event) {
 			datasets += (i + 1) + ". " + response.result[i].id + " - Type: " +
 				response.result[i].kind + " - Number of entries: " + response.result[i].numRows + "\n";
 		}
-		datasets += (response.result.length) + ". " + response.result[response.result.length - 1].id +
-			" - Type: " + response.result[response.result.length - 1].kind +
-			" - Number of entries: " + response.result[response.result.length - 1].numRows;
-		alert("The current dataset IDs present in InsightUBC are: \n" + datasets);
+		if (response.result.length >= 1) {
+			datasets += (response.result.length) + ". " + response.result[response.result.length - 1].id +
+				" - Type: " + response.result[response.result.length - 1].kind +
+				" - Number of entries: " + response.result[response.result.length - 1].numRows;
+		}
+		if (datasets !== "") {
+			alert("The current dataset IDs present in InsightUBC are: \n" + datasets);
+		} else {
+			alert("No datasets found in InsightUBC. Add some new ones!");
+		}
 	});
 }
 
@@ -91,6 +97,7 @@ async function handleRemove() {
 async function handleQuery(event) {
 	// No reloading the page, allow for adding DOM elements
 	event.preventDefault();
+
 	// TODO: obtain query components from a form
 	// Default form of query, must have these pieces, even if empty
 	let query = {"WHERE":{}, "OPTIONS":{"COLUMNS":[]}};
@@ -129,8 +136,6 @@ async function handleQuery(event) {
 		query.OPTIONS.ORDER.keys = getOrderKeys(querySet);
 	}
 
-	// TODO: Transformations / agg columns
-
 	if (document.getElementById("yesGroup").checked) {
 		query.TRANSFORMATIONS = {};
 		query.TRANSFORMATIONS.GROUP = [];
@@ -148,7 +153,7 @@ async function handleQuery(event) {
 			}
 		}
 
-		query.TRANSFORMATIONS.APPLY = getAggColumns(querySet);
+		query.TRANSFORMATIONS.APPLY = getAggColumns(query.OPTIONS.COLUMNS, querySet);
 	}
 
 	alert(JSON.stringify(query));
@@ -209,16 +214,75 @@ function getOrderKeys(querySet) {
 	return retVal;
 }
 
-// TODO
-function getAggColumns(querySet) {
+function getAggColumns(columns, querySet) {
+	let retVal = [];
+	let indexInList = 0;
+	for (let agg of document.getElementsByName("aggNames")) {
+		if (agg.value === "") {
+			indexInList++;
+			continue;
+		}
+		let aggToAdd = {};
+		aggToAdd[agg.value] = {};
 
+		let aggType = document.getElementById("aggType" + indexInList).value;
+		aggToAdd[agg.value][aggType] = querySet + document.getElementById("aggColumn" + indexInList).value;
+
+		retVal.push(aggToAdd);
+		columns.push(agg.value);
+
+		indexInList++;
+	}
+
+	return retVal;
 }
 
-function displayResults() {
+function displayResults(results) {
+	// TODO: remove children before adding new ones?
+	document.body.appendChild(document.createElement("br"));
+
+	let resultHeader = document.createElement("h2");
+	resultHeader.setAttribute("id", "resultHeader");
+	resultHeader.appendChild(document.createTextNode("RESULT"));
+
+	document.body.appendChild(resultHeader);
+
+	if (results.length === 0) {
+		return;
+	}
+
 	// TODO: Show the results in a table? Add to DOM
-	document.getElementsByTagName("body")[0].appendChild(
-		document.createElement("p").appendChild(
-			document.createTextNode("HELLO WORLD")));
+	let resultTable = document.createElement("table");
+	resultTable.setAttribute("id", "results");
+	let thead = document.createElement("thead");
+	resultTable.appendChild(thead);
+	let theadRow = document.createElement("tr");
+	thead.appendChild(theadRow);
+	for (let r of Object.keys(results[0])) {
+		let theadEntry = document.createElement("th");
+		let theadText = document.createTextNode(r);
+		theadEntry.appendChild(theadText);
+
+		theadRow.appendChild(theadEntry);
+	}
+
+	let tbody = document.createElement("tbody");
+	resultTable.appendChild(tbody);
+
+	for (let r of results) {
+		let row = document.createElement("tr");
+		for (let k of Object.keys(results[0])) {
+			let tdata = document.createElement("td");
+			tdata.setAttribute("class", "resultData");
+			let dataTxt = document.createTextNode(r[k]);
+			tdata.appendChild(dataTxt);
+			row.appendChild(tdata);
+		}
+		tbody.appendChild(row);
+	}
+
+	document.body.appendChild(document.createElement("br"));
+	document.body.appendChild(resultTable);
 }
 
 function unlockColumns() {
@@ -333,7 +397,7 @@ function unlockOrderNums() {
 	}
 }
 
-function unlockGroups() {
+function unlockGroupsAndAggs() {
 	if (document.getElementById("yesGroup").checked) {
 		if (document.getElementById("queryCoursesType").checked) {
 			for (let key of document.getElementsByName("columnsCourseGroup")) {
@@ -345,6 +409,18 @@ function unlockGroups() {
 			}
 		}
 
+		for (let name of document.getElementsByName("aggNames")) {
+			name.disabled = false;
+		}
+
+		for (let type of document.getElementsByName("aggTypes")) {
+			type.disabled = false;
+		}
+
+		for (let aggCol of document.getElementsByName("aggOnColumn")) {
+			aggCol.disabled = false;
+		}
+
 	} else {
 		for (let key of document.getElementsByName("columnsCourseGroup")) {
 			key.disabled = true;
@@ -352,6 +428,18 @@ function unlockGroups() {
 
 		for (let key of document.getElementsByName("columnsRoomGroup")) {
 			key.disabled = true;
+		}
+
+		for (let name of document.getElementsByName("aggNames")) {
+			name.disabled = true;
+		}
+
+		for (let type of document.getElementsByName("aggTypes")) {
+			type.disabled = true;
+		}
+
+		for (let aggCol of document.getElementsByName("aggOnColumn")) {
+			aggCol.disabled = true;
 		}
 	}
 }
