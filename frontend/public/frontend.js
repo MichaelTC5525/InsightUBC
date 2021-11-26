@@ -298,10 +298,10 @@ function displayResults(results) {
 	// TODO: remove children before adding new ones?
 	if (document.getElementById("results") !== null) {
 		let endpageLineBrs = document.getElementsByTagName("br");
-		document.removeChild(endpageLineBrs[endpageLineBrs.length - 2]);
-		document.removeChild(document.querySelector("#resultHeader"));
-		document.removeChild(endpageLineBrs[endpageLineBrs.length - 1]);
-		document.removeChild(document.querySelector("#results"));
+		document.body.removeChild(endpageLineBrs[endpageLineBrs.length - 2]);
+		document.body.removeChild(document.querySelector("#resultHeader"));
+		document.body.removeChild(endpageLineBrs[endpageLineBrs.length - 1]);
+		document.body.removeChild(document.querySelector("#results"));
 	}
 
 	document.body.appendChild(document.createElement("br"));

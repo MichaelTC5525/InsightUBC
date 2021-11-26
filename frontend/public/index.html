@@ -20,13 +20,13 @@
 			<input type="radio" id="addCourses" name="setType" value="courses" required><label for="addCourses">Courses</label>
 			<input type="radio" id="addRooms" name="setType" value="rooms"><label for="addRooms">Rooms</label><br/>
 			<p>Content File: <input type="file" id="addFile" accept="application/x-zip-compressed" required></p>
-			<input type="submit" value="Submit">
+			<button id="addDatasetButton" class="button">Add to InsightUBC</button>
 		</form>
 		<hr/>
 		<h2>Remove a Dataset from InsightUBC</h2>
 		<form id="removeDatasetForm">
 			<p>Dataset to remove: <input type="text" id="toRemoveID" name="toRemoveID" placeholder="Existing ID string" required></p>
-			<input type="submit" id="removeDatasetButton" value="Submit">
+			<button id="removeDatasetButton" class="button">Submit</button>
 		</form>
 		<hr/>
 		<h2>Query an existing InsightUBC dataset</h2>
@@ -971,7 +971,7 @@
 				</tbody>
 			</table>
 			<br/>
-			<input type="submit" id="queryButton" value="Submit Query">
+			<button id="queryButton" class="button">Submit Query</button>
 		</form>
 		<script type="text/javascript" src="/frontend.js"></script>
 	</body>
