@@ -212,8 +212,6 @@ async function handleQuery(event) {
 		query.TRANSFORMATIONS.APPLY = getAggColumns(query.OPTIONS.COLUMNS, querySet);
 	}
 
-	// TODO: remove when confident
-	alert(JSON.stringify(query));
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
 		headers: {
@@ -295,7 +293,6 @@ function getAggColumns(columns, querySet) {
 }
 
 function displayResults(results) {
-	// TODO: remove children before adding new ones?
 	if (document.getElementById("results") !== null) {
 		let endpageLineBrs = document.getElementsByTagName("br");
 		document.body.removeChild(endpageLineBrs[endpageLineBrs.length - 2]);
