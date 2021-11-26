@@ -689,6 +689,78 @@ describe("InsightFacade", function () {
 				}
 			}
 		);
+
+		// UNCOMMENT FOR REGRESSION TESTING
+		// testFolder<any, any[], PQErrorKind>(
+		// 	"Dynamic InsightFacade PerformQuery Regression tests",
+		// 	(input) => insightFacade.performQuery(input),
+		// 	"./test/resources/regression",
+		// 	{
+		// 		errorValidator(error): error is PQErrorKind {
+		// 			return error === "ResultTooLargeError" || error === "InsightError";
+		// 		},
+		//
+		// 		assertOnResult(expected: any[], actual: any, input: any) {
+		// 			expect(actual).to.be.instanceOf(Array);
+		// 			expect(actual).to.have.length(expected.length);
+		// 			expect(actual).to.have.deep.members(expected);
+		//
+		// 			const order: string | any = input.OPTIONS.ORDER;
+		// 			if (order !== undefined) {
+		// 				if (typeof order === "string") {
+		// 					for (let i = 1; i < actual.length; i++) {
+		// 						if (actual[i - 1][order] > actual[i][order]) {
+		// 							fail("Incorrect ordering");
+		// 						}
+		// 					}
+		// 				} else {
+		// 					let maxIdx: number = order.keys.length;
+		// 					if (order.dir === "DOWN") {
+		// 						for (let i = 1; i < actual.length; i++) {
+		// 							if (actual[i - 1][order.keys[0]] < actual[i][order.keys[0]]) {
+		// 								fail("Incorrect ordering");
+		// 							} else if (actual[i - 1][order.keys[0]] === actual[i][order.keys[0]]) {
+		// 								for (let j = 1; j < maxIdx; j++) {
+		// 									if (actual[i - 1][order.keys[j]] < actual[i][order.keys[j]]) {
+		// 										fail("Incorrect ordering");
+		// 									} else if (actual[i - 1][order.keys[j]] === actual[i][order.keys[j]]) {
+		// 										continue;
+		// 									} else {
+		// 										break;
+		// 									}
+		// 								}
+		// 							}
+		// 						}
+		// 					} else {
+		// 						for (let i = 1; i < actual.length; i++) {
+		// 							if (actual[i - 1][order.keys[0]] > actual[i][order.keys[0]]) {
+		// 								fail("Incorrect ordering");
+		// 							} else if (actual[i - 1][order.keys[0]] === actual[i][order.keys[0]]) {
+		// 								for (let j = 1; j < maxIdx; j++) {
+		// 									if (actual[i - 1][order.keys[j]] > actual[i][order.keys[j]]) {
+		// 										fail("Incorrect ordering");
+		// 									} else if (actual[i - 1][order.keys[j]] === actual[i][order.keys[j]]) {
+		// 										continue;
+		// 									} else {
+		// 										break;
+		// 									}
+		// 								}
+		// 							}
+		// 						}
+		// 					}
+		// 				}
+		// 			}
+		// 		},
+		//
+		// 		assertOnError(expected: PQErrorKind, actual: any) {
+		// 			if (expected === "ResultTooLargeError") {
+		// 				expect(actual).to.be.instanceof(ResultTooLargeError);
+		// 			} else {
+		// 				expect(actual).to.be.instanceof(InsightError);
+		// 			}
+		// 		}
+		// 	}
+		// );
 	});
 
 	describe("Non-folder-test performQuery", function () {

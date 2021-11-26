@@ -1,3 +1,45 @@
+#landingHeader {
+	text-align:center;
+}
+
+.warning {
+	color:red;
+}
+
+#options, #transforms, .borderedHeader, .borderedCell {
+	border: 2px solid black;
+	border-collapse: collapse;
+}
+
+#options, #transforms {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%
+}
+
+#options, #transforms {
+	column-width: fit-content;
+}
+
+#resultHeader {
+	text-align: center;
+	color:green;
+}
+
+#results {
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+	border-color: darkgreen;
+	width: 90%;
+}
+
+.resultData {
+	border-color: darkgreen;
+	text-align: center;
+	color: darkgreen;
+}
+
 .button {
 	background-color: #3f51b5;
 	border: none;
@@ -7,6 +49,7 @@
 	text-decoration: none;
 	display: inline-block;
 	font-size: 16px;
+	margin: auto;
 }
 
 .button:hover {

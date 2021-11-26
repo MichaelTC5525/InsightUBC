@@ -1,0 +1,30 @@
+{
+	"title": "Fail: Query order keys is empty array",
+	"input":
+	{
+		"WHERE":{},
+		"OPTIONS":{
+			"COLUMNS":[
+				"rooms_shortname",
+				"rooms_number",
+				"avgSeats"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys":[]
+			}
+		},
+		"TRANSFORMATIONS":{
+			"GROUP":["rooms_shortname", "rooms_number"],
+			"APPLY":[
+				{
+					"avgSeats":{
+						"AVG": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

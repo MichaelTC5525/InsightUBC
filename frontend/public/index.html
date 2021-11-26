@@ -2,12 +2,977 @@
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-		<title>310 Frontend</title>
+		<title>InsightUBC Database System: Home</title>
 		<link href="/style.css" rel="stylesheet" />
 	</head>
 	<body>
-		<button id="click-me-button" class="button" >Click Me!</button>
+		<h1 id="landingHeader">Welcome to the InsightUBC Database System</h1>
+		<p>This is a space where you can work with an InsightFacade system</p>
 
+		<h2>Check the currently stored datasets</h2>
+		<button id="listDatasetsButton" class="button" >List the currently stored datasets</button>
+		<br>
+		<hr/>
+		<h2>Add a new Dataset to InsightUBC</h2>
+		<form id="addDatasetForm">
+			<p>Dataset to add: <input type="text" id="addID" name="addID" placeholder="New ID string" required></p>
+			<p>Type of Dataset:</p>
+			<input type="radio" id="addCourses" name="setType" value="courses" required><label for="addCourses">Courses</label>
+			<input type="radio" id="addRooms" name="setType" value="rooms"><label for="addRooms">Rooms</label><br/>
+			<p>Content File: <input type="file" id="addFile" accept="application/x-zip-compressed" required></p>
+			<button id="addDatasetButton" class="button">Add to InsightUBC</button>
+		</form>
+		<hr/>
+		<h2>Remove a Dataset from InsightUBC</h2>
+		<form id="removeDatasetForm">
+			<p>Dataset to remove: <input type="text" id="toRemoveID" name="toRemoveID" placeholder="Existing ID string" required></p>
+			<button id="removeDatasetButton" class="button">Submit</button>
+		</form>
+		<hr/>
+		<h2>Query an existing InsightUBC dataset</h2>
+		<form id="queryForm">
+			<p>Dataset to Query: <input type="text" id="querySet" name="querySet" placeholder="ID string" required></p>
+			<p>Type of Dataset:</p>
+			<input type="radio" id="queryCoursesType" name="querySetType" value="unlockCourseColumns" required><label for="queryCoursesType">Courses</label>
+			<input type="radio" id="queryRoomsType" name="querySetType" value="unlockRoomColumns"><label for="queryRoomsType">Rooms</label><br/>
+
+			<h3>FILTER</h3>
+
+			<p>Set up conditions on which to filter out entries in your results. For conditions on string values, wildcards can be specified using * before and/or after the value.</p>
+			<p>Inverting the condition takes the opposite of what is entered (i.e. NOT of condition)</p>
+			<p class="warning">Note that specifying more than one condition here will be considered conditions that must be met at the same time (i.e. Condition1 AND Condition2). <br>
+								As such, it is recommended that a single column only be involved in no more than one condition.</p>
+			<p class="warning">The comparison operator <strong>"IS"</strong> can only be used with non-numerical fields / columns.</p>
+			<p class="warning">Conditions will only be considered for those that specify a column to check, have a filtering operator, and a non-empty value.</p>
+
+			<table id="filters">
+				<thead>
+					<tr>
+						<th>Filtered Column</th>
+						<th>Op</th>
+						<th>Value to Compare</th>
+						<th>Invert condition?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<select id="filterColumn0" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType0" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal0" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot0" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn1" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType1" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal1" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot1" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn2" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType2" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal2" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot2" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn3" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType3" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal3" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot3" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn4" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType4" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal4" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot4" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn5" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType5" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal5" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot5" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn6" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType6" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal6" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot6" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn7" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType7" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal7" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot7" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>OPTIONS</h3>
+			<table id="options">
+				<thead>
+					<tr>
+						<th class="borderedHeader"><h4>Columns</h4></th>
+						<th class="borderedHeader"><h4>Order</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="borderedCell">
+							<p>Select the columns to be displayed:</p>
+							<p>
+								<input type="checkbox" id="selectCourseDept" name="columnsCourseSelect" value="_dept" disabled><label for="selectCourseDept">Course Department</label><br>
+								<input type="checkbox" id="selectCourseID" name="columnsCourseSelect" value="_id" disabled><label for="selectCourseID">Course ID</label><br>
+								<input type="checkbox" id="selectCourseAvg" name="columnsCourseSelect" value="_avg" disabled><label for="selectCourseAvg">Course Average</label><br>
+								<input type="checkbox" id="selectCourseInstr" name="columnsCourseSelect" value="_instructor" disabled><label for="selectCourseInstr">Course Instructor</label><br>
+								<input type="checkbox" id="selectCourseTitle" name="columnsCourseSelect" value="_title" disabled><label for="selectCourseTitle">Course Title</label><br>
+								<input type="checkbox" id="selectCoursePass" name="columnsCourseSelect" value="_pass" disabled><label for="selectCoursePass">Number of Passing students</label><br>
+								<input type="checkbox" id="selectCourseFail" name="columnsCourseSelect" value="_fail" disabled><label for="selectCourseFail">Number of Failing students</label><br>
+								<input type="checkbox" id="selectCourseAudit" name="columnsCourseSelect" value="_audit" disabled><label for="selectCourseAudit">Number of Auditing students</label><br>
+								<input type="checkbox" id="selectCourseUUID" name="columnsCourseSelect" value="_uuid" disabled><label for="selectCourseUUID">Course UUID</label><br>
+								<input type="checkbox" id="selectCourseYear" name="columnsCourseSelect" value="_year" disabled><label for="selectCourseYear">Course Year</label><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="selectBuildingFN" name="columnsRoomSelect" value="_fullname" disabled><label for="selectBuildingFN">Building Name</label><br>
+								<input type="checkbox" id="selectBuildingSN" name="columnsRoomSelect" value="_shortname" disabled><label for="selectBuildingSN">Building Code</label><br>
+								<input type="checkbox" id="selectRoomNumber" name="columnsRoomSelect" value="_number" disabled><label for="selectRoomNumber">Room Number</label><br>
+								<input type="checkbox" id="selectRoomFN" name="columnsRoomSelect" value="_name" disabled><label for="selectRoomFN">Room Name</label><br>
+								<input type="checkbox" id="selectRoomsAddress" name="columnsRoomSelect" value="_address" disabled><label for="selectRoomsAddress">Building Address</label><br>
+								<input type="checkbox" id="selectBuildingLat" name="columnsRoomSelect" value="_lat" disabled><label for="selectBuildingLat">Building Geo Latitude</label><br>
+								<input type="checkbox" id="selectBuildingLon" name="columnsRoomSelect" value="_lon" disabled><label for="selectBuildingLon">Building Geo Longitude</label><br>
+								<input type="checkbox" id="selectRoomSeats" name="columnsRoomSelect" value="_seats" disabled><label for="selectRoomSeats">Room Capacity</label><br>
+								<input type="checkbox" id="selectRoomType" name="columnsRoomSelect" value="_type" disabled><label for="selectRoomType">Room Type</label><br>
+								<input type="checkbox" id="selectRoomFurniture" name="columnsRoomSelect" value="_furniture" disabled><label for="selectRoomFurniture">Room Furniture</label><br>
+								<input type="checkbox" id="selectRoomHREF" name="columnsRoomSelect" value="_href" disabled><label for="selectRoomHREF">More info link</label><br/>
+							</p>
+						</td>
+						<td class="borderedCell">
+							<p>Do you need your results to be sorted?
+								<input type="radio" id="yesOrder" name="isOrdered" required><label for="yesOrder">Yes</label>
+								<input type="radio" id="noOrder" name="isOrdered" checked><label for="noOrder">No</label>
+							</p>
+							<p>Select the direction to sort the results:
+								<input type="radio" id="upOrder" name="orderDir" value="UP" disabled checked required><label for="upOrder">UP (ascending)</label>
+								<input type="radio" id="downOrder" name="orderDir" value="DOWN" disabled><label for="downOrder">DOWN (descending)</label>
+							</p>
+							<p>Select the columns on which to sort. With each selected column, specify the order number for it. Ties in earlier keys will be broken by values in later ones (low to high).</p>
+							<p class="warning">Ensure that values in the order numbers are distinct. They do not have to be 1,2,3, etc. ; however you must make sure keys to sort on first are lower valued and subsequent ones are higher.</p>
+							<p>
+								<input type="checkbox" id="orderCourseDept" name="columnsCourseOrder" value="_dept" disabled><label for="orderCourseDept">Course Department</label>
+								<input type="text" id="orderCourseDept_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseID" name="columnsCourseOrder" value="_id" disabled><label for="orderCourseID">Course ID</label>
+								<input type="text" id="orderCourseID_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseAvg" name="columnsCourseOrder" value="_avg" disabled><label for="orderCourseAvg">Course Average</label>
+								<input type="text" id="orderCourseAvg_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseInstr" name="columnsCourseOrder" value="_instructor" disabled><label for="orderCourseInstr">Course Instructor</label>
+								<input type="text" id="orderCourseInstr_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseTitle" name="columnsCourseOrder" value="_title" disabled><label for="orderCourseTitle">Course Title</label>
+								<input type="text" id="orderCourseTitle_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCoursePass" name="columnsCourseOrder" value="_pass" disabled><label for="orderCoursePass">Number of Passing students</label>
+								<input type="text" id="orderCoursePass_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseFail" name="columnsCourseOrder" value="_fail" disabled><label for="orderCourseFail">Number of Failing students</label>
+								<input type="text" id="orderCourseFail_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseAudit" name="columnsCourseOrder" value="_audit" disabled><label for="orderCourseAudit">Number of Auditing students</label>
+								<input type="text" id="orderCourseAudit_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseUUID" name="columnsCourseOrder" value="_uuid" disabled><label for="orderCourseUUID">Course UUID</label>
+								<input type="text" id="orderCourseUUID_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderCourseYear" name="columnsCourseOrder" value="_year" disabled><label for="orderCourseYear">Course Year</label>
+								<input type="text" id="orderCourseYear_colnum" name="orderCourseColumnNumbers" placeholder="Order Key #" disabled><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="orderBuildingFN" name="columnsRoomOrder" value="_fullname" disabled><label for="orderBuildingFN">Building Name</label>
+								<input type="text" id="orderBuildingFN_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderBuildingSN" name="columnsRoomOrder" value="_shortname" disabled><label for="orderBuildingSN">Building Code</label>
+								<input type="text" id="orderBuildingSN_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomNumber" name="columnsRoomOrder" value="_number" disabled><label for="orderRoomNumber">Room Number</label>
+								<input type="text" id="orderRoomNumber_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomFN" name="columnsRoomOrder" value="_name" disabled><label for="orderRoomFN">Room Name</label>
+								<input type="text" id="orderRoomFN_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomsAddress" name="columnsRoomOrder" value="_address" disabled><label for="orderRoomsAddress">Building Address</label>
+								<input type="text" id="orderRoomsAddress_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderBuildingLat" name="columnsRoomOrder" value="_lat" disabled><label for="orderBuildingLat">Building Geo Latitude</label>
+								<input type="text" id="orderBuildingLat_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderBuildingLon" name="columnsRoomOrder" value="_lon" disabled><label for="orderBuildingLon">Building Geo Longitude</label>
+								<input type="text" id="orderBuildingLon_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomSeats" name="columnsRoomOrder" value="_seats" disabled><label for="orderRoomSeats">Room Capacity</label>
+								<input type="text" id="orderRoomSeats_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomType" name="columnsRoomOrder" value="_type" disabled><label for="orderRoomType">Room Type</label>
+								<input type="text" id="orderRoomType_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomFurniture" name="columnsRoomOrder" value="_furniture" disabled><label for="orderRoomFurniture">Room Furniture</label>
+								<input type="text" id="orderRoomFurniture_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br>
+
+								<input type="checkbox" id="orderRoomHREF" name="columnsRoomOrder" value="_href" disabled><label for="orderRoomHREF">More info link</label>
+								<input type="text" id="orderRoomHREF_colnum" name="orderRoomColumnNumbers" placeholder="Order Key #" disabled><br/>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+
+			<h3>TRANSFORMATIONS</h3>
+			<table id="transforms">
+				<thead>
+					<tr>
+						<th class="borderedHeader"><h4>Grouping</h4></th>
+						<th class="borderedHeader"><h4>Aggregated Columns</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="borderedCell">
+							<p>Does the output need to be grouped?
+								<input type="radio" id="yesGroup" name="isGrouped" required><label for="yesGroup">Yes</label>
+								<input type="radio" id="noGroup" name="isGrouped" checked><label for="noGroup">No</label>
+							</p>
+							<p>Select the columns on which to create groupings:</p>
+							<p>
+								<input type="checkbox" id="groupCourseDept" name="columnsCourseGroup" value="_dept" disabled><label for="groupCourseDept">Course Department</label><br>
+								<input type="checkbox" id="groupCourseID" name="columnsCourseGroup" value="_id" disabled><label for="groupCourseID">Course ID</label><br>
+								<input type="checkbox" id="groupCourseAvg" name="columnsCourseGroup" value="_avg" disabled><label for="groupCourseAvg">Course Average</label><br>
+								<input type="checkbox" id="groupCourseInstr" name="columnsCourseGroup" value="_instructor" disabled><label for="groupCourseInstr">Course Instructor</label><br>
+								<input type="checkbox" id="groupCourseTitle" name="columnsCourseGroup" value="_title" disabled><label for="groupCourseTitle">Course Title</label><br>
+								<input type="checkbox" id="groupCoursePass" name="columnsCourseGroup" value="_pass" disabled><label for="groupCoursePass">Number of Passing students</label><br>
+								<input type="checkbox" id="groupCourseFail" name="columnsCourseGroup" value="_fail" disabled><label for="groupCourseFail">Number of Failing students</label><br>
+								<input type="checkbox" id="groupCourseAudit" name="columnsCourseGroup" value="_audit" disabled><label for="groupCourseAudit">Number of Auditing students</label><br>
+								<input type="checkbox" id="groupCourseUUID" name="columnsCourseGroup" value="_uuid" disabled><label for="groupCourseUUID">Course UUID</label><br>
+								<input type="checkbox" id="groupCourseYear" name="columnsCourseGroup" value="_year" disabled><label for="groupCourseYear">Course Year</label><br/>
+							</p>
+							<p>
+								<input type="checkbox" id="groupBuildingFN" name="columnsRoomGroup" value="_fullname" disabled><label for="groupBuildingFN">Building Name</label><br>
+								<input type="checkbox" id="groupBuildingSN" name="columnsRoomGroup" value="_shortname" disabled><label for="groupBuildingSN">Building Code</label><br>
+								<input type="checkbox" id="groupRoomNumber" name="columnsRoomGroup" value="_number" disabled><label for="groupRoomNumber">Room Number</label><br>
+								<input type="checkbox" id="groupRoomFN" name="columnsRoomGroup" value="_name" disabled><label for="groupRoomFN">Room Name</label><br>
+								<input type="checkbox" id="groupRoomsAddress" name="columnsRoomGroup" value="_address" disabled><label for="groupRoomsAddress">Building Address</label><br>
+								<input type="checkbox" id="groupBuildingLat" name="columnsRoomGroup" value="_lat" disabled><label for="groupBuildingLat">Building Geo Latitude</label><br>
+								<input type="checkbox" id="groupBuildingLon" name="columnsRoomGroup" value="_lon" disabled><label for="groupBuildingLon">Building Geo Longitude</label><br>
+								<input type="checkbox" id="groupRoomSeats" name="columnsRoomGroup" value="_seats" disabled><label for="groupRoomSeats">Room Capacity</label><br>
+								<input type="checkbox" id="groupRoomType" name="columnsRoomGroup" value="_type" disabled><label for="groupRoomType">Room Type</label><br>
+								<input type="checkbox" id="groupRoomFurniture" name="columnsRoomGroup" value="_furniture" disabled><label for="groupRoomFurniture">Room Furniture</label><br>
+								<input type="checkbox" id="groupRoomHREF" name="columnsRoomGroup" value="_href" disabled><label for="groupRoomHREF">More info link</label><br/>
+							</p>
+						</td>
+						<td class="borderedCell">
+							<p>Create any aggregated columns here. Specify a custom name for your column, the aggregation type to run, and the column on which to run it.</p>
+							<p class="warning">Aggregations will only be created where column names are defined, selecting an aggregation type without a name has no effect.<br>
+								Be mindful of the type of dataset being queried, as it will affect what columns can be used in an aggregation.</p>
+							<p class="warning">Aggregated columns are only available when Transformations - Grouping is enabled.</p>
+							<table id="aggColumns">
+								<thead>
+									<tr>
+										<th>Aggregation Name</th>
+										<th>Aggregation Type</th>
+										<th>Column to Aggregate</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType0" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn0" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType1" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn1" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType2" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn2" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType3" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn3" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType4" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn4" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType5" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn5" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType6" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn6" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType7" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn7" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType8" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn8" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input type="text" name="aggNames" placeholder="Name of aggregate column" disabled> =></td>
+										<td>
+											<select id="aggType9" name="aggTypes" disabled>
+												<option value="MAX">MAX</option>
+												<option value="MIN">MIN</option>
+												<option value="AVG">AVG</option>
+												<option value="COUNT">COUNT</option>
+												<option value="SUM">SUM</option>
+											</select>
+										</td>
+										<td>
+											<select id="aggColumn9" name="aggOnColumn" disabled>
+												<option value="_dept">Course Department</option>
+												<option value="_id">Course ID</option>
+												<option value="_avg">Course Average</option>
+												<option value="_instructor">Course Instructor</option>
+												<option value="_title">Course Title</option>
+												<option value="_pass">Number of Passing students</option>
+												<option value="_fail">Number of Failing students</option>
+												<option value="_audit">Number of Auditing students</option>
+												<option value="_uuid">Course UUID</option>
+												<option value="_year">Course Year</option>
+												<option value="_fullname">Building Name</option>
+												<option value="_shortname">Building Code</option>
+												<option value="_number">Room Number</option>
+												<option value="_name">Room Name</option>
+												<option value="_address">Building Address</option>
+												<option value="_lat">Building Geo Latitude</option>
+												<option value="_lon">Building Geo Longitude</option>
+												<option value="_seats">Room Capacity</option>
+												<option value="_type">Room Type</option>
+												<option value="_furniture">Room Furniture</option>
+												<option value="_href">More info link</option>
+											</select>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<button id="queryButton" class="button">Submit Query</button>
+		</form>
 		<script type="text/javascript" src="/frontend.js"></script>
 	</body>
 </html>
