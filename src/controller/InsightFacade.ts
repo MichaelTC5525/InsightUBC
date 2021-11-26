@@ -168,7 +168,7 @@ export default class InsightFacade implements IInsightFacade {
 				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, aggregatedResults);
 				if (completedResults.length > 5000) {
 					return Promise.reject(new ResultTooLargeError("Query with transformations returned " +
-						completedResults.length + " groups"));
+						completedResults.length + " groups, which exceeds the maximum of " + InsightFacade.MAX_LINES));
 				}
 				return Promise.resolve(completedResults);
 			}

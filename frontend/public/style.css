@@ -6,7 +6,7 @@
 	color:red;
 }
 
-#options, th, td {
+#options, #transforms, .borderedHeader, .borderedCell {
 	border: 2px solid black;
 	border-collapse: collapse;
 }
@@ -17,8 +17,27 @@
 	width: 100%
 }
 
-#options {
+#options, #transforms {
 	column-width: fit-content;
+}
+
+#resultHeader {
+	text-align: center;
+	color:green;
+}
+
+#results {
+	margin-left: auto;
+	margin-right: auto;
+	border-collapse: collapse;
+	border-color: darkgreen;
+	width: 90%;
+}
+
+.resultData {
+	border-color: darkgreen;
+	text-align: center;
+	color: darkgreen;
 }
 
 .button {
