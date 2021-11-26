@@ -6,7 +6,7 @@
 	color:red;
 }
 
-#options, th, td {
+#options, #transforms, .borderedHeader, .borderedCell {
 	border: 2px solid black;
 	border-collapse: collapse;
 }
@@ -17,7 +17,7 @@
 	width: 100%
 }
 
-#options {
+#options, #transforms {
 	column-width: fit-content;
 }
 

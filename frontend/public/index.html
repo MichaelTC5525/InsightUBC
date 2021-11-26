@@ -38,19 +38,397 @@
 
 			<h3>FILTER</h3>
 
-			<!-- TODO -->
+			<p>Set up conditions on which to filter out entries in your results. For conditions on string values, wildcards can be specified using * before and/or after the value.</p>
+			<p>Inverting the condition takes the opposite of what is entered (i.e. NOT of condition)</p>
+			<p class="warning">Note that specifying more than one condition here will be considered conditions that must be met at the same time (i.e. Condition1 AND Condition2). <br>
+								As such, it is recommended that a single column only be involved in no more than one condition.</p>
+			<p class="warning">The comparison operator <strong>"IS"</strong> can only be used with non-numerical fields / columns.</p>
+			<p class="warning">Conditions will only be considered for those that specify a column to check, have a filtering operator, and a non-empty value.</p>
 
-			<h3>OPTIONS</h3>
-			<table id="options">
+			<table id="filters">
 				<thead>
 					<tr>
-						<th><h4>Columns</h4></th>
-						<th><h4>Order</h4></th>
+						<th>Filtered Column</th>
+						<th>Op</th>
+						<th>Value to Compare</th>
+						<th>Invert condition?</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td>
+							<select id="filterColumn0" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType0" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal0" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot0" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn1" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType1" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal1" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot1" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn2" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType2" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal2" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot2" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn3" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType3" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal3" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot3" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn4" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType4" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal4" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot4" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn5" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType5" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal5" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot5" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn6" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType6" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal6" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot6" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<select id="filterColumn7" name="filterColumns">
+								<option value=""></option>
+								<option value="_dept">Course Department</option>
+								<option value="_id">Course ID</option>
+								<option value="_avg">Course Average</option>
+								<option value="_instructor">Course Instructor</option>
+								<option value="_title">Course Title</option>
+								<option value="_pass">Number of Passing students</option>
+								<option value="_fail">Number of Failing students</option>
+								<option value="_audit">Number of Auditing students</option>
+								<option value="_uuid">Course UUID</option>
+								<option value="_year">Course Year</option>
+								<option value="_fullname">Building Name</option>
+								<option value="_shortname">Building Code</option>
+								<option value="_number">Room Number</option>
+								<option value="_name">Room Name</option>
+								<option value="_address">Building Address</option>
+								<option value="_lat">Building Geo Latitude</option>
+								<option value="_lon">Building Geo Longitude</option>
+								<option value="_seats">Room Capacity</option>
+								<option value="_type">Room Type</option>
+								<option value="_furniture">Room Furniture</option>
+								<option value="_href">More info link</option>
+							</select>
+						</td>
+						<td>
+							<select id="filterType7" name="filterTypes">
+								<option value=""></option>
+								<option value="GT"> > </option>
+								<option value="LT"> < </option>
+								<option value="GTE"> >= </option>
+								<option value="LTE"> <= </option>
+								<option value="EQ"> = </option>
+								<option value="IS"> IS </option>
+							</select>
+						</td>
+						<td>
+							<input id="filterVal7" type="text" name="filterVals" placeholder="value">
+						</td>
+						<td>
+							<input id="filterNot7" type="checkbox" name="filterNots">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>OPTIONS</h3>
+			<table id="options">
+				<thead>
+					<tr>
+						<th class="borderedHeader"><h4>Columns</h4></th>
+						<th class="borderedHeader"><h4>Order</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="borderedCell">
 							<p>Select the columns to be displayed:</p>
 							<p>
 								<input type="checkbox" id="selectCourseDept" name="columnsCourseSelect" value="_dept" disabled><label for="selectCourseDept">Course Department</label><br>
@@ -78,7 +456,7 @@
 								<input type="checkbox" id="selectRoomHREF" name="columnsRoomSelect" value="_href" disabled><label for="selectRoomHREF">More info link</label><br/>
 							</p>
 						</td>
-						<td>
+						<td class="borderedCell">
 							<p>Do you need your results to be sorted?
 								<input type="radio" id="yesOrder" name="isOrdered" required><label for="yesOrder">Yes</label>
 								<input type="radio" id="noOrder" name="isOrdered" checked><label for="noOrder">No</label>
@@ -164,13 +542,13 @@
 			<table id="transforms">
 				<thead>
 					<tr>
-						<th>Grouping</th>
-						<th>Aggregated Columns</th>
+						<th class="borderedHeader"><h4>Grouping</h4></th>
+						<th class="borderedHeader"><h4>Aggregated Columns</h4></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
+						<td class="borderedCell">
 							<p>Does the output need to be grouped?
 								<input type="radio" id="yesGroup" name="isGrouped" required><label for="yesGroup">Yes</label>
 								<input type="radio" id="noGroup" name="isGrouped" checked><label for="noGroup">No</label>
@@ -202,8 +580,7 @@
 								<input type="checkbox" id="groupRoomHREF" name="columnsRoomGroup" value="_href" disabled><label for="groupRoomHREF">More info link</label><br/>
 							</p>
 						</td>
-						<td>
-							<!-- TODO -->
+						<td class="borderedCell">
 							<p>Create any aggregated columns here. Specify a custom name for your column, the aggregation type to run, and the column on which to run it.</p>
 							<p class="warning">Aggregations will only be created where column names are defined, selecting an aggregation type without a name has no effect.<br>
 								Be mindful of the type of dataset being queried, as it will affect what columns can be used in an aggregation.</p>

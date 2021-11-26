@@ -94,11 +94,42 @@ async function handleRemove() {
 
 }
 
+function buildFilter(querySet, column, type, value, isNot) {
+	let retVal = {};
+	switch(type) {
+		case "GTE":
+			retVal = {"OR":[{"GT":{}},{"EQ":{}}]};
+			retVal.OR[0].GT[querySet + column] = Number(value);
+			retVal.OR[1].EQ[querySet + column] = Number(value);
+			break;
+		case "LTE":
+			retVal = {"OR":[{"LT":{}},{"EQ":{}}]};
+			retVal.OR[0].LT[querySet + column] = Number(value);
+			retVal.OR[1].EQ[querySet + column] = Number(value);
+			break;
+		case "IS":
+			retVal[type] = {};
+			retVal[type][querySet + column] = value;
+			break;
+		default:
+			retVal[type] = {};
+			retVal[type][querySet + column] = Number(value);
+	}
+
+	if (isNot) {
+		// Slap on a NOT clause
+		let flipRetVal = {};
+		flipRetVal.NOT = retVal;
+		retVal = flipRetVal;
+	}
+
+	return retVal;
+}
+
 async function handleQuery(event) {
 	// No reloading the page, allow for adding DOM elements
 	event.preventDefault();
 
-	// TODO: obtain query components from a form
 	// Default form of query, must have these pieces, even if empty
 	let query = {"WHERE":{}, "OPTIONS":{"COLUMNS":[]}};
 
@@ -109,6 +140,31 @@ async function handleQuery(event) {
 
 	let courseColumns = document.getElementsByName("columnsCourseSelect");
 	let roomColumns = document.getElementsByName("columnsRoomSelect");
+
+	let numFilters = 0;
+	let filterList = [];
+	for (let i = 0; i < document.getElementsByName("filterColumns").length; i++) {
+		let col = document.getElementById("filterColumn" + i).value;
+		let type = document.getElementById("filterType" + i).value;
+		let value = document.getElementById("filterVal" + i).value;
+		if (col === "" || type === "" || value === "") {
+			continue;
+		}
+
+		numFilters++;
+		if (document.getElementById("filterNot" + i).checked) {
+			filterList.push(buildFilter(querySet, col, type, value, true));
+		} else {
+			filterList.push(buildFilter(querySet, col, type, value, false));
+		}
+
+	}
+
+	if (numFilters > 1) {
+		query.WHERE.AND = filterList;
+	} else if (numFilters === 1) {
+		query.WHERE = filterList[0];
+	}
 
 	// Columns lists will be of type HTMLInputElement[] with the checked option because of type="checkbox"
 	if (setTypeCourses.checked) {
@@ -156,6 +212,7 @@ async function handleQuery(event) {
 		query.TRANSFORMATIONS.APPLY = getAggColumns(query.OPTIONS.COLUMNS, querySet);
 	}
 
+	// TODO: remove when confident
 	alert(JSON.stringify(query));
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
@@ -239,8 +296,15 @@ function getAggColumns(columns, querySet) {
 
 function displayResults(results) {
 	// TODO: remove children before adding new ones?
-	document.body.appendChild(document.createElement("br"));
+	if (document.getElementById("results") !== null) {
+		let endpageLineBrs = document.getElementsByTagName("br");
+		document.removeChild(endpageLineBrs[endpageLineBrs.length - 2]);
+		document.removeChild(document.querySelector("#resultHeader"));
+		document.removeChild(endpageLineBrs[endpageLineBrs.length - 1]);
+		document.removeChild(document.querySelector("#results"));
+	}
 
+	document.body.appendChild(document.createElement("br"));
 	let resultHeader = document.createElement("h2");
 	resultHeader.setAttribute("id", "resultHeader");
 	resultHeader.appendChild(document.createTextNode("RESULT"));
@@ -251,7 +315,6 @@ function displayResults(results) {
 		return;
 	}
 
-	// TODO: Show the results in a table? Add to DOM
 	let resultTable = document.createElement("table");
 	resultTable.setAttribute("id", "results");
 	let thead = document.createElement("thead");
@@ -260,6 +323,7 @@ function displayResults(results) {
 	thead.appendChild(theadRow);
 	for (let r of Object.keys(results[0])) {
 		let theadEntry = document.createElement("th");
+		theadEntry.setAttribute("class", "borderedHeader")
 		let theadText = document.createTextNode(r);
 		theadEntry.appendChild(theadText);
 
@@ -273,7 +337,7 @@ function displayResults(results) {
 		let row = document.createElement("tr");
 		for (let k of Object.keys(results[0])) {
 			let tdata = document.createElement("td");
-			tdata.setAttribute("class", "resultData");
+			tdata.setAttribute("class", "resultData borderedCell");
 			let dataTxt = document.createTextNode(r[k]);
 			tdata.appendChild(dataTxt);
 			row.appendChild(tdata);
