@@ -3,8 +3,10 @@ import KeyValidator from "./KeyValidator";
 
 export default class QueryValidator {
 	public validateQuery(id: string, obj: any, kind: string, existingSets: string[]) {
-		if (obj.WHERE === undefined || obj.OPTIONS.COLUMNS[0] === undefined || Object.keys(obj).length > 3) {
+		if (obj.WHERE === undefined || Object.keys(obj).length > 3) {
 			throw new InsightError("Query does not contain required keys, or has excess keys");
+		} else if (obj.OPTIONS.COLUMNS[0] === undefined) {
+			throw new InsightError("Query must select at least 1 column to display");
 		}
 
 		let validQueryKeys: string[] = [];

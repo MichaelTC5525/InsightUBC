@@ -1,14 +1,12 @@
 {
-	"title": "Fail: Query attempts to request columns from course and room type datasets",
+	"title": "Fail: Query contains columns specific to courses and rooms at the same time",
 	"input":
 	{
 		"WHERE": {},
 		"OPTIONS": {
 			"COLUMNS": [
-				"rooms_fullname",
-				"rooms_shortname",
 				"rooms_dept",
-				"rooms_uuid"
+				"rooms_address"
 			]
 		}
 	},

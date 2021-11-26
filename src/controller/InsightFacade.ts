@@ -27,6 +27,8 @@ export default class InsightFacade implements IInsightFacade {
 	private readonly datasetStorage: InsightDataset[];
 	private datasetEntries: DatasetEntry[];
 	private dataFolder: string = "./data/";
+
+	private static readonly MAX_LINES = 5000;
 	/**
 	 * On creating a new InsightFacade instance, we should read the ./data file system directory
 	 * in order to ensure that we reload any existing datasets that were left from a previous
@@ -68,6 +70,10 @@ export default class InsightFacade implements IInsightFacade {
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
 		if (!this.baseValidateDataset(id)) {
 			return Promise.reject(new InsightError("Dataset ID or content invalid"));
+		}
+
+		if (kind !== "courses" && kind !== "rooms") {
+			return Promise.reject(new InsightError("Dataset type must be either 'courses' or 'rooms'"));
 		}
 
 		if (this.hasDataset(id)) {
@@ -144,9 +150,9 @@ export default class InsightFacade implements IInsightFacade {
 			let rh: ResultHandler = new ResultHandler();
 			let rc: ResultCrafter = new ResultCrafter();
 			if (obj.TRANSFORMATIONS === undefined) {
-				if (this.datasetEntries.length > 5000) {
+				if (this.datasetEntries.length > InsightFacade.MAX_LINES) {
 					return Promise.reject(new ResultTooLargeError("Query returned " + this.datasetEntries.length +
-						" results"));
+						" results, which exceeds the maximum of " + InsightFacade.MAX_LINES));
 				}
 				let queryResults: any[] = rc.craftResults(datasetToSearch, obj.OPTIONS.COLUMNS, setKind,
 					this.datasetEntries);
@@ -162,7 +168,7 @@ export default class InsightFacade implements IInsightFacade {
 				let completedResults = rh.orderResults(obj.OPTIONS.ORDER, aggregatedResults);
 				if (completedResults.length > 5000) {
 					return Promise.reject(new ResultTooLargeError("Query with transformations returned " +
-						completedResults.length + " groups"));
+						completedResults.length + " groups, which exceeds the maximum of " + InsightFacade.MAX_LINES));
 				}
 				return Promise.resolve(completedResults);
 			}
