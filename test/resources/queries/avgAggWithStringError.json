@@ -1,0 +1,33 @@
+{
+	"title": "Fail: Query uses AVG aggregation type with string query key",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"avgAddress"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"avgAddress":{
+						"AVG": "rooms_address"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
