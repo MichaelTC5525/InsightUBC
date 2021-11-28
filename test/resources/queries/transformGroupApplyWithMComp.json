@@ -1,0 +1,1658 @@
+{
+	"title": "Success: Query contains all components, including an mcomparison",
+	"input":
+	{
+		"WHERE": {
+			"GT":{
+				"rooms_lon": -129
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats",
+				"avgSeats",
+				"maxSeats"
+			],
+			"ORDER":{
+				"dir": "DOWN",
+				"keys":[
+					"rooms_lat",
+					"rooms_lon"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":[
+				{
+					"avgSeats":{
+						"AVG": "rooms_seats"
+					}
+				},
+				{
+					"maxSeats":{
+						"MAX": "rooms_seats"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"rooms_address": "6000 Iona Drive",
+			"rooms_lat": 49.27106,
+			"rooms_lon": -123.25042,
+			"rooms_seats": 100,
+			"avgSeats": 100,
+			"maxSeats": 100
+		},
+		{
+			"rooms_address": "6000 Iona Drive",
+			"rooms_lat": 49.27106,
+			"rooms_lon": -123.25042,
+			"rooms_seats": 50,
+			"avgSeats": 50,
+			"maxSeats": 50
+		},
+		{
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 94,
+			"avgSeats": 94,
+			"maxSeats": 94
+		},
+		{
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 50,
+			"avgSeats": 50,
+			"maxSeats": 50
+		},
+		{
+			"rooms_address": "1822 East Mall",
+			"rooms_lat": 49.2699,
+			"rooms_lon": -123.25318,
+			"rooms_seats": 44,
+			"avgSeats": 44,
+			"maxSeats": 44
+		},
+		{
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 26,
+			"avgSeats": 26,
+			"maxSeats": 26
+		},
+		{
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 33,
+			"avgSeats": 33,
+			"maxSeats": 33
+		},
+		{
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 37,
+			"avgSeats": 37,
+			"maxSeats": 37
+		},
+		{
+			"rooms_address": "6303 North West Marine Drive",
+			"rooms_lat": 49.26958,
+			"rooms_lon": -123.25741,
+			"rooms_seats": 90,
+			"avgSeats": 90,
+			"maxSeats": 90
+		},
+		{
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 55,
+			"avgSeats": 55,
+			"maxSeats": 55
+		},
+		{
+			"rooms_address": "6331 Crescent Road V6T 1Z1",
+			"rooms_lat": 49.26867,
+			"rooms_lon": -123.25692,
+			"rooms_seats": 48,
+			"avgSeats": 48,
+			"maxSeats": 48
+		},
+		{
+			"rooms_address": "1874 East Mall",
+			"rooms_lat": 49.26862,
+			"rooms_lon": -123.25237,
+			"rooms_seats": 70,
+			"avgSeats": 70,
+			"maxSeats": 70
+		},
+		{
+			"rooms_address": "1874 East Mall",
+			"rooms_lat": 49.26862,
+			"rooms_lon": -123.25237,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "6000 Student Union Blvd",
+			"rooms_lat": 49.2683,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 299,
+			"avgSeats": 299,
+			"maxSeats": 299
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 275,
+			"avgSeats": 275,
+			"maxSeats": 275
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 150,
+			"avgSeats": 150,
+			"maxSeats": 150
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 131,
+			"avgSeats": 131,
+			"maxSeats": 131
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 181,
+			"avgSeats": 181,
+			"maxSeats": 181
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 108,
+			"avgSeats": 108,
+			"maxSeats": 108
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 42,
+			"avgSeats": 42,
+			"maxSeats": 42
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 26,
+			"avgSeats": 26,
+			"maxSeats": 26
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 56,
+			"avgSeats": 56,
+			"maxSeats": 56
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 48,
+			"avgSeats": 48,
+			"maxSeats": 48
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 78,
+			"avgSeats": 78,
+			"maxSeats": 78
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 22,
+			"avgSeats": 22,
+			"maxSeats": 22
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 32,
+			"avgSeats": 32,
+			"maxSeats": 32
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 18,
+			"avgSeats": 18,
+			"maxSeats": 18
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 65,
+			"avgSeats": 65,
+			"maxSeats": 65
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 50,
+			"avgSeats": 50,
+			"maxSeats": 50
+		},
+		{
+			"rooms_address": "1866 Main Mall",
+			"rooms_lat": 49.26826,
+			"rooms_lon": -123.25468,
+			"rooms_seats": 31,
+			"avgSeats": 31,
+			"maxSeats": 31
+		},
+		{
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 80,
+			"avgSeats": 80,
+			"maxSeats": 80
+		},
+		{
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 94,
+			"avgSeats": 94,
+			"maxSeats": 94
+		},
+		{
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 51,
+			"avgSeats": 51,
+			"maxSeats": 51
+		},
+		{
+			"rooms_address": "6333 Memorial Road",
+			"rooms_lat": 49.26767,
+			"rooms_lon": -123.25583,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 50,
+			"avgSeats": 50,
+			"maxSeats": 50
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 154,
+			"avgSeats": 154,
+			"maxSeats": 154
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 8,
+			"avgSeats": 8,
+			"maxSeats": 8
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 112,
+			"avgSeats": 112,
+			"maxSeats": 112
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 12,
+			"avgSeats": 12,
+			"maxSeats": 12
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 10,
+			"avgSeats": 10,
+			"maxSeats": 10
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "1961 East Mall V6T 1Z1",
+			"rooms_lat": 49.26766,
+			"rooms_lon": -123.2521,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "1924 West Mall",
+			"rooms_lat": 49.2666,
+			"rooms_lon": -123.25655,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "1924 West Mall",
+			"rooms_lat": 49.2666,
+			"rooms_lon": -123.25655,
+			"rooms_seats": 21,
+			"avgSeats": 21,
+			"maxSeats": 21
+		},
+		{
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 224,
+			"avgSeats": 224,
+			"maxSeats": 224
+		},
+		{
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 48,
+			"avgSeats": 48,
+			"maxSeats": 48
+		},
+		{
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "1984 Mathematics Road",
+			"rooms_lat": 49.266463,
+			"rooms_lon": -123.255534,
+			"rooms_seats": 25,
+			"avgSeats": 25,
+			"maxSeats": 25
+		},
+		{
+			"rooms_address": "6081 University Blvd",
+			"rooms_lat": 49.2663,
+			"rooms_lon": -123.2466,
+			"rooms_seats": 25,
+			"avgSeats": 25,
+			"maxSeats": 25
+		},
+		{
+			"rooms_address": "6081 University Blvd",
+			"rooms_lat": 49.2663,
+			"rooms_lon": -123.2466,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 257,
+			"avgSeats": 257,
+			"maxSeats": 257
+		},
+		{
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 155,
+			"avgSeats": 155,
+			"maxSeats": 155
+		},
+		{
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 150,
+			"avgSeats": 150,
+			"maxSeats": 150
+		},
+		{
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "6224 Agricultural Road",
+			"rooms_lat": 49.26627,
+			"rooms_lon": -123.25374,
+			"rooms_seats": 36,
+			"avgSeats": 36,
+			"maxSeats": 36
+		},
+		{
+			"rooms_address": "2045 East Mall",
+			"rooms_lat": 49.2661,
+			"rooms_lon": -123.25165,
+			"rooms_seats": 54,
+			"avgSeats": 54,
+			"maxSeats": 54
+		},
+		{
+			"rooms_address": "2045 East Mall",
+			"rooms_lat": 49.2661,
+			"rooms_lon": -123.25165,
+			"rooms_seats": 375,
+			"avgSeats": 375,
+			"maxSeats": 375
+		},
+		{
+			"rooms_address": "1986 Mathematics Road",
+			"rooms_lat": 49.266089,
+			"rooms_lon": -123.254816,
+			"rooms_seats": 106,
+			"avgSeats": 106,
+			"maxSeats": 106
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 225,
+			"avgSeats": 225,
+			"maxSeats": 225
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 100,
+			"avgSeats": 100,
+			"maxSeats": 100
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 42,
+			"avgSeats": 42,
+			"maxSeats": 42
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 72,
+			"avgSeats": 72,
+			"maxSeats": 72
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 39,
+			"avgSeats": 39,
+			"maxSeats": 39
+		},
+		{
+			"rooms_address": "1984 West Mall",
+			"rooms_lat": 49.26605,
+			"rooms_lon": -123.25623,
+			"rooms_seats": 21,
+			"avgSeats": 21,
+			"maxSeats": 21
+		},
+		{
+			"rooms_address": "2036 Main Mall",
+			"rooms_lat": 49.2659,
+			"rooms_lon": -123.25308,
+			"rooms_seats": 265,
+			"avgSeats": 265,
+			"maxSeats": 265
+		},
+		{
+			"rooms_address": "2036 Main Mall",
+			"rooms_lat": 49.2659,
+			"rooms_lon": -123.25308,
+			"rooms_seats": 240,
+			"avgSeats": 240,
+			"maxSeats": 240
+		},
+		{
+			"rooms_address": "2036 Main Mall",
+			"rooms_lat": 49.2659,
+			"rooms_lon": -123.25308,
+			"rooms_seats": 90,
+			"avgSeats": 90,
+			"maxSeats": 90
+		},
+		{
+			"rooms_address": "2036 Main Mall",
+			"rooms_lat": 49.2659,
+			"rooms_lon": -123.25308,
+			"rooms_seats": 114,
+			"avgSeats": 114,
+			"maxSeats": 114
+		},
+		{
+			"rooms_address": "6356 Agricultural Road",
+			"rooms_lat": 49.26545,
+			"rooms_lon": -123.25533,
+			"rooms_seats": 205,
+			"avgSeats": 205,
+			"maxSeats": 205
+		},
+		{
+			"rooms_address": "6356 Agricultural Road",
+			"rooms_lat": 49.26545,
+			"rooms_lon": -123.25533,
+			"rooms_seats": 183,
+			"avgSeats": 183,
+			"maxSeats": 183
+		},
+		{
+			"rooms_address": "6356 Agricultural Road",
+			"rooms_lat": 49.26545,
+			"rooms_lon": -123.25533,
+			"rooms_seats": 75,
+			"avgSeats": 75,
+			"maxSeats": 75
+		},
+		{
+			"rooms_address": "6356 Agricultural Road",
+			"rooms_lat": 49.26545,
+			"rooms_lon": -123.25533,
+			"rooms_seats": 42,
+			"avgSeats": 42,
+			"maxSeats": 42
+		},
+		{
+			"rooms_address": "2177 Wesbrook Mall V6T 1Z3",
+			"rooms_lat": 49.26541,
+			"rooms_lon": -123.24608,
+			"rooms_seats": 160,
+			"avgSeats": 160,
+			"maxSeats": 160
+		},
+		{
+			"rooms_address": "6174 University Boulevard",
+			"rooms_lat": 49.26517,
+			"rooms_lon": -123.24937,
+			"rooms_seats": 325,
+			"avgSeats": 325,
+			"maxSeats": 325
+		},
+		{
+			"rooms_address": "6174 University Boulevard",
+			"rooms_lat": 49.26517,
+			"rooms_lon": -123.24937,
+			"rooms_seats": 102,
+			"avgSeats": 102,
+			"maxSeats": 102
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 54,
+			"avgSeats": 54,
+			"maxSeats": 54
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 260,
+			"avgSeats": 260,
+			"maxSeats": 260
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 41,
+			"avgSeats": 41,
+			"maxSeats": 41
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 70,
+			"avgSeats": 70,
+			"maxSeats": 70
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 68,
+			"avgSeats": 68,
+			"maxSeats": 68
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 80,
+			"avgSeats": 80,
+			"maxSeats": 80
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 35,
+			"avgSeats": 35,
+			"maxSeats": 35
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 32,
+			"avgSeats": 32,
+			"maxSeats": 32
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 37,
+			"avgSeats": 37,
+			"maxSeats": 37
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 58,
+			"avgSeats": 58,
+			"maxSeats": 58
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 44,
+			"avgSeats": 44,
+			"maxSeats": 44
+		},
+		{
+			"rooms_address": "2053 Main Mall",
+			"rooms_lat": 49.26486,
+			"rooms_lon": -123.25364,
+			"rooms_seats": 53,
+			"avgSeats": 53,
+			"maxSeats": 53
+		},
+		{
+			"rooms_address": "6270 University Boulevard",
+			"rooms_lat": 49.26479,
+			"rooms_lon": -123.25249,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "6270 University Boulevard",
+			"rooms_lat": 49.26479,
+			"rooms_lon": -123.25249,
+			"rooms_seats": 228,
+			"avgSeats": 228,
+			"maxSeats": 228
+		},
+		{
+			"rooms_address": "6270 University Boulevard",
+			"rooms_lat": 49.26479,
+			"rooms_lon": -123.25249,
+			"rooms_seats": 76,
+			"avgSeats": 76,
+			"maxSeats": 76
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 120,
+			"avgSeats": 120,
+			"maxSeats": 120
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 503,
+			"avgSeats": 503,
+			"maxSeats": 503
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 88,
+			"avgSeats": 88,
+			"maxSeats": 88
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 181,
+			"avgSeats": 181,
+			"maxSeats": 181
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 21,
+			"avgSeats": 21,
+			"maxSeats": 21
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 14,
+			"avgSeats": 14,
+			"maxSeats": 14
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 10,
+			"avgSeats": 10,
+			"maxSeats": 10
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 12,
+			"avgSeats": 12,
+			"maxSeats": 12
+		},
+		{
+			"rooms_address": "2194 Health Sciences Mall",
+			"rooms_lat": 49.26478,
+			"rooms_lon": -123.24673,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 12,
+			"avgSeats": 12,
+			"maxSeats": 12
+		},
+		{
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 68,
+			"avgSeats": 68,
+			"maxSeats": 68
+		},
+		{
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 29,
+			"avgSeats": 29,
+			"maxSeats": 29
+		},
+		{
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 31,
+			"avgSeats": 31,
+			"maxSeats": 31
+		},
+		{
+			"rooms_address": "2080 West Mall",
+			"rooms_lat": 49.2643,
+			"rooms_lon": -123.25505,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 28,
+			"avgSeats": 28,
+			"maxSeats": 28
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 30,
+			"avgSeats": 30,
+			"maxSeats": 30
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 12,
+			"avgSeats": 12,
+			"maxSeats": 12
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 14,
+			"avgSeats": 14,
+			"maxSeats": 14
+		},
+		{
+			"rooms_address": "2206 East Mall",
+			"rooms_lat": 49.2642,
+			"rooms_lon": -123.24842,
+			"rooms_seats": 66,
+			"avgSeats": 66,
+			"maxSeats": 66
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 12,
+			"avgSeats": 12,
+			"maxSeats": 12
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 28,
+			"avgSeats": 28,
+			"maxSeats": 28
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 27,
+			"avgSeats": 27,
+			"maxSeats": 27
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 54,
+			"avgSeats": 54,
+			"maxSeats": 54
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 43,
+			"avgSeats": 43,
+			"maxSeats": 43
+		},
+		{
+			"rooms_address": "2205 East Mall",
+			"rooms_lat": 49.26414,
+			"rooms_lon": -123.24959,
+			"rooms_seats": 99,
+			"avgSeats": 99,
+			"maxSeats": 99
+		},
+		{
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "6445 University Boulevard",
+			"rooms_lat": 49.264,
+			"rooms_lon": -123.2559,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 280,
+			"avgSeats": 280,
+			"maxSeats": 280
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 38,
+			"avgSeats": 38,
+			"maxSeats": 38
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 34,
+			"avgSeats": 34,
+			"maxSeats": 34
+		},
+		{
+			"rooms_address": "2125 Main Mall",
+			"rooms_lat": 49.26398,
+			"rooms_lon": -123.2531,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "2202 Main Mall",
+			"rooms_lat": 49.26372,
+			"rooms_lon": -123.25099,
+			"rooms_seats": 144,
+			"avgSeats": 144,
+			"maxSeats": 144
+		},
+		{
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 47,
+			"avgSeats": 47,
+			"maxSeats": 47
+		},
+		{
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 27,
+			"avgSeats": 27,
+			"maxSeats": 27
+		},
+		{
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 187,
+			"avgSeats": 187,
+			"maxSeats": 187
+		},
+		{
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 188,
+			"avgSeats": 188,
+			"maxSeats": 188
+		},
+		{
+			"rooms_address": "2175 West Mall V6T 1Z4",
+			"rooms_lat": 49.26293,
+			"rooms_lon": -123.25431,
+			"rooms_seats": 190,
+			"avgSeats": 190,
+			"maxSeats": 190
+		},
+		{
+			"rooms_address": "2207 Main Mall",
+			"rooms_lat": 49.26274,
+			"rooms_lon": -123.25224,
+			"rooms_seats": 150,
+			"avgSeats": 150,
+			"maxSeats": 150
+		},
+		{
+			"rooms_address": "2207 Main Mall",
+			"rooms_lat": 49.26274,
+			"rooms_lon": -123.25224,
+			"rooms_seats": 350,
+			"avgSeats": 350,
+			"maxSeats": 350
+		},
+		{
+			"rooms_address": "2207 Main Mall",
+			"rooms_lat": 49.26274,
+			"rooms_lon": -123.25224,
+			"rooms_seats": 80,
+			"avgSeats": 80,
+			"maxSeats": 80
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 100,
+			"avgSeats": 100,
+			"maxSeats": 100
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 62,
+			"avgSeats": 62,
+			"maxSeats": 62
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 26,
+			"avgSeats": 26,
+			"maxSeats": 26
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 22,
+			"avgSeats": 22,
+			"maxSeats": 22
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 34,
+			"avgSeats": 34,
+			"maxSeats": 34
+		},
+		{
+			"rooms_address": "6250 Applied Science Lane",
+			"rooms_lat": 49.26273,
+			"rooms_lon": -123.24894,
+			"rooms_seats": 45,
+			"avgSeats": 45,
+			"maxSeats": 45
+		},
+		{
+			"rooms_address": "2350 Health Sciences Mall",
+			"rooms_lat": 49.26236,
+			"rooms_lon": -123.24494,
+			"rooms_seats": 350,
+			"avgSeats": 350,
+			"maxSeats": 350
+		},
+		{
+			"rooms_address": "2350 Health Sciences Mall",
+			"rooms_lat": 49.26236,
+			"rooms_lon": -123.24494,
+			"rooms_seats": 125,
+			"avgSeats": 125,
+			"maxSeats": 125
+		},
+		{
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 236,
+			"avgSeats": 236,
+			"maxSeats": 236
+		},
+		{
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 167,
+			"avgSeats": 167,
+			"maxSeats": 167
+		},
+		{
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 7,
+			"avgSeats": 7,
+			"maxSeats": 7
+		},
+		{
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 14,
+			"avgSeats": 14,
+			"maxSeats": 14
+		},
+		{
+			"rooms_address": "2405 Wesbrook Mall",
+			"rooms_lat": 49.26229,
+			"rooms_lon": -123.24342,
+			"rooms_seats": 72,
+			"avgSeats": 72,
+			"maxSeats": 72
+		},
+		{
+			"rooms_address": "2360 East Mall V6T 1Z3",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.24718,
+			"rooms_seats": 200,
+			"avgSeats": 200,
+			"maxSeats": 200
+		},
+		{
+			"rooms_address": "2360 East Mall V6T 1Z3",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.24718,
+			"rooms_seats": 94,
+			"avgSeats": 94,
+			"maxSeats": 94
+		},
+		{
+			"rooms_address": "2360 East Mall V6T 1Z3",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.24718,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "6339 Stores Road",
+			"rooms_lat": 49.26228,
+			"rooms_lon": -123.25198,
+			"rooms_seats": 50,
+			"avgSeats": 50,
+			"maxSeats": 50
+		},
+		{
+			"rooms_address": "2260 West Mall, V6T 1Z4",
+			"rooms_lat": 49.26207,
+			"rooms_lon": -123.25314,
+			"rooms_seats": 426,
+			"avgSeats": 426,
+			"maxSeats": 426
+		},
+		{
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 123,
+			"avgSeats": 123,
+			"maxSeats": 123
+		},
+		{
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 60,
+			"avgSeats": 60,
+			"maxSeats": 60
+		},
+		{
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 136,
+			"avgSeats": 136,
+			"maxSeats": 136
+		},
+		{
+			"rooms_address": "2356 Main Mall",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.24935,
+			"rooms_seats": 84,
+			"avgSeats": 84,
+			"maxSeats": 84
+		},
+		{
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 63,
+			"avgSeats": 63,
+			"maxSeats": 63
+		},
+		{
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 44,
+			"avgSeats": 44,
+			"maxSeats": 44
+		},
+		{
+			"rooms_address": "6350 Stores Road",
+			"rooms_lat": 49.26176,
+			"rooms_lon": -123.25179,
+			"rooms_seats": 35,
+			"avgSeats": 35,
+			"maxSeats": 35
+		},
+		{
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 120,
+			"avgSeats": 120,
+			"maxSeats": 120
+		},
+		{
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 80,
+			"avgSeats": 80,
+			"maxSeats": 80
+		},
+		{
+			"rooms_address": "6245 Agronomy Road V6T 1Z4",
+			"rooms_lat": 49.26125,
+			"rooms_lon": -123.24807,
+			"rooms_seats": 160,
+			"avgSeats": 160,
+			"maxSeats": 160
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 47,
+			"avgSeats": 47,
+			"maxSeats": 47
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 74,
+			"avgSeats": 74,
+			"maxSeats": 74
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 72,
+			"avgSeats": 72,
+			"maxSeats": 72
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 200,
+			"avgSeats": 200,
+			"maxSeats": 200
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 32,
+			"avgSeats": 32,
+			"maxSeats": 32
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 6,
+			"avgSeats": 6,
+			"maxSeats": 6
+		},
+		{
+			"rooms_address": "2357 Main Mall",
+			"rooms_lat": 49.26114,
+			"rooms_lon": -123.25027,
+			"rooms_seats": 8,
+			"avgSeats": 8,
+			"maxSeats": 8
+		},
+		{
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 72,
+			"avgSeats": 72,
+			"maxSeats": 72
+		},
+		{
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 25,
+			"avgSeats": 25,
+			"maxSeats": 25
+		},
+		{
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 48,
+			"avgSeats": 48,
+			"maxSeats": 48
+		},
+		{
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 16,
+			"avgSeats": 16,
+			"maxSeats": 16
+		},
+		{
+			"rooms_address": "6363 Agronomy Road",
+			"rooms_lat": 49.26048,
+			"rooms_lon": -123.24944,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		},
+		{
+			"rooms_address": "6108 Thunderbird Boulevard",
+			"rooms_lat": 49.26047,
+			"rooms_lon": -123.24467,
+			"rooms_seats": 40,
+			"avgSeats": 40,
+			"maxSeats": 40
+		},
+		{
+			"rooms_address": "6108 Thunderbird Boulevard",
+			"rooms_lat": 49.26047,
+			"rooms_lon": -123.24467,
+			"rooms_seats": 39,
+			"avgSeats": 39,
+			"maxSeats": 39
+		},
+		{
+			"rooms_address": "6108 Thunderbird Boulevard",
+			"rooms_lat": 49.26047,
+			"rooms_lon": -123.24467,
+			"rooms_seats": 442,
+			"avgSeats": 442,
+			"maxSeats": 442
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 65,
+			"avgSeats": 65,
+			"maxSeats": 65
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 24,
+			"avgSeats": 24,
+			"maxSeats": 24
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 250,
+			"avgSeats": 250,
+			"maxSeats": 250
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 99,
+			"avgSeats": 99,
+			"maxSeats": 99
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 18,
+			"avgSeats": 18,
+			"maxSeats": 18
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 36,
+			"avgSeats": 36,
+			"maxSeats": 36
+		},
+		{
+			"rooms_address": "2424 Main Mall",
+			"rooms_lat": 49.26044,
+			"rooms_lon": -123.24886,
+			"rooms_seats": 20,
+			"avgSeats": 20,
+			"maxSeats": 20
+		}
+	]
+}

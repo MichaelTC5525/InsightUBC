@@ -1,0 +1,41 @@
+{
+	"title": "Fail: Query contains a filter within logical combination with invalid query key type",
+	"input":
+	{
+		"WHERE": {
+			"AND":[
+				{
+					"GT": {
+						"rooms_lon": -129
+					}
+				},
+				{
+					"LT":{
+						"rooms_fullname": "Woodward"
+					}
+				}
+			]
+
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_fullname",
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"ORDER": {
+				"dir": "UP",
+				"keys": [
+					"rooms_fullname",
+					"rooms_seats",
+					"rooms_lat",
+					"rooms_lon"
+				]
+			}
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

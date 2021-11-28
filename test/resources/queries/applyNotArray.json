@@ -1,0 +1,26 @@
+{
+	"title": "Fail: TRANSFORMATIONS.APPLY is not an array type",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			]
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_address",
+				"rooms_lat",
+				"rooms_lon",
+				"rooms_seats"
+			],
+			"APPLY":{}
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

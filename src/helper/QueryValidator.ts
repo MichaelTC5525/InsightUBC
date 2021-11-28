@@ -1,4 +1,5 @@
 import {InsightError} from "../controller/IInsightFacade";
+import KeyValidator from "./KeyValidator";
 
 export default class QueryValidator {
 	public validateQuery(id: string, obj: any, kind: string, existingSets: string[]) {
@@ -77,7 +78,7 @@ export default class QueryValidator {
 			} else {
 				// obj.ORDER is a JSON object
 				if (obj.ORDER.dir === null || obj.ORDER.keys === null) {
-					throw new InsightError("ORDER clause is defined as object; missing required ordering keys");
+					throw new InsightError("ORDER clause is defined as object; missing required ordering info");
 				}
 				if (obj.ORDER.dir !== "UP" && obj.ORDER.dir !== "DOWN") {
 					throw new InsightError("ORDER clause sorting direction invalid");
@@ -115,13 +116,14 @@ export default class QueryValidator {
 
 		let comp = Object.keys(obj)[0];
 		let compKey: string;
+		let keyValidator: KeyValidator = new KeyValidator();
 		switch(comp) {
 			case "GT":
 			case "LT":
 			case "EQ":
 			case "IS":
 				compKey = Object.keys(obj[comp])[0];
-				this.checkKey(id, fields, obj[comp], compKey);
+				keyValidator.checkKey(id, fields, obj[comp], comp, compKey);
 				break;
 			case "OR":
 				if (Object.keys(obj.OR).length === 0) {
@@ -145,61 +147,6 @@ export default class QueryValidator {
 				break;
 			default:
 				throw new InsightError("WHERE clause contains unsupported logic / comparison type");
-		}
-	}
-
-	private checkKey(id: string, fields: string[], obj: any, key: string) {
-		let strVal: string = "";
-		switch(key) {
-		// String Course fields
-			case id + "_dept":
-			case id + "_id":
-			case id + "_instructor":
-			case id + "_title":
-			case id + "_uuid":
-			// String Room fields
-			case id + "_fullname":
-			case id + "_shortname":
-			case id + "_number":
-			case id + "_name":
-			case id + "_address":
-			case id + "_type":
-			case id + "_furniture":
-			case id + "_href":
-				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
-					!fields.includes(key.split("_")[1])) {
-					throw new InsightError("WHERE clause contains invalid string comparison key");
-				}
-				if (!(typeof Object.values(obj)[0] === "string")) {
-					throw new InsightError("WHERE clause contains string comparison but value is not string");
-				}
-
-				strVal = (Object.values(obj)[0] as string);
-				if (strVal.indexOf("*", 1) > 0 && strVal.indexOf("*", 1) < strVal.length - 1) {
-					throw new InsightError("WHERE clause contains string comparison with non-edge position wildcard");
-				}
-				break;
-			// Number Course fields
-			case id + "_avg":
-			case id + "_pass":
-			case id + "_fail":
-			case id + "_audit":
-			case id + "_year":
-			// Number Room fields
-			case id + "_lat":
-			case id + "_lon":
-			case id + "_seats":
-				if (key.split("_").length !== 2 || key.split("_")[0] !== id ||
-					!fields.includes(key.split("_")[1])) {
-					throw new InsightError("WHERE clause contains invalid numerical comparison key");
-				}
-				if (!(typeof Object.values(obj)[0] === "number")) {
-					throw new InsightError("WHERE clause contains numerical comparison but value is not numerical");
-				}
-				break;
-			default:
-				throw new InsightError("Comparison key does not match any known supported query keys; " +
-											"check dataset ID or attribute in the WHERE clause");
 		}
 	}
 

@@ -1,0 +1,12 @@
+{
+	"title": "Fail: OPTIONS.COLUMNS is an empty array",
+	"input":
+	{
+		"WHERE":{},
+		"OPTIONS":{
+			"COLUMNS":[]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
