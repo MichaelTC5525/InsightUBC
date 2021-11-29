@@ -414,10 +414,12 @@ function unlockOrders() {
 		if (document.getElementById("queryCoursesType").checked) {
 			for (let key of document.getElementsByName("columnsCourseOrder")) {
 				key.disabled = false;
+				unlockOrderNums();
 			}
 		} else if (document.getElementById("queryRoomsType").checked) {
 			for (let key of document.getElementsByName("columnsRoomOrder")) {
 				key.disabled = false;
+				unlockOrderNums();
 			}
 		}
 
@@ -428,10 +430,12 @@ function unlockOrders() {
 
 		for (let key of document.getElementsByName("columnsCourseOrder")) {
 			key.disabled = true;
+			unlockOrderNums();
 		}
 
 		for (let key of document.getElementsByName("columnsRoomOrder")) {
 			key.disabled = true;
+			unlockOrderNums();
 		}
 	}
 }
