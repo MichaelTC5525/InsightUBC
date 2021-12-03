@@ -209,6 +209,9 @@ export default class QueryValidator {
 			}
 			this.checkAggOp(Object.keys(o[applyKey])[0], aggValueArray[1]);
 
+			if (applyKey.includes("_")) {
+				throw new InsightError("APPLY column name cannot contain underscores");
+			}
 			applyKeys.push(applyKey);
 		}
 		return columns;
