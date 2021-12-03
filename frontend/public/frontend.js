@@ -212,6 +212,7 @@ async function handleQuery(event) {
 		query.TRANSFORMATIONS.APPLY = getAggColumns(query.OPTIONS.COLUMNS, querySet);
 	}
 
+	alert(JSON.stringify(query));
 	await fetch("http://localhost:4321/query", {
 		method: "POST",
 		headers: {
