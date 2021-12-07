@@ -201,6 +201,11 @@ export default class QueryValidator {
 			}
 
 			// o[applyKey] = { "MAX": "courses_avg" } ; "MAX" is the only key at 0th element
+			if (Object.keys(o[applyKey]).length !== 1) {
+				throw new InsightError("An applyrule has too many aggregation functions specified, " +
+											"should have 1, but found " + Object.keys(o[applyKey]).length);
+			}
+
 			if (!(supportedAggs.includes(Object.keys(o[applyKey])[0]))) {
 				throw new InsightError("Aggregation type for APPLY column " +
 					applyKey + " is unsupported");
