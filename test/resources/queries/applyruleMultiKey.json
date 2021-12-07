@@ -1,0 +1,35 @@
+{
+	"title": "Fail: Query contains an APPLYRULE with too many applykeys",
+	"input": {
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_type",
+				"sumLat"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"sumLat"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_type"
+			],
+			"APPLY": [
+				{
+					"sumLat": {
+						"SUM": "rooms_lat"
+					},
+					"countLon": {
+						"COUNT": "rooms_lon"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}

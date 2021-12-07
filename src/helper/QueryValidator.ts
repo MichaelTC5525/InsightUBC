@@ -186,7 +186,12 @@ export default class QueryValidator {
 		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
 		for (let o of obj) {
 			// o = { applykey: { "MAX": "courses_avg" }}
-			let applyKey: string = Object.keys(o)[0]; // There should only be a first element, no more
+			if (Object.keys(o).length !== 1) {
+				throw new InsightError("An APPLYRULE has an invalid number of keys; should have 1, but found " +
+												Object.keys(o).length);
+			}
+
+			let applyKey: string = Object.keys(o)[0]; // Pick up the only applykey in the object
 			if (applyKeys.includes(applyKey)) {
 				throw new InsightError("APPLY clause contains duplicate applyKeys; an aggregated column can only" +
 				" take on a single aggregation operation");
