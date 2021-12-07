@@ -1,0 +1,32 @@
+{
+	"title": "Fail: Query contains an aggregation operation whose value is not a column",
+	"input": {
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_type",
+				"sumLat"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"sumLat"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_type"
+			],
+			"APPLY": [
+				{
+					"sumLat": {
+						"SUM": "rooms_asdfasdfasdf"
+					}
+				}
+			]
+		}
+	},
+	"errorExpected": true,
+	"with": "InsightError"
+}
