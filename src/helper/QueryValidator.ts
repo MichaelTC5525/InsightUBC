@@ -186,7 +186,12 @@ export default class QueryValidator {
 		// obj = [ { applykey : { token: key } } ] --> o of obj = { applykey : ... } --> Object.keys(o) = ["applykey"]
 		for (let o of obj) {
 			// o = { applykey: { "MAX": "courses_avg" }}
-			let applyKey: string = Object.keys(o)[0]; // There should only be a first element, no more
+			if (Object.keys(o).length !== 1) {
+				throw new InsightError("An APPLYRULE has an invalid number of keys; should have 1, but found " +
+												Object.keys(o).length);
+			}
+
+			let applyKey: string = Object.keys(o)[0]; // Pick up the only applykey in the object
 			if (applyKeys.includes(applyKey)) {
 				throw new InsightError("APPLY clause contains duplicate applyKeys; an aggregated column can only" +
 				" take on a single aggregation operation");
@@ -196,6 +201,11 @@ export default class QueryValidator {
 			}
 
 			// o[applyKey] = { "MAX": "courses_avg" } ; "MAX" is the only key at 0th element
+			if (Object.keys(o[applyKey]).length !== 1) {
+				throw new InsightError("An applyrule has too many aggregation functions specified, " +
+											"should have 1, but found " + Object.keys(o[applyKey]).length);
+			}
+
 			if (!(supportedAggs.includes(Object.keys(o[applyKey])[0]))) {
 				throw new InsightError("Aggregation type for APPLY column " +
 					applyKey + " is unsupported");
@@ -209,6 +219,9 @@ export default class QueryValidator {
 			}
 			this.checkAggOp(Object.keys(o[applyKey])[0], aggValueArray[1]);
 
+			if (applyKey.includes("_")) {
+				throw new InsightError("APPLY column name cannot contain underscores");
+			}
 			applyKeys.push(applyKey);
 		}
 		return columns;

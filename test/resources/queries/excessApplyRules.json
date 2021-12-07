@@ -1,0 +1,70 @@
+{
+	"title": "Success: Query contains more apply rules than aggregated columns requested",
+	"input":
+	{
+		"WHERE": {},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_type",
+				"sumLat"
+			],
+			"ORDER": {
+				"dir": "DOWN",
+				"keys": [
+					"sumLat"
+				]
+			}
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": [
+				"rooms_type"
+			],
+			"APPLY": [
+				{
+					"sumLat": {
+						"SUM": "rooms_lat"
+					}
+				},
+				{
+					"sumLon": {
+						"COUNT": "rooms_lon"
+					}
+				}
+			]
+		}
+	},
+	"with": [
+		{
+			"rooms_type":"Small Group",
+			"sumLat":7783.84
+		},
+		{
+			"rooms_type":"Open Design General Purpose",
+			"sumLat":4384.6
+		},
+		{
+			"rooms_type":"Tiered Large Group",
+			"sumLat":3744.12
+		},
+		{
+			"rooms_type":"Case Style",
+			"sumLat":1182.38
+		},
+		{
+			"rooms_type":"Active Learning",
+			"sumLat":443.34
+		},
+		{
+			"rooms_type":"TBD",
+			"sumLat":197.07
+		},
+		{
+			"rooms_type":"Studio Lab",
+			"sumLat":147.79
+		},
+		{
+			"rooms_type":"",
+			"sumLat":49.27
+		}
+	]
+}
